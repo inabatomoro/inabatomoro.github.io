@@ -2,6 +2,13 @@ import { client } from '@/app/sanity/client'
 import { workQuery, workSlugsQuery } from '@/app/sanity/queries'
 import { PortableText } from '@portabletext/react'
 import Image from 'next/image'
+import imageUrlBuilder from '@sanity/image-url'
+
+const builder = imageUrlBuilder(client)
+
+function urlFor(source: any) {
+  return builder.image(source)
+}
 
 export async function generateStaticParams() {
   const slugs = await client.fetch(workSlugsQuery)
@@ -23,7 +30,7 @@ export default async function WorkPage({ params }: { params: { slug: string } })
       {work.mainImage || work.imageUrl && (
         <div className="relative w-full h-96 mb-8">
           <Image
-            src={work.imageUrl || client.urlFor(work.mainImage).url()}
+            src={work.imageUrl || urlFor(work.mainImage).url()}
             alt={work.mainImage?.alt || work.title}
             fill
             className="object-cover rounded-lg"

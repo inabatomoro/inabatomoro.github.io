@@ -2,6 +2,13 @@ import { client } from '@/app/sanity/client'
 import { serviceQuery, serviceSlugsQuery } from '@/app/sanity/queries'
 import { PortableText } from '@portabletext/react'
 import Image from 'next/image'
+import imageUrlBuilder from '@sanity/image-url'
+
+const builder = imageUrlBuilder(client)
+
+function urlFor(source: any) {
+  return builder.image(source)
+}
 
 export async function generateStaticParams() {
   const slugs = await client.fetch(serviceSlugsQuery)
@@ -21,7 +28,7 @@ export default async function ServicePage({ params }: { params: { slug: string }
       {service.mainImage || service.imageUrl && (
         <div className="relative w-full h-96 mb-8">
           <Image
-            src={service.imageUrl || client.urlFor(service.mainImage).url()}
+            src={service.imageUrl || urlFor(service.mainImage).url()}
             alt={service.mainImage?.alt || service.title}
             fill
             className="object-cover rounded-lg"

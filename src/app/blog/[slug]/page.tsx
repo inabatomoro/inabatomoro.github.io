@@ -4,6 +4,13 @@ import { PortableText } from '@portabletext/react'
 import Image from 'next/image'
 import BlogSidebar from '@/app/components/BlogSidebar'
 import SummaryButton from '@/app/components/SummaryButton'
+import imageUrlBuilder from '@sanity/image-url'
+
+const builder = imageUrlBuilder(client)
+
+function urlFor(source: any) {
+  return builder.image(source)
+}
 
 export async function generateStaticParams() {
   const slugs = await client.fetch(postSlugsQuery)
@@ -63,7 +70,7 @@ export default async function PostPage({ params }: { params: { slug: string } })
           {(post.mainImage || post.imageUrl) && (
             <div className="relative w-full h-96 mb-8">
               <Image
-                src={post.imageUrl || client.urlFor(post.mainImage).url()}
+                src={post.imageUrl || urlFor(post.mainImage).url()}
                 alt={post.mainImage?.alt || post.title}
                 fill
                 className="object-cover rounded-lg"

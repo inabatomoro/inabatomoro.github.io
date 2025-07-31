@@ -4,6 +4,13 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { client } from '@/app/sanity/client'
 import { useState } from 'react'
+import imageUrlBuilder from '@sanity/image-url'
+
+const builder = imageUrlBuilder(client)
+
+function urlFor(source: any) {
+  return builder.image(source)
+}
 
 interface ServicesProps {
   services: any[]; // Data passed from parent page.tsx
@@ -34,7 +41,7 @@ export default function Services({ services }: ServicesProps) {
         let transformStyle = ''
         let zIndex = 10
         let opacity = 0
-        let pointerEvents = 'none'
+        let pointerEvents: 'none' | 'auto' = 'none'
         let cardWidth = '350px'
         let cardHeight = 'auto' // Auto height
         let imageHeight = 'h-72' // Default image height for side cards
@@ -82,7 +89,7 @@ export default function Services({ services }: ServicesProps) {
             {(service.mainImage || service.imageUrl) && (
               <div className={`relative w-full ${imageHeight}`}> {/* Dynamic image height */}
                 <Image
-                  src={service.imageUrl || client.urlFor(service.mainImage).url()}
+                  src={service.imageUrl || urlFor(service.mainImage).url()}
                   alt={service.mainImage?.alt || service.title}
                   fill
                   className="object-cover"

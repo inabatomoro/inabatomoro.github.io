@@ -2,6 +2,13 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { client } from '@/app/sanity/client'
 import { postsQuery } from '@/app/sanity/queries'
+import imageUrlBuilder from '@sanity/image-url'
+
+const builder = imageUrlBuilder(client)
+
+function urlFor(source: any) {
+  return builder.image(source)
+}
 
 export default async function RecentPosts() {
   const posts = await client.fetch(postsQuery)
@@ -21,7 +28,7 @@ export default async function RecentPosts() {
             {(post.mainImage || post.imageUrl) && (
               <div className="relative w-full h-48">
                 <Image
-                  src={post.imageUrl || client.urlFor(post.mainImage).url()}
+                  src={post.imageUrl || urlFor(post.mainImage).url()}
                   alt={post.mainImage?.alt || post.title}
                   fill
                   className="object-cover"

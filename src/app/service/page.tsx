@@ -2,6 +2,13 @@ import { client } from '@/app/sanity/client'
 import { servicesQuery } from '@/app/sanity/queries'
 import Link from 'next/link'
 import Image from 'next/image'
+import imageUrlBuilder from '@sanity/image-url'
+
+const builder = imageUrlBuilder(client)
+
+function urlFor(source: any) {
+  return builder.image(source)
+}
 
 export default async function ServicesPage() {
   const services = await client.fetch(servicesQuery)
@@ -16,7 +23,7 @@ export default async function ServicesPage() {
               {(service.mainImage || service.imageUrl) && (
                 <div className="relative w-full h-48">
                   <Image
-                    src={service.imageUrl || client.urlFor(service.mainImage).url()}
+                    src={service.imageUrl || urlFor(service.mainImage).url()}
                     alt={service.mainImage?.alt || service.title}
                     fill
                     className="object-cover"

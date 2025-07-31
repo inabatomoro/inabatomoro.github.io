@@ -2,6 +2,13 @@ import { client } from '@/app/sanity/client'
 import { worksQuery } from '@/app/sanity/queries'
 import Link from 'next/link'
 import Image from 'next/image'
+import imageUrlBuilder from '@sanity/image-url'
+
+const builder = imageUrlBuilder(client)
+
+function urlFor(source: any) {
+  return builder.image(source)
+}
 
 export default async function WorksPage() {
   const works = await client.fetch(worksQuery)
@@ -16,7 +23,7 @@ export default async function WorksPage() {
               {(work.mainImage || work.imageUrl) && (
                 <div className="relative w-full h-48">
                   <Image
-                    src={work.imageUrl || client.urlFor(work.mainImage).url()}
+                    src={work.imageUrl || urlFor(work.mainImage).url()}
                     alt={work.mainImage?.alt || work.title}
                     fill
                     className="object-cover"

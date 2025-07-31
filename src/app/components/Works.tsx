@@ -3,6 +3,13 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { client } from '@/app/sanity/client' // clientはurlForのために残す
+import imageUrlBuilder from '@sanity/image-url'
+
+const builder = imageUrlBuilder(client)
+
+function urlFor(source: any) {
+  return builder.image(source)
+}
 
 interface WorksProps {
   works: any[];
@@ -29,7 +36,7 @@ export default function Works({ works }: WorksProps) {
           {(work.mainImage || work.imageUrl) && (
             <div className="relative w-full h-48 group-hover:scale-105 transition duration-300">
               <Image
-                src={work.imageUrl || client.urlFor(work.mainImage).url()}
+                src={work.imageUrl || urlFor(work.mainImage).url()}
                 alt={work.mainImage?.alt || work.title}
                 fill
                 className="object-cover"

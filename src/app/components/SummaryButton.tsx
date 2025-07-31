@@ -1,9 +1,10 @@
 'use client'
 
 import React, { useState, useRef, useEffect } from 'react'
+import { PortableText } from '@portabletext/react'
 
 interface SummaryButtonProps {
-  summary: string; // summaryの型をstringに戻す
+  summary: any; // summaryの型をanyに戻す
 }
 
 export default function SummaryButton({ summary }: SummaryButtonProps) {
@@ -46,8 +47,8 @@ export default function SummaryButton({ summary }: SummaryButtonProps) {
         }}
         className="mt-4"
       >
-        <div className="bg-gray-800 p-6 rounded-lg shadow-lg prose max-w-none">
-          <p className="text-gray-300">{summary}</p>
+        <div className="bg-gray-800 p-6 rounded-lg shadow-lg prose max-w-none prose-invert">
+          <PortableText value={summary} />
         </div>
       </div>
     </div>

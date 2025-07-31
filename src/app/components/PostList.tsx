@@ -1,6 +1,13 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { client } from '@/app/sanity/client'
+import imageUrlBuilder from '@sanity/image-url'
+
+const builder = imageUrlBuilder(client)
+
+function urlFor(source: any) {
+  return builder.image(source)
+}
 
 interface Post {
   _id: string
@@ -25,7 +32,7 @@ export default function PostList({ posts }: PostListProps) {
           {(post.mainImage || post.imageUrl) && (
             <div className="relative w-full h-48">
               <Image
-                src={post.imageUrl || client.urlFor(post.mainImage).url()}
+                src={post.imageUrl || urlFor(post.mainImage).url()}
                 alt={post.mainImage?.alt || post.title}
                 fill
                 className="object-cover"
