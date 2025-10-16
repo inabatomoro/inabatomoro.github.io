@@ -1,0 +1,356 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    color: var(--primary-text-color, white);
+    font-family: 'Noto Sans JP', sans-serif;
+}
+
+.background-layer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+body {
+    overflow: hidden;
+}
+
+h1, h2 {
+    font-family: 'Archivo Black', sans-serif;
+}
+
+.container {
+    display: flex;
+    width: 600vw; /* 6セクション x 100vw */
+    height: 100vh;
+    will-change: transform;
+}
+
+.section {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 100px 5vw;
+    box-sizing: border-box;
+    position: relative;
+    overflow-y: auto;
+}
+
+/* Header */
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px 5vw;
+    box-sizing: border-box;
+    z-index: 100;
+    display: flex;
+    justify-content: flex-end;
+}
+
+nav a {
+    color: var(--primary-text-color, white);
+    text-decoration: none;
+    margin-left: 20px;
+    font-size: 1rem;
+}
+
+/* Intro */
+#intro .intro-content h1 {
+    font-size: 4rem;
+    margin: 0;
+}
+#intro .intro-content p {
+    font-size: 1rem;
+    margin-top: 10px;
+    color: #aaa;
+}
+
+/* Concept */
+#concept .concept-content {
+    max-width: 800px;
+    text-align: center;
+}
+#concept .concept-content h2 {
+    font-size: 6rem;
+    margin-bottom: 30px;
+}
+#concept .concept-content p {
+    font-size: 1rem;
+    line-height: 1.8;
+}
+
+/* Featured Works Marquee */
+#featured-works {
+    overflow: hidden;
+    padding: 0;
+}
+
+.marquee-container {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    gap: 20px;
+}
+
+.marquee-column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* アニメーションのために重要 */
+}
+
+@keyframes marquee-down {
+    from { transform: translateY(-50%); }
+    to { transform: translateY(0); }
+}
+
+@keyframes marquee-up {
+    from { transform: translateY(0); }
+    to { transform: translateY(-50%); }
+}
+
+.marquee-track {
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    animation: marquee-down 60s linear infinite;
+}
+
+.marquee-track.reverse {
+    animation: marquee-up 60s linear infinite;
+}
+
+.marquee-track .grid-item {
+    margin-bottom: 20px;
+}
+
+.marquee-track .grid-item h3 {
+    font-size: 1.2rem;
+}
+
+/* Service */
+#service .service-content, #about-contact .about-content {
+    width: 100%;
+    max-width: 1200px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 5vw;
+}
+
+#service .service-content h2, #about-contact .about-content h2 {
+    flex-basis: 30%;
+    font-size: 6rem;
+    text-align: left;
+    margin: 0;
+    position: sticky;
+    top: 0;
+}
+
+#service .service-content ul {
+    flex-basis: 60%;
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+#service .service-content li {
+    background-color: var(--card-bg-color, rgba(255, 255, 255, 0.05));
+    padding: 30px;
+    border-radius: 10px;
+    border: 1px solid var(--card-border-color, rgba(255, 255, 255, 0.1));
+}
+
+#service .service-content h3 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    font-size: 1.2rem;
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+#service .service-content p {
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: var(--secondary-text-color, #ccc);
+}
+
+/* Works (Triple Slider) */
+#works {
+    align-items: flex-start; /* 上揃えにする */
+    justify-content: center;
+    padding: 0; /* Remove padding to make sliders full-width */
+}
+
+.triple-slider-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 20vh 0; /* 上下の余白 */
+}
+
+.slider-row {
+    width: 100%;
+    overflow: hidden;
+    margin-bottom: 10vh; /* 各段の間に余白を追加 */
+}
+
+@keyframes slide-left {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+}
+
+@keyframes slide-right {
+    from { transform: translateX(-50%); }
+    to { transform: translateX(0); }
+}
+
+.slider-track {
+    display: flex;
+    width: calc(6 * 650px); /* (3 slides + 3 clones) * (600px width + 50px margin) */
+    animation: slide-left 80s linear infinite; /* 速度を調整 */
+}
+
+.slider-row.reverse .slider-track {
+    animation: slide-right 80s linear infinite; /* 速度を調整 */
+}
+
+.slide {
+    width: 600px; /* カードサイズを大きく */
+    margin-right: 50px;
+    flex-shrink: 0;
+}
+
+.slide img {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.slide h3 {
+    font-size: 1.5rem; /* 少し大きく */
+    margin: 15px 0 5px 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+.slide p {
+    font-size: 1rem; /* 少し大きく */
+    color: var(--secondary-text-color, #ccc);
+    margin: 0;
+}
+
+/* Gallery (Marquee) */
+#gallery {
+    overflow: hidden;
+    padding: 0;
+}
+
+.marquee-container {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    gap: 20px;
+}
+
+.marquee-column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+@keyframes marquee-down {
+    from { transform: translateY(-50%); }
+    to { transform: translateY(0); }
+}
+
+@keyframes marquee-up {
+    from { transform: translateY(0); }
+    to { transform: translateY(-50%); }
+}
+
+.marquee-track {
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    animation: marquee-down 80s linear infinite;
+}
+
+.marquee-track.reverse {
+    animation: marquee-up 80s linear infinite;
+}
+
+.marquee-track .grid-item {
+    margin-bottom: 20px;
+}
+
+.marquee-track .grid-item h3 {
+    font-size: 1.2rem;
+}
+
+/* About & Contact */
+#about-contact .right-column {
+    flex-basis: 60%;
+}
+
+#about-contact .about-content dl {
+    margin: 0 0 80px 0;
+}
+
+#about-contact .about-item {
+    display: flex;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--card-border-color, #444);
+}
+
+#about-contact .about-item:first-child {
+    border-top: 1px solid var(--card-border-color, #444);
+}
+
+#about-contact .about-item dt {
+    width: 200px;
+    font-weight: bold;
+    font-family: 'Poppins', sans-serif;
+}
+
+#about-contact .about-item dd {
+    margin: 0;
+    flex: 1;
+    font-size: 1rem;
+}
+
+#about-contact .contact-details p {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: var(--secondary-text-color, #ccc);
+    margin-bottom: 40px;
+}
+
+#about-contact .email-button {
+    display: inline-block;
+    padding: 15px 40px;
+    border: 1px solid var(--primary-text-color, white);
+    border-radius: 5px;
+    text-decoration: none;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    transition: all 0.3s ease;
+    color: var(--primary-text-color, white);
+}
+
+#about-contact .email-button:hover {
+    background-color: var(--primary-text-color, white);
+    color: var(--bg-color, #111);
+}
