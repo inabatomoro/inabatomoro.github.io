@@ -3,6 +3,46 @@ const navLinks = document.querySelectorAll('nav a');
 const sections = document.querySelectorAll('.section');
 const backgroundLayer = document.querySelector('.background-layer');
 
+// --- Custom Cursor --- 
+const cursorDot = document.querySelector('.cursor-dot');
+const cursorRing = document.querySelector('.cursor-ring');
+const hoverables = document.querySelectorAll('a');
+
+let mouseX = 0;
+let mouseY = 0;
+let ringX = 0;
+let ringY = 0;
+const ringEase = 0.1;
+
+function cursorAnimation() {
+    // スラッシュは回転させつつ追従
+    cursorDot.style.transform = `translate(${mouseX - 2}px, ${mouseY - 12}px) rotate(35deg)`;
+
+    // リングは遅れて追従
+    ringX += (mouseX - ringX) * ringEase;
+    ringY += (mouseY - ringY) * ringEase;
+    cursorRing.style.transform = `translate(${ringX - 20}px, ${ringY - 20}px)`;
+
+    requestAnimationFrame(cursorAnimation);
+}
+
+window.addEventListener('mousemove', e => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+});
+
+hoverables.forEach(el => {
+    el.addEventListener('mouseenter', () => {
+        cursorRing.classList.add('hover');
+    });
+    el.addEventListener('mouseleave', () => {
+        cursorRing.classList.remove('hover');
+    });
+});
+
+// カーソルアニメーションを開始
+cursorAnimation();
+
 // --- 設定 ---
 const ease = 0.075;
 const TRANSITION_START_POINT = 0.8;
@@ -72,7 +112,6 @@ function smoothScroll() {
         blendedTextColor = hexToRgb(sectionTextColors[sectionIndex]);
     }
 
-    // CSS変数を更新
     const root = document.documentElement;
     root.style.setProperty('--bg-color', rgbToCss(blendedBgColor));
     root.style.setProperty('--primary-text-color', rgbToCss(blendedTextColor));
@@ -84,13 +123,29 @@ function smoothScroll() {
     requestAnimationFrame(smoothScroll);
 }
 
-// --- イベントリスナーなど ---
+// --- イベントリスナー ---
+window.addEventListener('mousemove', e => {
+    cursorDot.style.left = e.clientX + 'px';
+    cursorDot.style.top = e.clientY + 'px';
+    cursorRing.style.left = e.clientX + 'px';
+    cursorRing.style.top = e.clientY + 'px';
+});
+
+hoverables.forEach(el => {
+    el.addEventListener('mouseenter', () => {
+        cursorRing.classList.add('hover');
+    });
+    el.addEventListener('mouseleave', () => {
+        cursorRing.classList.remove('hover');
+    });
+});
+
 document.addEventListener('wheel', (event) => {
     const sectionIndex = Math.floor(currentScroll / window.innerWidth);
     const activeSection = sections[sectionIndex];
 
     if (Math.abs(event.deltaX) > Math.abs(event.deltaY)) {
-        if (activeSection && activeSection.id === 'works') {
+        if (activeSection && (activeSection.id === 'works' || activeSection.id === 'gallery')) {
             event.preventDefault();
             targetScroll += event.deltaX;
             targetScroll = Math.max(0, targetScroll);
@@ -99,7 +154,7 @@ document.addEventListener('wheel', (event) => {
         return;
     }
 
-    if (activeSection && activeSection.id === 'works') {
+    if (activeSection && (activeSection.id === 'works' || activeSection.id === 'gallery')) {
         const el = activeSection;
         const isAtBottom = el.scrollHeight - el.scrollTop <= el.clientHeight + 1;
         const isAtTop = el.scrollTop === 0;
