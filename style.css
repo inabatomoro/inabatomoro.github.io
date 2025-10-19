@@ -26,29 +26,70 @@ body, html {
     position: fixed;
     top: 0;
     left: 0;
-    pointer-events: none; /* カーソル自体がクリックイベントを妨げないようにする */
+    pointer-events: none;
     z-index: 9999;
-    border-radius: 50%;
+    transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.3s ease;
 }
 
 .cursor-dot {
-    width: 3px;
-    height: 24px;
-    background-color: var(--primary-text-color, white);
+    width: 4px;
+    height: 30px;
+    background: linear-gradient(45deg, #FF0A6B, #FB41E6);
+    border-radius: 2px;
+    opacity: 1;
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+
+body.is-hovering .cursor-dot {
+    opacity: 0;
 }
 
 .cursor-ring {
-    width: 40px;
-    height: 40px;
-    border: 1px solid var(--primary-text-color, white);
-    transform: translate(-50%, -50%);
-    transition: transform 0.2s ease-out, border-color 0.2s ease-out;
+    width: 50px;
+    height: 50px;
+    border: 2px solid #007BFF;
+    border-radius: 50%;
+    background-color: rgba(0, 123, 255, 0.2);
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.5);
 }
 
-/* ホバー時のスタイル */
-.cursor-ring.hover {
-    transform: translate(-50%, -50%) scale(1.5);
-    border-color: #ff0000;
+body.is-hovering .cursor-ring {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+/* リング内にシャープな矢印を作成 */
+.cursor-ring::before, .cursor-ring::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 14px; /* 長さ */
+    height: 1.5px; /* 細さ */
+    background-color: #007BFF;
+    border-radius: 1px;
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    transform-origin: right center; /* 右端を軸に回転 */
+}
+
+/* ホバー時に矢印を表示 */
+body.is-hovering .cursor-ring::before, body.is-hovering .cursor-ring::after {
+    opacity: 1;
+}
+
+.cursor-ring::before {
+    transform: translate(-70%, -50%) rotate(35deg);
+}
+
+.cursor-ring::after {
+    transform: translate(-70%, -50%) rotate(-35deg);
+}
+
+/* ドットの擬似要素は不要 */
+.cursor-dot::before, .cursor-dot::after {
+    display: none;
 }
 
 

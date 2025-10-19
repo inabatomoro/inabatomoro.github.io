@@ -15,13 +15,15 @@ let ringY = 0;
 const ringEase = 0.1;
 
 function cursorAnimation() {
-    // スラッシュは回転させつつ追従
-    cursorDot.style.transform = `translate(${mouseX - 2}px, ${mouseY - 12}px) rotate(35deg)`;
+    // ドットは即時追従
+    cursorDot.style.left = mouseX + 'px';
+    cursorDot.style.top = mouseY + 'px';
 
     // リングは遅れて追従
     ringX += (mouseX - ringX) * ringEase;
     ringY += (mouseY - ringY) * ringEase;
-    cursorRing.style.transform = `translate(${ringX - 20}px, ${ringY - 20}px)`;
+    cursorRing.style.left = ringX + 'px';
+    cursorRing.style.top = ringY + 'px';
 
     requestAnimationFrame(cursorAnimation);
 }
@@ -33,10 +35,10 @@ window.addEventListener('mousemove', e => {
 
 hoverables.forEach(el => {
     el.addEventListener('mouseenter', () => {
-        cursorRing.classList.add('hover');
+        document.body.classList.add('is-hovering');
     });
     el.addEventListener('mouseleave', () => {
-        cursorRing.classList.remove('hover');
+        document.body.classList.remove('is-hovering');
     });
 });
 
