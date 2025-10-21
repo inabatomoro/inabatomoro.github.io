@@ -159,6 +159,19 @@ nav a {
 #concept .concept-content h2 {
     font-size: 6rem;
     margin-bottom: 30px;
+    overflow: hidden;
+}
+
+#concept h2 span {
+    display: inline-block; /* Required for transform */
+    transform: translateY(110%);
+    opacity: 0;
+    transition: transform 0.8s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.6s ease;
+}
+
+#concept h2.is-visible span {
+    transform: translateY(0);
+    opacity: 1;
 }
 #concept .concept-content p {
     font-size: 1rem;
@@ -312,6 +325,14 @@ nav a {
     padding: 30px;
     border-radius: 10px;
     border: 1px solid var(--card-border-color, rgba(255, 255, 255, 0.1));
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+#service .service-content li.is-visible {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 #service .service-content h3 {

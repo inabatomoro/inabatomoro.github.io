@@ -189,3 +189,74 @@ navLinks.forEach(link => {
 
 // --- 開始 ---
 smoothScroll();
+
+
+// --- Staggered Fade-in Animation for Service Section ---
+function setupStaggeredAnimation() {
+    const serviceItems = document.querySelectorAll('#service .service-content li');
+
+    const observerCallback = (entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                observer.unobserve(entry.target); // Stop observing once visible
+            }
+        });
+    };
+
+    const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1
+    };
+
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
+
+    serviceItems.forEach((item, index) => {
+        item.style.transitionDelay = `${index * 100}ms`;
+        observer.observe(item);
+    });
+}
+
+setupStaggeredAnimation();
+
+
+// --- Text Animation for Concept Section ---
+function setupConceptAnimation() {
+    const conceptH2 = document.querySelector('#concept h2');
+    if (!conceptH2) return;
+
+    const text = conceptH2.textContent;
+    const words = text.split(' ');
+    conceptH2.innerHTML = ''; // Clear original text
+
+    words.forEach((word, index) => {
+        const span = document.createElement('span');
+        span.textContent = word;
+        // Set delay for staggered effect
+        span.style.transitionDelay = `${index * 150}ms`;
+        conceptH2.appendChild(span);
+        // Add space back in
+        if (index < words.length - 1) {
+            conceptH2.append(' ');
+        }
+    });
+
+    // Observer to trigger the animation
+    const observerCallback = (entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                observer.unobserve(entry.target);
+            }
+        });
+    };
+
+    const observer = new IntersectionObserver(observerCallback, { threshold: 0.5 });
+    observer.observe(conceptH2);
+}
+
+setupConceptAnimation();
+
+
+
