@@ -2,6 +2,7 @@ const container = document.querySelector('.container');
 const navLinks = document.querySelectorAll('nav a');
 const sections = document.querySelectorAll('.section');
 const backgroundLayer = document.querySelector('.background-layer');
+const spotlightOverlay = document.querySelector('.spotlight-overlay');
 
 // --- Custom Cursor --- 
 const cursorDot = document.querySelector('.cursor-dot');
@@ -31,6 +32,8 @@ function cursorAnimation() {
 window.addEventListener('mousemove', e => {
     mouseX = e.clientX;
     mouseY = e.clientY;
+    spotlightOverlay.style.setProperty('--mouse-x', mouseX + 'px');
+    spotlightOverlay.style.setProperty('--mouse-y', mouseY + 'px');
 });
 
 hoverables.forEach(el => {
@@ -99,8 +102,8 @@ function smoothScroll() {
     const sectionIndex = Math.floor(currentScroll / window.innerWidth);
     const progressInSection = (currentScroll % window.innerWidth) / window.innerWidth;
 
+    // --- Color Transition ---
     let blendedBgColor, blendedTextColor;
-
     if (progressInSection >= TRANSITION_START_POINT) {
         const transitionProgress = (progressInSection - TRANSITION_START_POINT) / (1 - TRANSITION_START_POINT);
         const bg1 = hexToRgb(sectionBgColors[sectionIndex]);
@@ -121,6 +124,27 @@ function smoothScroll() {
     root.style.setProperty('--card-bg-color', `rgba(${blendedTextColor.r}, ${blendedTextColor.g}, ${blendedTextColor.b}, 0.05)`);
     root.style.setProperty('--card-border-color', `rgba(${blendedTextColor.r}, ${blendedTextColor.g}, ${blendedTextColor.b}, 0.1)`);
     backgroundLayer.style.backgroundColor = rgbToCss(blendedBgColor);
+
+    // --- Blur Transition ---
+    const BLUR_START_POINT = 0.5;
+    const MAX_BLUR = 20; // in pixels
+
+    sections.forEach((section, index) => {
+        let blurAmount = 0;
+        if (index === sectionIndex && progressInSection > BLUR_START_POINT) {
+            // Current section blurring out
+            const blurProgress = (progressInSection - BLUR_START_POINT) / (1 - BLUR_START_POINT);
+            blurAmount = blurProgress * MAX_BLUR;
+        } else if (index === sectionIndex + 1 && progressInSection > BLUR_START_POINT) {
+            // Next section blurring in
+            const blurProgress = (progressInSection - BLUR_START_POINT) / (1 - BLUR_START_POINT);
+            blurAmount = (1 - blurProgress) * MAX_BLUR;
+        } else if (index !== sectionIndex) {
+            // Ensure other sections are not blurred, or fully blurred if they are the next one
+            blurAmount = (index === sectionIndex + 1) ? MAX_BLUR : 0;
+        }
+        section.style.filter = `blur(${blurAmount}px)`;
+    });
 
     requestAnimationFrame(smoothScroll);
 }
@@ -257,6 +281,13 @@ function setupConceptAnimation() {
 }
 
 setupConceptAnimation();
+
+document.addEventListener('DOMContentLoaded', () => {
+    smoothScroll();
+    cursorAnimation();
+    setupStaggeredAnimation();
+    setupConceptAnimation();
+});
 
 
 

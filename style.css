@@ -118,6 +118,8 @@ h1, h2 {
     box-sizing: border-box;
     position: relative;
     overflow-y: auto;
+    filter: blur(0px);
+    transition: filter 0.3s ease-out;
 }
 
 /* Header */
@@ -402,4 +404,25 @@ nav a {
 #about-contact .email-button:hover {
     background-color: var(--primary-text-color, white);
     color: var(--bg-color, #111);
+}
+
+/* Spotlight Overlay */
+.spotlight-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 9998; /* Below cursor, above everything else */
+    pointer-events: none; /* Allow clicks to go through */
+
+    -webkit-mask: radial-gradient(circle 300px at var(--mouse-x) var(--mouse-y), transparent 0%, rgba(0,0,0,1) 100%);
+    mask: radial-gradient(circle 300px at var(--mouse-x) var(--mouse-y), transparent 0%, rgba(0,0,0,1) 100%);
+    transition: -webkit-mask-size 0.3s ease, mask-size 0.3s ease;
+}
+
+body.is-hovering .spotlight-overlay {
+    -webkit-mask-size: 500px;
+    mask-size: 500px;
 }
