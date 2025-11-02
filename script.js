@@ -1,8 +1,12 @@
 const container = document.querySelector('.container');
-const navLinks = document.querySelectorAll('nav a');
 const sections = document.querySelectorAll('.section');
 const backgroundLayer = document.querySelector('.background-layer');
 const spotlightOverlay = document.querySelector('.spotlight-overlay');
+const scrollIndicator = document.querySelector('.scroll-indicator');
+const hamburgerMenu = document.querySelector('.hamburger-menu');
+const closeMenuButton = document.querySelector('.close-menu-button');
+const navLinks = document.querySelectorAll('.modal-menu nav a');
+const body = document.body;
 
 // --- Custom Cursor --- 
 const cursorDot = document.querySelector('.cursor-dot');
@@ -146,6 +150,13 @@ function smoothScroll() {
         section.style.filter = `blur(${blurAmount}px)`;
     });
 
+    // --- Scroll Indicator Logic ---
+    if (sections[sectionIndex].id === 'works') {
+        scrollIndicator.classList.add('is-down-arrow');
+    } else {
+        scrollIndicator.classList.remove('is-down-arrow');
+    }
+
     requestAnimationFrame(smoothScroll);
 }
 
@@ -199,17 +210,36 @@ document.addEventListener('wheel', (event) => {
 
 }, { passive: false });
 
-navLinks.forEach(link => {
-    link.addEventListener('click', (e) => {
-        e.preventDefault();
-        const targetId = link.getAttribute('href');
-        const targetSection = document.querySelector(targetId);
-        if (targetSection) {
-            const sectionIndex = Array.from(sections).indexOf(targetSection);
-            targetScroll = window.innerWidth * sectionIndex;
-        }
+
+function setupMenu() {
+    if (!hamburgerMenu) return;
+
+    hamburgerMenu.addEventListener('click', () => {
+        body.classList.toggle('is-menu-open');
     });
-});
+
+    closeMenuButton.addEventListener('click', () => {
+        body.classList.remove('is-menu-open');
+    });
+
+    navLinks.forEach((link, index) => {
+        link.style.setProperty('--i', index);
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            body.classList.remove('is-menu-open');
+            
+            const targetId = link.getAttribute('href');
+            const targetSection = document.querySelector(targetId);
+            if (targetSection) {
+                const sectionIndex = Array.from(sections).indexOf(targetSection);
+                // Add a delay to allow the menu to close before scrolling
+                setTimeout(() => {
+                    targetScroll = window.innerWidth * sectionIndex;
+                }, 400);
+            }
+        });
+    });
+}
 
 // --- 開始 ---
 smoothScroll();
@@ -287,6 +317,7 @@ document.addEventListener('DOMContentLoaded', () => {
     cursorAnimation();
     setupStaggeredAnimation();
     setupConceptAnimation();
+    setupMenu();
 });
 
 

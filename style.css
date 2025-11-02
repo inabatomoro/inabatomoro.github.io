@@ -27,7 +27,7 @@ body, html {
     top: 0;
     left: 0;
     pointer-events: none;
-    z-index: 9999;
+    z-index: 10003;
     transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.3s ease;
 }
 
@@ -130,17 +130,12 @@ header {
     width: 100%;
     padding: 20px 5vw;
     box-sizing: border-box;
-    z-index: 100;
+    z-index: 10001; /* Above scroll indicator */
     display: flex;
-    justify-content: flex-end;
+    justify-content: flex-start;
 }
 
-nav a {
-    color: var(--primary-text-color, white);
-    text-decoration: none;
-    margin-left: 20px;
-    font-size: 1rem;
-}
+
 
 /* Intro */
 #intro .intro-content h1 {
@@ -419,10 +414,190 @@ nav a {
 
     -webkit-mask: radial-gradient(circle 300px at var(--mouse-x) var(--mouse-y), transparent 0%, rgba(0,0,0,1) 100%);
     mask: radial-gradient(circle 300px at var(--mouse-x) var(--mouse-y), transparent 0%, rgba(0,0,0,1) 100%);
-    transition: -webkit-mask-size 0.3s ease, mask-size 0.3s ease;
+    transition: background-color 0.3s ease;
 }
 
 body.is-hovering .spotlight-overlay {
-    -webkit-mask-size: 500px;
-    mask-size: 500px;
+    -webkit-mask: radial-gradient(circle 500px at var(--mouse-x) var(--mouse-y), transparent 0%, rgba(0,0,0,1) 100%);
+    mask: radial-gradient(circle 500px at var(--mouse-x) var(--mouse-y), transparent 0%, rgba(0,0,0,1) 100%);
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+/* Scroll Indicator */
+.scroll-indicator {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    color: var(--primary-text-color, white);
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    opacity: 1;
+    transition: opacity 0.5s ease;
+    z-index: 10000;
+}
+
+.scroll-indicator span {
+    transition: opacity 0.3s ease;
+}
+
+.scroll-indicator .arrow {
+    width: 40px;
+    height: 1px;
+    background-color: var(--primary-text-color, white);
+    margin-left: 10px;
+    position: relative;
+    animation: move-arrow-x 1.5s ease-in-out infinite;
+    transition: transform 0.3s ease;
+}
+
+.scroll-indicator .arrow::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: -3px;
+    width: 8px;
+    height: 8px;
+    border-top: 1px solid var(--primary-text-color, white);
+    border-right: 1px solid var(--primary-text-color, white);
+    transform: rotate(45deg);
+    transition: transform 0.3s ease;
+}
+
+/* Down Arrow State */
+.scroll-indicator.is-down-arrow span:first-child {
+    opacity: 0;
+}
+
+.scroll-indicator.is-down-arrow .arrow {
+    animation: move-arrow-y 1.5s ease-in-out infinite;
+    transform: rotate(90deg) translateX(20px);
+    background-color: transparent; /* Hide the line, just show the head */
+}
+
+.scroll-indicator.is-down-arrow .arrow::after {
+    transform: rotate(135deg);
+}
+
+@keyframes move-arrow-x {
+    0% { transform: translateX(0); }
+    50% { transform: translateX(10px); }
+    100% { transform: translateX(0); }
+}
+
+@keyframes move-arrow-y {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(10px); }
+    100% { transform: translateY(0); }
+}
+
+/* Hamburger Menu & Modal */
+.hamburger-menu {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    padding: 5px;
+    background: transparent;
+    border: none;
+    z-index: 10002; /* Above everything */
+}
+
+.hamburger-menu span {
+    width: 4px;
+    height: 4px;
+    background-color: var(--primary-text-color, white);
+    border-radius: 50%;
+    transition: transform 0.3s ease, opacity 0.3s ease, height 0.3s ease;
+}
+
+.modal-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.9);
+    z-index: 10001; /* Below hamburger, above header */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+}
+
+.modal-menu nav {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.modal-menu nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 3rem;
+    font-family: 'Archivo Black', sans-serif;
+    margin: 15px 0;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+/* --- Open State --- */
+body.is-menu-open .hamburger-menu span {
+    height: 2px; /* Stretch dots into lines */
+}
+
+body.is-menu-open .hamburger-menu span:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+}
+
+body.is-menu-open .hamburger-menu span:nth-child(2) {
+    opacity: 0;
+}
+
+body.is-menu-open .hamburger-menu span:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+}
+
+body.is-menu-open .modal-menu {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+body.is-menu-open .modal-menu nav a {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: calc(var(--i) * 100ms + 300ms); /* Stagger effect */
+}
+
+.close-menu-button {
+    position: fixed;
+    top: 20px;
+    left: 5vw;
+    width: 40px;
+    height: 40px;
+    background: transparent;
+    border: none;
+    z-index: 10002; /* Same as hamburger */
+    opacity: 0;
+    transition: opacity 0.3s ease 300ms;
+}
+
+.close-menu-button span {
+    display: block;
+    width: 4px;
+    height: 30px;
+    background: linear-gradient(45deg, #FF0A6B, #FB41E6);
+    border-radius: 2px;
+    transform: rotate(-45deg);
+}
+
+body.is-menu-open .close-menu-button {
+    opacity: 1;
 }
