@@ -139,8 +139,10 @@ header {
 
 /* Intro */
 #intro .intro-content h1 {
-    font-size: 4rem;
+    font-size: 6rem;
     margin: 0;
+    margin-bottom: 30px;
+    text-align: center;
 }
 #intro .intro-content p {
     font-size: 1rem;
@@ -408,7 +410,7 @@ header {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(0, 0, 0, 0.4);
     z-index: 9998; /* Below cursor, above everything else */
     pointer-events: none; /* Allow clicks to go through */
 
@@ -420,7 +422,7 @@ header {
 body.is-hovering .spotlight-overlay {
     -webkit-mask: radial-gradient(circle 500px at var(--mouse-x) var(--mouse-y), transparent 0%, rgba(0,0,0,1) 100%);
     mask: radial-gradient(circle 500px at var(--mouse-x) var(--mouse-y), transparent 0%, rgba(0,0,0,1) 100%);
-    background-color: rgba(0, 0, 0, 0.4);
+    background-color: rgba(0, 0, 0, 0);
 }
 
 /* Scroll Indicator */
