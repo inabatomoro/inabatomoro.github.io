@@ -106,6 +106,9 @@ function smoothScroll() {
     const sectionIndex = Math.floor(currentScroll / window.innerWidth);
     const progressInSection = (currentScroll % window.innerWidth) / window.innerWidth;
 
+    console.log('sectionIndex:', sectionIndex);
+    console.log('sectionBgColors[sectionIndex]:', sectionBgColors[sectionIndex]);
+
     // --- Color Transition ---
     let blendedBgColor, blendedTextColor;
     if (progressInSection >= TRANSITION_START_POINT) {

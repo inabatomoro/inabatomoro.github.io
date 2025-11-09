@@ -139,7 +139,7 @@ header {
 
 /* Intro */
 #intro .intro-content h1 {
-    font-size: 6rem;
+    font-size: 5rem;
     margin: 0;
     margin-bottom: 30px;
     text-align: center;
@@ -148,6 +148,7 @@ header {
     font-size: 1rem;
     margin-top: 10px;
     color: #aaa;
+    text-align: center;
 }
 
 /* Concept */
@@ -409,7 +410,6 @@ header {
     top: 0;
     left: 0;
     width: 100vw;
-    height: 100vh;
     background-color: rgba(0, 0, 0, 0.4);
     z-index: 9998; /* Below cursor, above everything else */
     pointer-events: none; /* Allow clicks to go through */
