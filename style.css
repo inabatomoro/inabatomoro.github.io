@@ -410,19 +410,19 @@ header {
     top: 0;
     left: 0;
     width: 100vw;
-    background-color: rgba(0, 0, 0, 0.4);
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.6);
     z-index: 9998; /* Below cursor, above everything else */
     pointer-events: none; /* Allow clicks to go through */
 
-    -webkit-mask: radial-gradient(circle 300px at var(--mouse-x) var(--mouse-y), transparent 0%, rgba(0,0,0,1) 100%);
-    mask: radial-gradient(circle 300px at var(--mouse-x) var(--mouse-y), transparent 0%, rgba(0,0,0,1) 100%);
+    -webkit-mask: radial-gradient(circle 400px at var(--mouse-x) var(--mouse-y), transparent 0%, rgba(0,0,0,1) 100%);
+    mask: radial-gradient(circle 400px at var(--mouse-x) var(--mouse-y), transparent 0%, rgba(0,0,0,1) 100%);
     transition: background-color 0.3s ease;
 }
 
 body.is-hovering .spotlight-overlay {
-    -webkit-mask: radial-gradient(circle 500px at var(--mouse-x) var(--mouse-y), transparent 0%, rgba(0,0,0,1) 100%);
-    mask: radial-gradient(circle 500px at var(--mouse-x) var(--mouse-y), transparent 0%, rgba(0,0,0,1) 100%);
-    background-color: rgba(0, 0, 0, 0);
+    -webkit-mask: radial-gradient(circle 800px at var(--mouse-x) var(--mouse-y), transparent 0%, rgba(0,0,0,1) 100%);
+    mask: radial-gradient(circle 800px at var(--mouse-x) var(--mouse-y), transparent 0%, rgba(0,0,0,1) 100%);
 }
 
 /* Scroll Indicator */
