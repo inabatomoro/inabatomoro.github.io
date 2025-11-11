@@ -103,7 +103,7 @@ function smoothScroll() {
     currentScroll += (targetScroll - currentScroll) * ease;
     container.style.transform = `translateX(-${currentScroll}px)`;
 
-    const sectionIndex = Math.floor(currentScroll / window.innerWidth);
+    const sectionIndex = Math.round(currentScroll / window.innerWidth);
     const progressInSection = (currentScroll % window.innerWidth) / window.innerWidth;
 
     console.log('sectionIndex:', sectionIndex);
@@ -111,17 +111,20 @@ function smoothScroll() {
 
     // --- Color Transition ---
     let blendedBgColor, blendedTextColor;
-    if (progressInSection >= TRANSITION_START_POINT) {
-        const transitionProgress = (progressInSection - TRANSITION_START_POINT) / (1 - TRANSITION_START_POINT);
-        const bg1 = hexToRgb(sectionBgColors[sectionIndex]);
-        const bg2 = hexToRgb(sectionBgColors[Math.min(sectionIndex + 1, sectionBgColors.length - 1)]);
+    const currentFloorIndex = Math.floor(currentScroll / window.innerWidth);
+    const currentProgress = (currentScroll % window.innerWidth) / window.innerWidth;
+
+    if (currentProgress >= TRANSITION_START_POINT) {
+        const transitionProgress = (currentProgress - TRANSITION_START_POINT) / (1 - TRANSITION_START_POINT);
+        const bg1 = hexToRgb(sectionBgColors[currentFloorIndex]);
+        const bg2 = hexToRgb(sectionBgColors[Math.min(currentFloorIndex + 1, sectionBgColors.length - 1)]);
         blendedBgColor = lerpColor(bg1, bg2, transitionProgress);
-        const text1 = hexToRgb(sectionTextColors[sectionIndex]);
-        const text2 = hexToRgb(sectionTextColors[Math.min(sectionIndex + 1, sectionTextColors.length - 1)]);
+        const text1 = hexToRgb(sectionTextColors[currentFloorIndex]);
+        const text2 = hexToRgb(sectionTextColors[Math.min(currentFloorIndex + 1, sectionTextColors.length - 1)]);
         blendedTextColor = lerpColor(text1, text2, transitionProgress);
     } else {
-        blendedBgColor = hexToRgb(sectionBgColors[sectionIndex]);
-        blendedTextColor = hexToRgb(sectionTextColors[sectionIndex]);
+        blendedBgColor = hexToRgb(sectionBgColors[currentFloorIndex]);
+        blendedTextColor = hexToRgb(sectionTextColors[currentFloorIndex]);
     }
 
     const root = document.documentElement;
@@ -138,26 +141,29 @@ function smoothScroll() {
 
     sections.forEach((section, index) => {
         let blurAmount = 0;
-        if (index === sectionIndex && progressInSection > BLUR_START_POINT) {
+        if (index === currentFloorIndex && currentProgress > BLUR_START_POINT) {
             // Current section blurring out
-            const blurProgress = (progressInSection - BLUR_START_POINT) / (1 - BLUR_START_POINT);
+            const blurProgress = (currentProgress - BLUR_START_POINT) / (1 - BLUR_START_POINT);
             blurAmount = blurProgress * MAX_BLUR;
-        } else if (index === sectionIndex + 1 && progressInSection > BLUR_START_POINT) {
+        } else if (index === currentFloorIndex + 1 && currentProgress > BLUR_START_POINT) {
             // Next section blurring in
-            const blurProgress = (progressInSection - BLUR_START_POINT) / (1 - BLUR_START_POINT);
+            const blurProgress = (currentProgress - BLUR_START_POINT) / (1 - BLUR_START_POINT);
             blurAmount = (1 - blurProgress) * MAX_BLUR;
-        } else if (index !== sectionIndex) {
+        } else if (index !== currentFloorIndex) {
             // Ensure other sections are not blurred, or fully blurred if they are the next one
-            blurAmount = (index === sectionIndex + 1) ? MAX_BLUR : 0;
+            blurAmount = (index === currentFloorIndex + 1) ? MAX_BLUR : 0;
         }
         section.style.filter = `blur(${blurAmount}px)`;
     });
 
     // --- Scroll Indicator Logic ---
+    // The class 'is-down-arrow' is now handled directly in CSS, so this logic is no longer needed.
+
+    // --- Scroll Indicator Logic for works/service sections ---
     if (sections[sectionIndex].id === 'works') {
-        scrollIndicator.classList.add('is-down-arrow');
+        scrollIndicator.classList.add('is-works-section');
     } else {
-        scrollIndicator.classList.remove('is-down-arrow');
+        scrollIndicator.classList.remove('is-works-section');
     }
 
     requestAnimationFrame(smoothScroll);

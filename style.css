@@ -323,11 +323,22 @@ header {
 #service .service-content li {
     background-color: var(--card-bg-color, rgba(255, 255, 255, 0.05));
     padding: 30px;
+    padding-bottom: 60px; /* 金額分のスペースを確保 */
     border-radius: 10px;
     border: 1px solid var(--card-border-color, rgba(255, 255, 255, 0.1));
     opacity: 0;
     transform: translateY(30px);
     transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    position: relative; /* 金額をabsolute配置するため */
+}
+
+#service .service-content li .price-estimate {
+    position: absolute;
+    bottom: 20px; /* 下からの位置 */
+    left: 30px; /* 左からの位置 */
+    font-size: 1.1rem; /* 文字サイズを少し大きく */
+    color: var(--secondary-text-color, #ccc); /* テキスト色を調整 */
+    margin: 0; /* デフォルトのマージンをリセット */
 }
 
 #service .service-content li.is-visible {
@@ -440,52 +451,87 @@ body.is-hovering .spotlight-overlay {
     z-index: 10000;
 }
 
-.scroll-indicator span {
+.scroll-indicator .scroll-text {
     transition: opacity 0.3s ease;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    letter-spacing: 0.2em;
 }
 
-.scroll-indicator .arrow {
-    width: 40px;
-    height: 1px;
-    background-color: var(--primary-text-color, white);
+.scroll-indicator .scroll-arrow-down {
+    width: 1px;
+    height: 40px;
+    background-color: var(--primary-text-color, white); /* 元の色に戻す */
     margin-left: 10px;
     position: relative;
-    animation: move-arrow-x 1.5s ease-in-out infinite;
+    animation: move-arrow-y 1.5s ease-in-out infinite;
     transition: transform 0.3s ease;
 }
 
-.scroll-indicator .arrow::after {
+.scroll-indicator .scroll-arrow-down::after {
     content: '';
     position: absolute;
-    right: 0;
-    top: -3px;
+    left: 50%; /* 棒の中心に */
+    bottom: 0;
     width: 8px;
     height: 8px;
-    border-top: 1px solid var(--primary-text-color, white);
-    border-right: 1px solid var(--primary-text-color, white);
-    transform: rotate(45deg);
+    border-bottom: 2px solid var(--primary-text-color, white); /* 太くする */
+    border-right: 2px solid var(--primary-text-color, white); /* 太くする */
+    transform: translateX(-50%) rotate(45deg); /* 中心に配置し、回転 */
     transition: transform 0.3s ease;
 }
 
-/* Down Arrow State */
-.scroll-indicator.is-down-arrow span:first-child {
-    opacity: 0;
+.scroll-indicator .scroll-arrows-cross {
+    display: none; /* デフォルトでは非表示 */
+    position: relative;
+    width: 40px; /* 十字キー全体の幅 */
+    height: 40px; /* 十字キー全体の高さ */
 }
 
-.scroll-indicator.is-down-arrow .arrow {
-    animation: move-arrow-y 1.5s ease-in-out infinite;
-    transform: rotate(90deg) translateX(20px);
-    background-color: transparent; /* Hide the line, just show the head */
+.scroll-indicator .scroll-arrows-cross span {
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 6px 6px 0 6px; /* 矢印の頭のサイズ */
+    border-color: var(--primary-text-color, white) transparent transparent transparent;
+    opacity: 0; /* デフォルトでは非表示 */
+    transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
-.scroll-indicator.is-down-arrow .arrow::after {
-    transform: rotate(135deg);
+.scroll-indicator .scroll-arrows-cross .arrow-up {
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%) rotate(180deg); /* 0を180に */
+    opacity: 1;
+}
+.scroll-indicator .scroll-arrows-cross .arrow-down {
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%) rotate(0deg); /* -180を0に */
+    opacity: 1;
+}
+.scroll-indicator .scroll-arrows-cross .arrow-left {
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%) rotate(90deg); /* -90を90に */
+    opacity: 1;
+}
+.scroll-indicator .scroll-arrows-cross .arrow-right {
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%) rotate(-90deg); /* 90を-90に */
+    opacity: 1;
 }
 
-@keyframes move-arrow-x {
-    0% { transform: translateX(0); }
-    50% { transform: translateX(10px); }
-    100% { transform: translateX(0); }
+/* worksセクションに入った時の表示切り替え */
+.scroll-indicator.is-works-section .scroll-text,
+.scroll-indicator.is-works-section .scroll-arrow-down {
+    display: none;
+}
+
+.scroll-indicator.is-works-section .scroll-arrows-cross {
+    display: block;
 }
 
 @keyframes move-arrow-y {
