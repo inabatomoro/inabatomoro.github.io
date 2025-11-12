@@ -183,13 +183,36 @@ header {
     align-items: flex-start;
     justify-content: center;
     padding: 0;
+    position: relative; /* works-background-textをabsolute配置するため */
+}
+
+.works-background-text {
+    position: absolute;
+    top: 20%; /* 垂直方向を調整 */
+    left: 10vw; /* 左寄せを調整 */
+    transform: translateY(-50%); /* 垂直方向の中央揃え */
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 15vw; /* 画面幅に応じて大きく */
+    color: rgba(255, 255, 255, 0.05); /* 薄い色 */
+    pointer-events: none; /* クリックイベントを透過 */
+    z-index: 0; /* 背景として配置 */
+    /* white-space: nowrap; */ /* 改行を許可するため削除 */
+    display: flex; /* 縦並びにするため */
+    flex-direction: column; /* 縦並びにするため */
+    line-height: 0.8; /* 行間を詰める */
+}
+
+.works-background-text span:last-child {
+    margin-left: 15vw; /* Designの真ん中くらいから始まるようにインデント */
 }
 
 .triple-slider-container {
     width: 100%;
     display: flex;
     flex-direction: column;
-    padding: 20vh 0;
+    padding: 40vh 0; /* コンテンツ全体を下に下げる */
+    position: relative; /* z-indexを有効にするため */
+    z-index: 1; /* works-background-textより手前に */
 }
 
 .slider-row {
@@ -210,7 +233,7 @@ header {
 
 .slider-track {
     display: flex;
-    width: calc(6 * 650px);
+    /* width: calc(6 * 650px); */ /* JavaScriptで動的に設定 */
     animation: slide-left 80s linear infinite;
 }
 
@@ -237,10 +260,24 @@ header {
     font-family: 'Poppins', sans-serif;
 }
 
-.slide p {
-    font-size: 1rem;
-    color: var(--secondary-text-color, #ccc);
+.slide .credits {
+    margin-top: 10px;
+    font-size: 0.9rem;
+    color: var(--secondary-text-color, #aaa);
+}
+
+.slide .credits p {
     margin: 0;
+    line-height: 1.4;
+}
+
+#works .slide a {
+    color: inherit; /* 親要素の色を継承 (白) */
+    text-decoration: none; /* 下線を非表示 */
+}
+
+#works .slide a:hover {
+    text-decoration: none; /* ホバー時も下線を非表示 */
 }
 
 /* Gallery (Marquee) */
@@ -648,4 +685,19 @@ body.is-menu-open .modal-menu nav a {
 
 body.is-menu-open .close-menu-button {
     opacity: 1;
+}
+
+.footer-background-text {
+    position: absolute; /* worksセクション内で配置 */
+    bottom: 5vh; /* worksセクションの最下部からの位置 */
+    right: 5vw; /* worksセクションの右端からの位置 */
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 15vw; /* Design Worksと同じサイズに */
+    color: rgba(255, 255, 255, 0.05); /* 薄い色 */
+    pointer-events: none; /* クリックイベントを透過 */
+    z-index: 0; /* 背景として配置 */
+    white-space: nowrap; /* 折り返しを防ぐ */
+    display: flex; /* 縦並びにするため */
+    flex-direction: column; /* 縦並びにするため */
+    line-height: 0.8; /* 行間を詰める */
 }

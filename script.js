@@ -8,10 +8,10 @@ const closeMenuButton = document.querySelector('.close-menu-button');
 const navLinks = document.querySelectorAll('.modal-menu nav a');
 const body = document.body;
 
-// --- Custom Cursor --- 
+// --- Custom Cursor ---
 const cursorDot = document.querySelector('.cursor-dot');
 const cursorRing = document.querySelector('.cursor-ring');
-const hoverables = document.querySelectorAll('a');
+// hoverablesは動的に再設定するため、ここでは宣言しない
 
 let mouseX = 0;
 let mouseY = 0;
@@ -40,18 +40,28 @@ window.addEventListener('mousemove', e => {
     spotlightOverlay.style.setProperty('--mouse-y', mouseY + 'px');
 });
 
-hoverables.forEach(el => {
-    el.addEventListener('mouseenter', () => {
-        document.body.classList.add('is-hovering');
+// hoverable要素にイベントリスナーを設定する関数
+function setupHoverables() {
+    const hoverables = document.querySelectorAll('a'); // 動的に生成されたaタグも含む
+    hoverables.forEach(el => {
+        // 既存のリスナーが重複しないように一度削除してから追加
+        el.removeEventListener('mouseenter', handleMouseEnter);
+        el.removeEventListener('mouseleave', handleMouseLeave);
+        el.addEventListener('mouseenter', handleMouseEnter);
+        el.addEventListener('mouseleave', handleMouseLeave);
     });
-    el.addEventListener('mouseleave', () => {
-        document.body.classList.remove('is-hovering');
-    });
-});
+}
+
+function handleMouseEnter() {
+    document.body.classList.add('is-hovering');
+}
+
+function handleMouseLeave() {
+    document.body.classList.remove('is-hovering');
+}
 
 // カーソルアニメーションを開始
 cursorAnimation();
-
 // --- 設定 ---
 const ease = 0.075;
 const TRANSITION_START_POINT = 0.8;
@@ -177,14 +187,7 @@ window.addEventListener('mousemove', e => {
     cursorRing.style.top = e.clientY + 'px';
 });
 
-hoverables.forEach(el => {
-    el.addEventListener('mouseenter', () => {
-        cursorRing.classList.add('hover');
-    });
-    el.addEventListener('mouseleave', () => {
-        cursorRing.classList.remove('hover');
-    });
-});
+
 
 document.addEventListener('wheel', (event) => {
     const sectionIndex = Math.floor(currentScroll / window.innerWidth);
@@ -250,8 +253,140 @@ function setupMenu() {
     });
 }
 
+// --- 作品データ (ダミー) ---
+const worksData = [
+    {
+        url: "https://www.studio-works.jp/stuwor-port",
+        ogpImage: "https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?q=80&w=800&auto=format&fit=crop",
+        title: "STUDIO WORKS LLC. Portfolio",
+        designer: "Taro Yamada",
+        client: "STUDIO WORKS LLC.",
+        period: "2023.10"
+    },
+    {
+        url: "https://example.com/project1",
+        ogpImage: "https://images.unsplash.com/photo-1496171367470-9ed9a91ea931?q=80&w=800&auto=format&fit=crop",
+        title: "E-commerce Platform Redesign",
+        designer: "Hanako Suzuki",
+        client: "ABC Company",
+        period: "2024.01"
+    },
+    {
+        url: "https://example.com/project2",
+        ogpImage: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=800&auto=format&fit=crop",
+        title: "Corporate Website Renewal",
+        designer: "Jiro Tanaka",
+        client: "XYZ Corporation",
+        period: "2023.12"
+    },
+    {
+        url: "https://example.com/project3",
+        ogpImage: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=800&auto=format&fit=crop",
+        title: "Mobile App UI/UX Improvement",
+        designer: "Ayaka Sato",
+        client: "Mobile Tech Inc.",
+        period: "2024.03"
+    },
+    {
+        url: "https://example.com/project4",
+        ogpImage: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?q=80&w=800&auto=format&fit=crop",
+        title: "SaaS Product Landing Page",
+        designer: "Kenta Kobayashi",
+        client: "Cloud Solutions",
+        period: "2024.02"
+    },
+    {
+        url: "https://example.com/project5",
+        ogpImage: "https://images.unsplash.com/photo-1516233758813-a38d024919c5?q=80&w=800&auto=format&fit=crop",
+        title: "Brand Identity Development",
+        designer: "Yuki Nakamura",
+        client: "Fashion Brand A",
+        period: "2023.11"
+    },
+    {
+        url: "https://example.com/project6",
+        ogpImage: "https://images.unsplash.com/photo-1541701494587-cb58502866ab?q=80&w=800&auto=format&fit=crop",
+        title: "Portfolio Website for Artist",
+        designer: "Rina Kato",
+        client: "Artist B",
+        period: "2024.04"
+    },
+    {
+        url: "https://example.com/project7",
+        ogpImage: "https://images.unsplash.com/photo-1501854140801-50d01698950b?q=80&w=800&auto=format&fit=crop",
+        title: "Local Business Promotion Site",
+        designer: "Shohei Yoshida",
+        client: "Cafe C",
+        period: "2023.09"
+    },
+];
+
+// 配列をシャッフルする関数 (Fisher-Yatesアルゴリズム)
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
+// 作品データからslide要素を生成する関数
+function createWorksSlide(work) {
+    const slide = document.createElement('div');
+    slide.classList.add('slide');
+    slide.innerHTML = `
+        <a href="${work.url}" target="_blank" rel="noopener noreferrer">
+            <img src="${work.ogpImage}" alt="${work.title}">
+            <h3>${work.title}</h3>
+            <div class="credits">
+                <p class="period">Period: ${work.period}</p>
+                <p class="client">Client: ${work.client}</p>
+                <p class="designer">Designer: ${work.designer}</p>
+            </div>
+        </a>
+    `;
+    return slide;
+}
+
+// Worksセクションのスライダーを初期化する関数
+function initWorksSlider() {
+    const sliderTracks = document.querySelectorAll('#works .slider-track');
+    const slideWidth = 600; // slideの幅
+    const slideMarginRight = 50; // slideのmargin-right
+
+    sliderTracks.forEach(track => {
+        track.innerHTML = ''; // 既存のコンテンツをクリア
+
+        // 作品データをシャッフル
+        const shuffledWorks = shuffleArray([...worksData]);
+
+        // 無限ループアニメーションのために作品データを複数回連結
+        // アニメーションのtranslateX(-50%)が正しく機能するように、
+        // 元の作品データセットの2倍のコンテンツを生成する
+        const combinedWorks = [...shuffledWorks, ...shuffledWorks];
+
+        // スライドを生成してトラックに追加
+        combinedWorks.forEach(work => {
+            track.appendChild(createWorksSlide(work));
+        });
+
+        // slider-trackの幅を動的に設定
+        // (slideWidth + slideMarginRight) * combinedWorks.length
+        const totalWidth = (slideWidth + slideMarginRight) * combinedWorks.length;
+        track.style.width = `${totalWidth}px`;
+
+        // アニメーションのtranslateX(-50%)が、元の作品データセットの幅分移動するように調整
+        // CSSアニメーションのto { transform: translateX(-50%); } はそのまま利用し、
+        // trackのwidthをshuffledWorksの全幅の2倍に設定することで、
+        // translateX(-50%)がshuffledWorksの全幅分移動するようにする。
+        // totalWidthは既にshuffledWorksの2倍の幅になっているので、これでOK。
+    });
+    setupHoverables(); // ここで呼び出す
+}
+
 // --- 開始 ---
 smoothScroll();
+initWorksSlider(); // Worksスライダーの初期化を追加
 
 
 // --- Staggered Fade-in Animation for Service Section ---
@@ -327,6 +462,8 @@ document.addEventListener('DOMContentLoaded', () => {
     setupStaggeredAnimation();
     setupConceptAnimation();
     setupMenu();
+    initWorksSlider(); // Worksスライダーの初期化を追加
+    // setupHoverables(); // ここを削除
 });
 
 
