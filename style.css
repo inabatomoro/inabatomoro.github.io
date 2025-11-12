@@ -473,6 +473,10 @@ body.is-hovering .spotlight-overlay {
     mask: radial-gradient(circle 800px at var(--mouse-x) var(--mouse-y), transparent 0%, rgba(0,0,0,1) 100%);
 }
 
+.spotlight-overlay.is-works-section-active {
+    background-color: transparent; /* worksセクションでは透明に */
+}
+
 /* Scroll Indicator */
 .scroll-indicator {
     position: fixed;
@@ -689,7 +693,7 @@ body.is-menu-open .close-menu-button {
 
 .footer-background-text {
     position: absolute; /* worksセクション内で配置 */
-    bottom: 5vh; /* worksセクションの最下部からの位置 */
+    bottom: 0; /* worksセクションの最下部に配置 */
     right: 5vw; /* worksセクションの右端からの位置 */
     font-family: 'Archivo Black', sans-serif;
     font-size: 15vw; /* Design Worksと同じサイズに */

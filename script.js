@@ -172,8 +172,10 @@ function smoothScroll() {
     // --- Scroll Indicator Logic for works/service sections ---
     if (sections[sectionIndex].id === 'works') {
         scrollIndicator.classList.add('is-works-section');
+        spotlightOverlay.classList.add('is-works-section-active'); // ここを追加
     } else {
         scrollIndicator.classList.remove('is-works-section');
+        spotlightOverlay.classList.remove('is-works-section-active'); // ここを追加
     }
 
     requestAnimationFrame(smoothScroll);
