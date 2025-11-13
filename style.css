@@ -181,9 +181,12 @@ header {
 /* Works (Triple Slider) */
 #works {
     align-items: flex-start;
-    justify-content: center;
-    padding: 0;
+    justify-content: flex-start; /* 上から順に配置 */
+    padding: 40vh 0 0 0; /* 上部にパディングを追加 */
     position: relative; /* works-background-textをabsolute配置するため */
+    min-height: 100vh; /* 少なくとも画面の高さ分は確保 */
+    display: flex; /* 子要素をflexboxで配置 */
+    flex-direction: column; /* 縦方向に並べる */
 }
 
 .works-background-text {
@@ -210,7 +213,8 @@ header {
     width: 100%;
     display: flex;
     flex-direction: column;
-    padding: 40vh 0; /* コンテンツ全体を下に下げる */
+    padding: 0 0 20vh 0; /* padding-topを削除 */
+    /* margin-top: 40vh; */ /* padding-topで調整するため削除 */
     position: relative; /* z-indexを有効にするため */
     z-index: 1; /* works-background-textより手前に */
 }
@@ -692,8 +696,8 @@ body.is-menu-open .close-menu-button {
 }
 
 .footer-background-text {
-    position: absolute; /* worksセクション内で配置 */
-    bottom: 0; /* worksセクションの最下部に配置 */
+    /* position: absolute; */ /* flexboxで配置するため削除 */
+    /* bottom: 0; */ /* flexboxで配置するため削除 */
     right: 5vw; /* worksセクションの右端からの位置 */
     font-family: 'Archivo Black', sans-serif;
     font-size: 15vw; /* Design Worksと同じサイズに */
@@ -704,4 +708,6 @@ body.is-menu-open .close-menu-button {
     display: flex; /* 縦並びにするため */
     flex-direction: column; /* 縦並びにするため */
     line-height: 0.8; /* 行間を詰める */
+    margin-top: auto; /* 親要素の最下部に押しやる */
+    align-self: flex-end; /* 右寄せ */
 }
