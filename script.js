@@ -60,6 +60,18 @@ function handleMouseLeave() {
     document.body.classList.remove('is-hovering');
 }
 
+// Scroll Indicatorのホバーエフェクトを条件付きで適用
+scrollIndicator.addEventListener('mouseenter', () => {
+    // 'is-back-to-top'クラスがあるときだけホバーエフェクトを有効にする
+    if (scrollIndicator.classList.contains('is-back-to-top')) {
+        handleMouseEnter();
+    }
+});
+scrollIndicator.addEventListener('mouseleave', () => {
+    // マウスが離れたら、状態に関わらずホバーエフェクトを無効にする
+    handleMouseLeave();
+});
+
 // カーソルアニメーションを開始
 cursorAnimation();
 // --- 設定 ---
@@ -166,9 +178,6 @@ function smoothScroll() {
         section.style.filter = `blur(${blurAmount}px)`;
     });
 
-    // --- Scroll Indicator Logic ---
-    // The class 'is-down-arrow' is now handled directly in CSS, so this logic is no longer needed.
-
     // --- Scroll Indicator Logic for works/service sections ---
     if (sections[sectionIndex].id === 'works') {
         scrollIndicator.classList.add('is-works-section');
@@ -176,6 +185,16 @@ function smoothScroll() {
     } else {
         scrollIndicator.classList.remove('is-works-section');
         spotlightOverlay.classList.remove('is-works-section-active'); // ここを追加
+    }
+
+    // --- Scroll Indicator for Last Section ---
+    const scrollText = scrollIndicator.querySelector('.scroll-text');
+    const isLastSection = sectionIndex === sections.length - 1;
+    scrollIndicator.classList.toggle('is-back-to-top', isLastSection);
+    if (isLastSection) {
+        scrollText.textContent = 'BACK TO TOP';
+    } else {
+        scrollText.textContent = 'SCROLL';
     }
 
     requestAnimationFrame(smoothScroll);
@@ -469,4 +488,9 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-
+// --- Scroll to Top on Indicator Click ---
+scrollIndicator.addEventListener('click', () => {
+    if (scrollIndicator.classList.contains('is-back-to-top')) {
+        targetScroll = 0;
+    }
+});

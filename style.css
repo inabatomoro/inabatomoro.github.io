@@ -750,3 +750,26 @@ body.is-menu-open .close-menu-button {
     margin-top: auto; /* 親要素の最下部に押しやる */
     align-self: flex-end; /* 右寄せ */
 }
+
+/* --- Scroll to Top Indicator --- */
+.scroll-indicator.is-back-to-top {
+    cursor: pointer;
+    flex-direction: column; /* 縦並びにする */
+    align-items: center; /* 中央揃え */
+}
+
+.scroll-indicator.is-back-to-top .scroll-text {
+    writing-mode: horizontal-tb;
+    margin-right: 0; /* 元のmargin-rightをリセット */
+    margin-bottom: 5px; /* 矢印との間隔 */
+}
+
+.scroll-indicator.is-back-to-top .scroll-arrow-down {
+    animation: none;
+    margin-left: 0; /* 元のmargin-leftをリセット */
+    transform: rotate(90deg); /* 棒を水平にする */
+}
+
+.scroll-indicator.is-back-to-top .scroll-arrow-down::after {
+    transform: translateX(-50%) rotate(-135deg); /* ユーザーの指示通り */
+}
