@@ -771,5 +771,5 @@ body.is-menu-open .close-menu-button {
 }
 
 .scroll-indicator.is-back-to-top .scroll-arrow-down::after {
-    transform: translateX(-50%) rotate(-135deg); /* ユーザーの指示通り */
+    transform: translateX(-50%) rotate(40deg);
 }
