@@ -281,20 +281,43 @@ function createWorksSlide(work) {
     const slide = document.createElement('div');
     slide.classList.add('slide');
 
-    // descriptionが長い場合に切り詰める
-    const maxDescLength = 80;
-    const description = work.description.length > maxDescLength 
-        ? work.description.substring(0, maxDescLength) + '…' 
-        : work.description;
+    // 各情報が存在する場合にのみHTMLを生成
+    const titleHTML = `<h3>${work.title}</h3>`;
     
-    const notesHTML = work.notes ? `<p class="notes">${work.notes}</p>` : '';
+    const descriptionHTML = work.description 
+        ? `<p class="description">${work.description}</p>` 
+        : '';
+
+    // 横並びにするメタ情報を生成
+    const periodHTML = work.production_period 
+        ? `<span class="meta-item period"><strong>Period:</strong> ${work.production_period}</span>` 
+        : '';
+    const clientHTML = work.client 
+        ? `<span class="meta-item client"><strong>Client:</strong> ${work.client}</span>` 
+        : '';
+    const designHTML = work.design 
+        ? `<span class="meta-item design"><strong>Design:</strong> ${work.design}</span>` 
+        : '';
+
+    // メタ情報を一つの行にまとめる
+    const metaItems = [periodHTML, clientHTML, designHTML].filter(Boolean); // 空の要素を除外
+    const metaLineHTML = metaItems.length > 0 
+        ? `<div class="meta-line">${metaItems.join('')}</div>` 
+        : '';
+
+    const notesHTML = work.notes 
+        ? `<p class="notes">${work.notes}</p>` 
+        : '';
 
     slide.innerHTML = `
         <a href="${work.url}" target="_blank" rel="noopener noreferrer">
             <img src="${work.image}" alt="${work.title}" onerror="this.style.display='none'">
-            <h3>${work.title}</h3>
-            <p>${description}</p>
-            ${notesHTML}
+            <div class="slide-info">
+                ${titleHTML}
+                ${descriptionHTML}
+                ${metaLineHTML}
+                ${notesHTML}
+            </div>
         </a>
     `;
     return slide;
