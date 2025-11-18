@@ -238,11 +238,11 @@ header {
 .slider-track {
     display: flex;
     /* width: calc(6 * 650px); */ /* JavaScriptで動的に設定 */
-    animation: slide-left 80s linear infinite;
+    animation: slide-left 40s linear infinite;
 }
 
 .slider-row.reverse .slider-track {
-    animation: slide-right 80s linear infinite;
+    animation: slide-right 40s linear infinite;
 }
 
 .slide {
@@ -320,11 +320,11 @@ header {
     display: flex;
     flex-direction: column;
     flex-shrink: 0;
-    animation: marquee-down 80s linear infinite;
+    animation: marquee-down 40s linear infinite;
 }
 
 .marquee-track.reverse {
-    animation: marquee-up 80s linear infinite;
+    animation: marquee-up 40s linear infinite;
 }
 
 .marquee-track .grid-item {
