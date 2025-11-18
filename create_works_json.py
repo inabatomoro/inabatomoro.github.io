@@ -120,7 +120,7 @@ def get_meta_data(url):
 def main():
     """
     urls.txtからURLを読み込み、メタデータを取得してworks.jsonに保存する
-    手動で入力したデータは保持する
+    既存のworks.jsonにあるデータは再スクレイピングせず、urls.txtに新規追加されたURLのみを処理する
     """
     script_dir = os.path.dirname(os.path.abspath(__file__))
     urls_file_path = os.path.join(script_dir, 'urls.txt')
@@ -135,48 +135,48 @@ def main():
                     if 'url' in item:
                         existing_data[item['url']] = item
             except json.JSONDecodeError:
-                print(f"Warning: Could not parse {works_json_path}. It will be overwritten.")
+                print(f"Warning: Could not parse {works_json_path}. It will be treated as empty for existing URLs.")
 
     # 2. urls.txtを読み込む
     if not os.path.exists(urls_file_path):
         print(f"Error: '{urls_file_path}' not found.")
         return
     with open(urls_file_path, 'r') as f:
-        urls = [line.strip() for line in f if line.strip()]
+        urls_from_txt = [line.strip() for line in f if line.strip()]
 
     final_data = []
-    for url in urls:
-        print(f"Processing: {url}")
-        
-        # 3. URLから新しいデータをスクレイピング
-        scraped_data = get_meta_data(url)
-        
-        # 既存の手動入力データを取得
-        manual_data = existing_data.get(url, {})
+    processed_urls = set() # urls.txt内の重複URLをスキップするため
 
-        if not scraped_data:
-            print(f"  -> Scraping failed for {url}.")
-            # スクレイピングに失敗しても、既存のデータがあればそれを使う
-            if manual_data:
-                print("  -> Using existing data.")
-                final_data.append(manual_data)
-            else:
-                print("  -> No existing data. Skipping.")
+    for url in urls_from_txt:
+        if url in processed_urls:
+            print(f"Skipping duplicate URL in urls.txt: {url}")
             continue
+        processed_urls.add(url)
 
-        # 4. データをマージ（手動入力を優先）
-        #    手動入力フィールドが空でない場合はその値を、空の場合はスクレイピングした値（またはデフォルト値）を使用
-        final_item = {
-            "image": manual_data.get("image") or scraped_data.get("image", ""),
-            "title": manual_data.get("title") or scraped_data.get("title", "No Title Found"),
-            "description": manual_data.get("description") or scraped_data.get("description", "No Description Found"),
-            "url": url,
-            "client": manual_data.get("client", ""),
-            "production_period": manual_data.get("production_period") or scraped_data.get("production_period", ""),
-            "design": manual_data.get("design", ""),
-            "notes": manual_data.get("notes", "")
-        }
-        final_data.append(final_item)
+        if url in existing_data:
+            # URLがworks.jsonに存在する場合、既存のデータをそのまま使用（再スクレイピングしない）
+            print(f"Keeping existing entry for: {url}")
+            final_data.append(existing_data[url])
+        else:
+            # URLが新規の場合、スクレイピングする
+            print(f"Scraping new entry for: {url}")
+            scraped_data = get_meta_data(url)
+            if scraped_data:
+                # 新規スクレイピングデータで初期化。手動入力フィールドは空欄。
+                final_item = {
+                    "image": scraped_data.get("image", ""),
+                    "title": scraped_data.get("title", "No Title Found"),
+                    "description": scraped_data.get("description", "No Description Found"),
+                    "url": url,
+                    "client": "",
+                    "production_period": scraped_data.get("production_period", ""),
+                    "design": "",
+                    "notes": ""
+                }
+                final_data.append(final_item)
+            else:
+                print(f"  -> Scraping failed for new URL {url}. Skipping.")
+                # スクレイピングに失敗した新規URLは追加しない
 
     # 5. 新しいJSONファイルとして書き出し
     with open(works_json_path, 'w', encoding='utf-8') as f:
