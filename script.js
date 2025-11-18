@@ -274,73 +274,31 @@ function setupMenu() {
     });
 }
 
-// --- 作品データ (ダミー) ---
-const worksData = [
-    {
-        url: "https://www.studio-works.jp/stuwor-port",
-        ogpImage: "https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?q=80&w=800&auto=format&fit=crop",
-        title: "STUDIO WORKS LLC. Portfolio",
-        designer: "Taro Yamada",
-        client: "STUDIO WORKS LLC.",
-        period: "2023.10"
-    },
-    {
-        url: "https://example.com/project1",
-        ogpImage: "https://images.unsplash.com/photo-1496171367470-9ed9a91ea931?q=80&w=800&auto=format&fit=crop",
-        title: "E-commerce Platform Redesign",
-        designer: "Hanako Suzuki",
-        client: "ABC Company",
-        period: "2024.01"
-    },
-    {
-        url: "https://example.com/project2",
-        ogpImage: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=800&auto=format&fit=crop",
-        title: "Corporate Website Renewal",
-        designer: "Jiro Tanaka",
-        client: "XYZ Corporation",
-        period: "2023.12"
-    },
-    {
-        url: "https://example.com/project3",
-        ogpImage: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=800&auto=format&fit=crop",
-        title: "Mobile App UI/UX Improvement",
-        designer: "Ayaka Sato",
-        client: "Mobile Tech Inc.",
-        period: "2024.03"
-    },
-    {
-        url: "https://example.com/project4",
-        ogpImage: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?q=80&w=800&auto=format&fit=crop",
-        title: "SaaS Product Landing Page",
-        designer: "Kenta Kobayashi",
-        client: "Cloud Solutions",
-        period: "2024.02"
-    },
-    {
-        url: "https://example.com/project5",
-        ogpImage: "https://images.unsplash.com/photo-1516233758813-a38d024919c5?q=80&w=800&auto=format&fit=crop",
-        title: "Brand Identity Development",
-        designer: "Yuki Nakamura",
-        client: "Fashion Brand A",
-        period: "2023.11"
-    },
-    {
-        url: "https://example.com/project6",
-        ogpImage: "https://images.unsplash.com/photo-1541701494587-cb58502866ab?q=80&w=800&auto=format&fit=crop",
-        title: "Portfolio Website for Artist",
-        designer: "Rina Kato",
-        client: "Artist B",
-        period: "2024.04"
-    },
-    {
-        url: "https://example.com/project7",
-        ogpImage: "https://images.unsplash.com/photo-1501854140801-50d01698950b?q=80&w=800&auto=format&fit=crop",
-        title: "Local Business Promotion Site",
-        designer: "Shohei Yoshida",
-        client: "Cafe C",
-        period: "2023.09"
-    },
-];
+// --- Works Slider from JSON ---
+
+// 作品データからslide要素を生成する関数
+function createWorksSlide(work) {
+    const slide = document.createElement('div');
+    slide.classList.add('slide');
+
+    // descriptionが長い場合に切り詰める
+    const maxDescLength = 80;
+    const description = work.description.length > maxDescLength 
+        ? work.description.substring(0, maxDescLength) + '…' 
+        : work.description;
+    
+    const notesHTML = work.notes ? `<p class="notes">${work.notes}</p>` : '';
+
+    slide.innerHTML = `
+        <a href="${work.url}" target="_blank" rel="noopener noreferrer">
+            <img src="${work.image}" alt="${work.title}" onerror="this.style.display='none'">
+            <h3>${work.title}</h3>
+            <p>${description}</p>
+            ${notesHTML}
+        </a>
+    `;
+    return slide;
+}
 
 // 配列をシャッフルする関数 (Fisher-Yatesアルゴリズム)
 function shuffleArray(array) {
@@ -351,58 +309,58 @@ function shuffleArray(array) {
     return array;
 }
 
-// 作品データからslide要素を生成する関数
-function createWorksSlide(work) {
-    const slide = document.createElement('div');
-    slide.classList.add('slide');
-    slide.innerHTML = `
-        <a href="${work.url}" target="_blank" rel="noopener noreferrer">
-            <img src="${work.ogpImage}" alt="${work.title}">
-            <h3>${work.title}</h3>
-            <div class="credits">
-                <p class="period">Period: ${work.period}</p>
-                <p class="client">Client: ${work.client}</p>
-                <p class="designer">Designer: ${work.designer}</p>
-            </div>
-        </a>
-    `;
-    return slide;
-}
-
 // Worksセクションのスライダーを初期化する関数
-function initWorksSlider() {
-    const sliderTracks = document.querySelectorAll('#works .slider-track');
-    const slideWidth = 600; // slideの幅
-    const slideMarginRight = 50; // slideのmargin-right
+async function initWorksSlider() {
+    const sliderContainer = document.querySelector('.triple-slider-container');
+    if (!sliderContainer) return;
 
-    sliderTracks.forEach(track => {
-        track.innerHTML = ''; // 既存のコンテンツをクリア
+    try {
+        const response = await fetch('works.json');
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const worksData = await response.json();
 
-        // 作品データをシャッフル
-        const shuffledWorks = shuffleArray([...worksData]);
+        if (!worksData || worksData.length === 0) {
+            console.warn('No works data found or data is empty.');
+            return;
+        }
 
-        // 無限ループアニメーションのために作品データを複数回連結
-        // アニメーションのtranslateX(-50%)が正しく機能するように、
-        // 元の作品データセットの2倍のコンテンツを生成する
-        const combinedWorks = [...shuffledWorks, ...shuffledWorks];
+        const slidesPerRow = 4; // 1行あたり4つのコンテンツ
+        
+        // worksDataを4つずつのチャンクに分割し、それぞれに対して行を生成
+        for (let i = 0; i < worksData.length; i += slidesPerRow) {
+            const chunk = worksData.slice(i, i + slidesPerRow);
+            
+            // 新しい行を作成
+            const sliderRow = document.createElement('div');
+            sliderRow.classList.add('slider-row');
+            
+            // 行のインデックス (0, 1, 2...) に基づいて交互にreverseクラスを適用
+            const rowIndex = i / slidesPerRow;
+            if (rowIndex % 2 !== 0) {
+                sliderRow.classList.add('reverse');
+            }
 
-        // スライドを生成してトラックに追加
-        combinedWorks.forEach(work => {
-            track.appendChild(createWorksSlide(work));
-        });
+            const sliderTrack = document.createElement('div');
+            sliderTrack.classList.add('slider-track');
 
-        // slider-trackの幅を動的に設定
-        // (slideWidth + slideMarginRight) * combinedWorks.length
-        const totalWidth = (slideWidth + slideMarginRight) * combinedWorks.length;
-        track.style.width = `${totalWidth}px`;
+            // 無限ループのためにデータを2倍にする
+            const combinedWorks = [...chunk, ...chunk];
 
-        // アニメーションのtranslateX(-50%)が、元の作品データセットの幅分移動するように調整
-        // CSSアニメーションのto { transform: translateX(-50%); } はそのまま利用し、
-        // trackのwidthをshuffledWorksの全幅の2倍に設定することで、
-        // translateX(-50%)がshuffledWorksの全幅分移動するようにする。
-        // totalWidthは既にshuffledWorksの2倍の幅になっているので、これでOK。
-    });
-    setupHoverables(); // ここで呼び出す
+            combinedWorks.forEach(work => {
+                sliderTrack.appendChild(createWorksSlide(work));
+            });
+            
+            sliderRow.appendChild(sliderTrack);
+            sliderContainer.appendChild(sliderRow);
+        }
+
+        setupHoverables(); // スライド生成後にホバーイベントを設定
+
+    } catch (error) {
+        console.error("Could not load works data:", error);
+    }
 }
 
 // --- 開始 ---

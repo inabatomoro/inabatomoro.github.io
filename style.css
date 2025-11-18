@@ -773,3 +773,11 @@ body.is-menu-open .close-menu-button {
 .scroll-indicator.is-back-to-top .scroll-arrow-down::after {
     transform: translateX(-50%) rotate(40deg);
 }
+
+/* Works Slide Notes */
+.slide .notes {
+    font-size: 0.8rem;
+    font-style: italic;
+    color: var(--secondary-text-color, #aaa);
+    margin-top: 10px;
+}
