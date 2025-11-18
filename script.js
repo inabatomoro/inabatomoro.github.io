@@ -258,17 +258,24 @@ function setupMenu() {
     navLinks.forEach((link, index) => {
         link.style.setProperty('--i', index);
         link.addEventListener('click', (e) => {
-            e.preventDefault();
-            body.classList.remove('is-menu-open');
-            
             const targetId = link.getAttribute('href');
-            const targetSection = document.querySelector(targetId);
-            if (targetSection) {
-                const sectionIndex = Array.from(sections).indexOf(targetSection);
-                // Add a delay to allow the menu to close before scrolling
-                setTimeout(() => {
-                    targetScroll = window.innerWidth * sectionIndex;
-                }, 400);
+            
+            // 内部アンカーリンクの場合のみpreventDefault()を実行
+            if (targetId && targetId.startsWith('#')) {
+                e.preventDefault();
+                body.classList.remove('is-menu-open');
+                
+                const targetSection = document.querySelector(targetId);
+                if (targetSection) {
+                    const sectionIndex = Array.from(sections).indexOf(targetSection);
+                    // メニューが閉じるのを待ってからスクロール
+                    setTimeout(() => {
+                        targetScroll = window.innerWidth * sectionIndex;
+                    }, 400);
+                }
+            } else {
+                // 外部/絶対パスのリンクの場合、デフォルトの動作を許可
+                body.classList.remove('is-menu-open'); // メニューは閉じる
             }
         });
     });
