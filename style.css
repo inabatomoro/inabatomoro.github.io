@@ -1,15 +1,18 @@
-body, html {
+body,
+html {
     margin: 0;
     padding: 0;
     width: 100%;
     height: 100%;
     color: var(--primary-text-color, white);
     font-family: 'Noto Sans JP', sans-serif;
-    cursor: none; /* デフォルトカーソルを非表示 */
+    cursor: none;
+    /* デフォルトカーソルを非表示 */
 }
 
 * {
-    cursor: none; /* すべての要素でカーソルを非表示 */
+    cursor: none;
+    /* すべての要素でカーソルを非表示 */
 }
 
 .background-layer {
@@ -22,7 +25,8 @@ body, html {
 }
 
 /* カスタムカーソル */
-.cursor-dot, .cursor-ring {
+.cursor-dot,
+.cursor-ring {
     position: fixed;
     top: 0;
     left: 0;
@@ -60,22 +64,27 @@ body.is-hovering .cursor-ring {
 }
 
 /* リング内にシャープな矢印を作成 */
-.cursor-ring::before, .cursor-ring::after {
+.cursor-ring::before,
+.cursor-ring::after {
     content: '';
     position: absolute;
     left: 50%;
     top: 50%;
-    width: 14px; /* 長さ */
-    height: 1.5px; /* 細さ */
+    width: 14px;
+    /* 長さ */
+    height: 1.5px;
+    /* 細さ */
     background-color: #007BFF;
     border-radius: 1px;
     opacity: 0;
     transition: opacity 0.3s ease, transform 0.3s ease;
-    transform-origin: right center; /* 右端を軸に回転 */
+    transform-origin: right center;
+    /* 右端を軸に回転 */
 }
 
 /* ホバー時に矢印を表示 */
-body.is-hovering .cursor-ring::before, body.is-hovering .cursor-ring::after {
+body.is-hovering .cursor-ring::before,
+body.is-hovering .cursor-ring::after {
     opacity: 1;
 }
 
@@ -88,7 +97,8 @@ body.is-hovering .cursor-ring::before, body.is-hovering .cursor-ring::after {
 }
 
 /* ドットの擬似要素は不要 */
-.cursor-dot::before, .cursor-dot::after {
+.cursor-dot::before,
+.cursor-dot::after {
     display: none;
 }
 
@@ -97,13 +107,15 @@ body {
     overflow: hidden;
 }
 
-h1, h2 {
+h1,
+h2 {
     font-family: 'Archivo Black', sans-serif;
 }
 
 .container {
     display: flex;
-    width: 600vw; /* 6セクション x 100vw */
+    width: 600vw;
+    /* 6セクション x 100vw */
     height: 100vh;
     will-change: transform;
 }
@@ -130,7 +142,8 @@ header {
     width: 100%;
     padding: 20px 5vw;
     box-sizing: border-box;
-    z-index: 10001; /* Above scroll indicator */
+    z-index: 10001;
+    /* Above scroll indicator */
     display: flex;
     justify-content: flex-start;
 }
@@ -144,6 +157,11 @@ header {
     margin-bottom: 30px;
     text-align: center;
 }
+
+#intro .char {
+    display: inline-block;
+}
+
 #intro .intro-content p {
     font-size: 1rem;
     margin-top: 10px;
@@ -156,6 +174,7 @@ header {
     max-width: 800px;
     text-align: center;
 }
+
 #concept .concept-content h2 {
     font-size: 6rem;
     margin-bottom: 30px;
@@ -163,7 +182,8 @@ header {
 }
 
 #concept h2 span {
-    display: inline-block; /* Required for transform */
+    display: inline-block;
+    /* Required for transform */
     transform: translateY(110%);
     opacity: 0;
     transition: transform 0.8s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.6s ease;
@@ -173,6 +193,7 @@ header {
     transform: translateY(0);
     opacity: 1;
 }
+
 #concept .concept-content p {
     font-size: 1rem;
     line-height: 1.8;
@@ -181,42 +202,64 @@ header {
 /* Works (Triple Slider) */
 #works {
     align-items: flex-start;
-    justify-content: flex-start; /* 上から順に配置 */
-    padding: 40vh 0 0 0; /* 上部にパディングを追加 */
-    position: relative; /* works-background-textをabsolute配置するため */
-    min-height: 100vh; /* 少なくとも画面の高さ分は確保 */
-    display: flex; /* 子要素をflexboxで配置 */
-    flex-direction: column; /* 縦方向に並べる */
+    justify-content: flex-start;
+    /* 上から順に配置 */
+    padding: 40vh 0 0 0;
+    /* 上部にパディングを追加 */
+    position: relative;
+    /* works-background-textをabsolute配置するため */
+    min-height: 100vh;
+    /* 少なくとも画面の高さ分は確保 */
+    display: flex;
+    /* 子要素をflexboxで配置 */
+    flex-direction: column;
+    /* 縦方向に並べる */
 }
 
 .works-background-text {
     position: absolute;
-    top: 20%; /* 垂直方向を調整 */
-    left: 10vw; /* 左寄せを調整 */
-    transform: translateY(-50%); /* 垂直方向の中央揃え */
+    top: 20%;
+    /* 垂直方向を調整 */
+    left: 10vw;
+    /* 左寄せを調整 */
+    transform: translateY(-50%);
+    /* 垂直方向の中央揃え */
     font-family: 'Archivo Black', sans-serif;
-    font-size: 15vw; /* 画面幅に応じて大きく */
-    color: rgba(255, 255, 255, 0.05); /* 薄い色 */
-    pointer-events: none; /* クリックイベントを透過 */
-    z-index: 0; /* 背景として配置 */
-    /* white-space: nowrap; */ /* 改行を許可するため削除 */
-    display: flex; /* 縦並びにするため */
-    flex-direction: column; /* 縦並びにするため */
-    line-height: 0.8; /* 行間を詰める */
+    font-size: 15vw;
+    /* 画面幅に応じて大きく */
+    color: rgba(255, 255, 255, 0.05);
+    /* 薄い色 */
+    pointer-events: none;
+    /* クリックイベントを透過 */
+    z-index: 0;
+    /* 背景として配置 */
+    /* white-space: nowrap; */
+    /* 改行を許可するため削除 */
+    display: flex;
+    /* 縦並びにするため */
+    flex-direction: column;
+    /* 縦並びにするため */
+    line-height: 0.8;
+    /* 行間を詰める */
 }
 
 .works-background-text span:last-child {
-    margin-left: 15vw; /* Designの真ん中くらいから始まるようにインデント */
+    margin-left: 15vw;
+    /* Designの真ん中くらいから始まるようにインデント */
 }
 
 .triple-slider-container {
     width: 100%;
     display: flex;
     flex-direction: column;
-    padding: 0 0 20vh 0; /* padding-topを削除 */
-    /* margin-top: 40vh; */ /* padding-topで調整するため削除 */
-    position: relative; /* z-indexを有効にするため */
-    z-index: 1; /* works-background-textより手前に */
+    padding: 0 0 20vh 0;
+    /* padding-topを削除 */
+    /* margin-top: 40vh; */
+    /* padding-topで調整するため削除 */
+    position: relative;
+    /* z-indexを有効にするため */
+    z-index: 1;
+    /* works-background-textより手前に */
 }
 
 .slider-row {
@@ -226,18 +269,29 @@ header {
 }
 
 @keyframes slide-left {
-    from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(-50%);
+    }
 }
 
 @keyframes slide-right {
-    from { transform: translateX(-50%); }
-    to { transform: translateX(0); }
+    from {
+        transform: translateX(-50%);
+    }
+
+    to {
+        transform: translateX(0);
+    }
 }
 
 .slider-track {
     display: flex;
-    /* width: calc(6 * 650px); */ /* JavaScriptで動的に設定 */
+    /* width: calc(6 * 650px); */
+    /* JavaScriptで動的に設定 */
     animation: slide-left 40s linear infinite;
 }
 
@@ -262,7 +316,8 @@ header {
 .slide-info {
     display: flex;
     flex-direction: column;
-    gap: 8px; /* 各要素間の基本的な間隔 */
+    gap: 8px;
+    /* 各要素間の基本的な間隔 */
 }
 
 .slide h3 {
@@ -284,13 +339,15 @@ header {
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
-    min-height: calc(0.9rem * 1.6 * 2); /* 2行分の高さを最低でも確保 */
+    min-height: calc(0.9rem * 1.6 * 2);
+    /* 2行分の高さを最低でも確保 */
 }
 
 .slide .meta-line {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5em 1.5em; /* 縦方向のgap | 横方向のgap */
+    gap: 0.5em 1.5em;
+    /* 縦方向のgap | 横方向のgap */
     padding-top: 4px;
 }
 
@@ -329,12 +386,15 @@ header {
 }
 
 #works .slide a {
-    color: inherit; /* 親要素の色を継承 (白) */
-    text-decoration: none; /* 下線を非表示 */
+    color: inherit;
+    /* 親要素の色を継承 (白) */
+    text-decoration: none;
+    /* 下線を非表示 */
 }
 
 #works .slide a:hover {
-    text-decoration: none; /* ホバー時も下線を非表示 */
+    text-decoration: none;
+    /* ホバー時も下線を非表示 */
 }
 
 /* Gallery (Marquee) */
@@ -355,18 +415,30 @@ header {
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    padding: 0 5px; /* 左右に5pxのパディングを追加 */
-    box-sizing: border-box; /* パディングを幅に含める */
+    padding: 0 5px;
+    /* 左右に5pxのパディングを追加 */
+    box-sizing: border-box;
+    /* パディングを幅に含める */
 }
 
 @keyframes marquee-down {
-    from { transform: translateY(-50%); }
-    to { transform: translateY(0); }
+    from {
+        transform: translateY(-50%);
+    }
+
+    to {
+        transform: translateY(0);
+    }
 }
 
 @keyframes marquee-up {
-    from { transform: translateY(0); }
-    to { transform: translateY(-50%); }
+    from {
+        transform: translateY(0);
+    }
+
+    to {
+        transform: translateY(-50%);
+    }
 }
 
 .marquee-track {
@@ -381,9 +453,12 @@ header {
 }
 
 .marquee-track .grid-item {
-    width: 100%; /* 親要素(padding適用済み)の幅いっぱいに */
-    height: 50vh; /* 縦長にする */
-    margin: 5px 0; /* 上下余白5px、左右余白0 */
+    width: 100%;
+    /* 親要素(padding適用済み)の幅いっぱいに */
+    height: 50vh;
+    /* 縦長にする */
+    margin: 5px 0;
+    /* 上下余白5px、左右余白0 */
     overflow: hidden;
     border-radius: 5px;
 }
@@ -391,12 +466,14 @@ header {
 .marquee-track .grid-item img {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* アスペクト比を維持しつつコンテナを埋める */
+    object-fit: cover;
+    /* アスペクト比を維持しつつコンテナを埋める */
     transition: transform 0.3s ease;
 }
 
 .marquee-track .grid-item:hover img {
-    transform: scale(1.05); /* ホバー時に少し拡大 */
+    transform: scale(1.05);
+    /* ホバー時に少し拡大 */
 }
 
 .marquee-track .grid-item h3 {
@@ -404,7 +481,8 @@ header {
 }
 
 /* Service */
-#service .service-content, #about-contact .about-content {
+#service .service-content,
+#about-contact .about-content {
     width: 100%;
     max-width: 1200px;
     display: flex;
@@ -456,22 +534,29 @@ header {
 #service .service-content li {
     background-color: var(--card-bg-color, rgba(255, 255, 255, 0.05));
     padding: 30px;
-    padding-bottom: 60px; /* 金額分のスペースを確保 */
+    padding-bottom: 60px;
+    /* 金額分のスペースを確保 */
     border-radius: 10px;
     border: 1px solid var(--card-border-color, rgba(255, 255, 255, 0.1));
     opacity: 0;
     transform: translateY(30px);
     transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-    position: relative; /* 金額をabsolute配置するため */
+    position: relative;
+    /* 金額をabsolute配置するため */
 }
 
 #service .service-content li .price-estimate {
     position: absolute;
-    bottom: 20px; /* 下からの位置 */
-    left: 30px; /* 左からの位置 */
-    font-size: 1.1rem; /* 文字サイズを少し大きく */
-    color: var(--secondary-text-color, #ccc); /* テキスト色を調整 */
-    margin: 0; /* デフォルトのマージンをリセット */
+    bottom: 20px;
+    /* 下からの位置 */
+    left: 30px;
+    /* 左からの位置 */
+    font-size: 1.1rem;
+    /* 文字サイズを少し大きく */
+    color: var(--secondary-text-color, #ccc);
+    /* テキスト色を調整 */
+    margin: 0;
+    /* デフォルトのマージンをリセット */
 }
 
 #service .service-content li.is-visible {
@@ -556,21 +641,24 @@ header {
     width: 100vw;
     height: 100vh;
     background-color: rgba(0, 0, 0, 0.6);
-    z-index: 9998; /* Below cursor, above everything else */
-    pointer-events: none; /* Allow clicks to go through */
+    z-index: 9998;
+    /* Below cursor, above everything else */
+    pointer-events: none;
+    /* Allow clicks to go through */
 
-    -webkit-mask: radial-gradient(circle 400px at var(--mouse-x) var(--mouse-y), transparent 0%, rgba(0,0,0,1) 100%);
-    mask: radial-gradient(circle 400px at var(--mouse-x) var(--mouse-y), transparent 0%, rgba(0,0,0,1) 100%);
+    -webkit-mask: radial-gradient(circle 400px at var(--mouse-x) var(--mouse-y), transparent 0%, rgba(0, 0, 0, 1) 100%);
+    mask: radial-gradient(circle 400px at var(--mouse-x) var(--mouse-y), transparent 0%, rgba(0, 0, 0, 1) 100%);
     transition: background-color 0.3s ease;
 }
 
 body.is-hovering .spotlight-overlay {
-    -webkit-mask: radial-gradient(circle 800px at var(--mouse-x) var(--mouse-y), transparent 0%, rgba(0,0,0,1) 100%);
-    mask: radial-gradient(circle 800px at var(--mouse-x) var(--mouse-y), transparent 0%, rgba(0,0,0,1) 100%);
+    -webkit-mask: radial-gradient(circle 800px at var(--mouse-x) var(--mouse-y), transparent 0%, rgba(0, 0, 0, 1) 100%);
+    mask: radial-gradient(circle 800px at var(--mouse-x) var(--mouse-y), transparent 0%, rgba(0, 0, 0, 1) 100%);
 }
 
 .spotlight-overlay.is-works-section-active {
-    background-color: transparent; /* worksセクションでは透明に */
+    background-color: transparent;
+    /* worksセクションでは透明に */
 }
 
 /* Scroll Indicator */
@@ -598,7 +686,8 @@ body.is-hovering .spotlight-overlay {
 .scroll-indicator .scroll-arrow-down {
     width: 1px;
     height: 40px;
-    background-color: var(--primary-text-color, white); /* 元の色に戻す */
+    background-color: var(--primary-text-color, white);
+    /* 元の色に戻す */
     margin-left: 10px;
     position: relative;
     animation: move-arrow-y 1.5s ease-in-out infinite;
@@ -608,21 +697,28 @@ body.is-hovering .spotlight-overlay {
 .scroll-indicator .scroll-arrow-down::after {
     content: '';
     position: absolute;
-    left: 50%; /* 棒の中心に */
+    left: 50%;
+    /* 棒の中心に */
     bottom: 0;
     width: 8px;
     height: 8px;
-    border-bottom: 2px solid var(--primary-text-color, white); /* 太くする */
-    border-right: 2px solid var(--primary-text-color, white); /* 太くする */
-    transform: translateX(-50%) rotate(45deg); /* 中心に配置し、回転 */
+    border-bottom: 2px solid var(--primary-text-color, white);
+    /* 太くする */
+    border-right: 2px solid var(--primary-text-color, white);
+    /* 太くする */
+    transform: translateX(-50%) rotate(45deg);
+    /* 中心に配置し、回転 */
     transition: transform 0.3s ease;
 }
 
 .scroll-indicator .scroll-arrows-cross {
-    display: none; /* デフォルトでは非表示 */
+    display: none;
+    /* デフォルトでは非表示 */
     position: relative;
-    width: 40px; /* 十字キー全体の幅 */
-    height: 40px; /* 十字キー全体の高さ */
+    width: 40px;
+    /* 十字キー全体の幅 */
+    height: 40px;
+    /* 十字キー全体の高さ */
 }
 
 .scroll-indicator .scroll-arrows-cross span {
@@ -630,34 +726,43 @@ body.is-hovering .spotlight-overlay {
     width: 0;
     height: 0;
     border-style: solid;
-    border-width: 6px 6px 0 6px; /* 矢印の頭のサイズ */
+    border-width: 6px 6px 0 6px;
+    /* 矢印の頭のサイズ */
     border-color: var(--primary-text-color, white) transparent transparent transparent;
-    opacity: 0; /* デフォルトでは非表示 */
+    opacity: 0;
+    /* デフォルトでは非表示 */
     transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 .scroll-indicator .scroll-arrows-cross .arrow-up {
     top: 0;
     left: 50%;
-    transform: translateX(-50%) rotate(180deg); /* 0を180に */
+    transform: translateX(-50%) rotate(180deg);
+    /* 0を180に */
     opacity: 1;
 }
+
 .scroll-indicator .scroll-arrows-cross .arrow-down {
     bottom: 0;
     left: 50%;
-    transform: translateX(-50%) rotate(0deg); /* -180を0に */
+    transform: translateX(-50%) rotate(0deg);
+    /* -180を0に */
     opacity: 1;
 }
+
 .scroll-indicator .scroll-arrows-cross .arrow-left {
     left: 0;
     top: 50%;
-    transform: translateY(-50%) rotate(90deg); /* -90を90に */
+    transform: translateY(-50%) rotate(90deg);
+    /* -90を90に */
     opacity: 1;
 }
+
 .scroll-indicator .scroll-arrows-cross .arrow-right {
     right: 0;
     top: 50%;
-    transform: translateY(-50%) rotate(-90deg); /* 90を-90に */
+    transform: translateY(-50%) rotate(-90deg);
+    /* 90を-90に */
     opacity: 1;
 }
 
@@ -672,9 +777,17 @@ body.is-hovering .spotlight-overlay {
 }
 
 @keyframes move-arrow-y {
-    0% { transform: translateY(0); }
-    50% { transform: translateY(10px); }
-    100% { transform: translateY(0); }
+    0% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(10px);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
 }
 
 /* Hamburger Menu & Modal */
@@ -689,7 +802,8 @@ body.is-hovering .spotlight-overlay {
     padding: 5px;
     background: transparent;
     border: none;
-    z-index: 10002; /* Above everything */
+    z-index: 10002;
+    /* Above everything */
 }
 
 .hamburger-menu span {
@@ -707,7 +821,8 @@ body.is-hovering .spotlight-overlay {
     width: 100vw;
     height: 100vh;
     background-color: rgba(0, 0, 0, 0.9);
-    z-index: 10001; /* Below hamburger, above header */
+    z-index: 10001;
+    /* Below hamburger, above header */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -735,7 +850,8 @@ body.is-hovering .spotlight-overlay {
 
 /* --- Open State --- */
 body.is-menu-open .hamburger-menu span {
-    height: 2px; /* Stretch dots into lines */
+    height: 2px;
+    /* Stretch dots into lines */
 }
 
 body.is-menu-open .hamburger-menu span:nth-child(1) {
@@ -758,7 +874,8 @@ body.is-menu-open .modal-menu {
 body.is-menu-open .modal-menu nav a {
     opacity: 1;
     transform: translateY(0);
-    transition-delay: calc(var(--i) * 100ms + 300ms); /* Stagger effect */
+    transition-delay: calc(var(--i) * 100ms + 300ms);
+    /* Stagger effect */
 }
 
 .close-menu-button {
@@ -769,7 +886,8 @@ body.is-menu-open .modal-menu nav a {
     height: 40px;
     background: transparent;
     border: none;
-    z-index: 10002; /* Same as hamburger */
+    z-index: 10002;
+    /* Same as hamburger */
     opacity: 0;
     transition: opacity 0.3s ease 300ms;
 }
@@ -788,39 +906,58 @@ body.is-menu-open .close-menu-button {
 }
 
 .footer-background-text {
-    /* position: absolute; */ /* flexboxで配置するため削除 */
-    /* bottom: 0; */ /* flexboxで配置するため削除 */
-    right: 5vw; /* worksセクションの右端からの位置 */
+    /* position: absolute; */
+    /* flexboxで配置するため削除 */
+    /* bottom: 0; */
+    /* flexboxで配置するため削除 */
+    right: 5vw;
+    /* worksセクションの右端からの位置 */
     font-family: 'Archivo Black', sans-serif;
-    font-size: 15vw; /* Design Worksと同じサイズに */
-    color: rgba(255, 255, 255, 0.05); /* 薄い色 */
-    pointer-events: none; /* クリックイベントを透過 */
-    z-index: 0; /* 背景として配置 */
-    white-space: nowrap; /* 折り返しを防ぐ */
-    display: flex; /* 縦並びにするため */
-    flex-direction: column; /* 縦並びにするため */
-    line-height: 0.8; /* 行間を詰める */
-    margin-top: auto; /* 親要素の最下部に押しやる */
-    align-self: flex-end; /* 右寄せ */
+    font-size: 15vw;
+    /* Design Worksと同じサイズに */
+    color: rgba(255, 255, 255, 0.05);
+    /* 薄い色 */
+    pointer-events: none;
+    /* クリックイベントを透過 */
+    z-index: 0;
+    /* 背景として配置 */
+    white-space: nowrap;
+    /* 折り返しを防ぐ */
+    display: flex;
+    /* 縦並びにするため */
+    flex-direction: column;
+    /* 縦並びにするため */
+    line-height: 0.8;
+    /* 行間を詰める */
+    margin-top: auto;
+    /* 親要素の最下部に押しやる */
+    align-self: flex-end;
+    /* 右寄せ */
 }
 
 /* --- Scroll to Top Indicator --- */
 .scroll-indicator.is-back-to-top {
     cursor: pointer;
-    flex-direction: column; /* 縦並びにする */
-    align-items: center; /* 中央揃え */
+    flex-direction: column;
+    /* 縦並びにする */
+    align-items: center;
+    /* 中央揃え */
 }
 
 .scroll-indicator.is-back-to-top .scroll-text {
     writing-mode: horizontal-tb;
-    margin-right: 0; /* 元のmargin-rightをリセット */
-    margin-bottom: 5px; /* 矢印との間隔 */
+    margin-right: 0;
+    /* 元のmargin-rightをリセット */
+    margin-bottom: 5px;
+    /* 矢印との間隔 */
 }
 
 .scroll-indicator.is-back-to-top .scroll-arrow-down {
     animation: none;
-    margin-left: 0; /* 元のmargin-leftをリセット */
-    transform: rotate(90deg); /* 棒を水平にする */
+    margin-left: 0;
+    /* 元のmargin-leftをリセット */
+    transform: rotate(90deg);
+    /* 棒を水平にする */
 }
 
 .scroll-indicator.is-back-to-top .scroll-arrow-down::after {

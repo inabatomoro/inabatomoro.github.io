@@ -1,3 +1,6 @@
+// Initialize Lenis for smooth scrolling (if needed later, currently using custom smoothScroll)
+// const lenis = new Lenis({ ... });
+
 const container = document.querySelector('.container');
 const sections = document.querySelectorAll('.section');
 const backgroundLayer = document.querySelector('.background-layer');
@@ -128,9 +131,6 @@ function smoothScroll() {
     const sectionIndex = Math.round(currentScroll / window.innerWidth);
     const progressInSection = (currentScroll % window.innerWidth) / window.innerWidth;
 
-    console.log('sectionIndex:', sectionIndex);
-    console.log('sectionBgColors[sectionIndex]:', sectionBgColors[sectionIndex]);
-
     // --- Color Transition ---
     let blendedBgColor, blendedTextColor;
     const currentFloorIndex = Math.floor(currentScroll / window.innerWidth);
@@ -181,10 +181,10 @@ function smoothScroll() {
     // --- Scroll Indicator Logic for works/service sections ---
     if (sections[sectionIndex].id === 'works') {
         scrollIndicator.classList.add('is-works-section');
-        spotlightOverlay.classList.add('is-works-section-active'); // ここを追加
+        spotlightOverlay.classList.add('is-works-section-active');
     } else {
         scrollIndicator.classList.remove('is-works-section');
-        spotlightOverlay.classList.remove('is-works-section-active'); // ここを追加
+        spotlightOverlay.classList.remove('is-works-section-active');
     }
 
     // --- Scroll Indicator for Last Section ---
@@ -207,8 +207,6 @@ window.addEventListener('mousemove', e => {
     cursorRing.style.left = e.clientX + 'px';
     cursorRing.style.top = e.clientY + 'px';
 });
-
-
 
 document.addEventListener('wheel', (event) => {
     const sectionIndex = Math.floor(currentScroll / window.innerWidth);
@@ -259,12 +257,12 @@ function setupMenu() {
         link.style.setProperty('--i', index);
         link.addEventListener('click', (e) => {
             const targetId = link.getAttribute('href');
-            
+
             // 内部アンカーリンクの場合のみpreventDefault()を実行
             if (targetId && targetId.startsWith('#')) {
                 e.preventDefault();
                 body.classList.remove('is-menu-open');
-                
+
                 const targetSection = document.querySelector(targetId);
                 if (targetSection) {
                     const sectionIndex = Array.from(sections).indexOf(targetSection);
@@ -290,30 +288,30 @@ function createWorksSlide(work) {
 
     // 各情報が存在する場合にのみHTMLを生成
     const titleHTML = `<h3>${work.title}</h3>`;
-    
-    const descriptionHTML = work.description 
-        ? `<p class="description">${work.description}</p>` 
+
+    const descriptionHTML = work.description
+        ? `<p class="description">${work.description}</p>`
         : '';
 
     // 横並びにするメタ情報を生成
-    const periodHTML = work.production_period 
-        ? `<span class="meta-item period"><strong>Period:</strong> ${work.production_period}</span>` 
+    const periodHTML = work.production_period
+        ? `<span class="meta-item period"><strong>Period:</strong> ${work.production_period}</span>`
         : '';
-    const clientHTML = work.client 
-        ? `<span class="meta-item client"><strong>Client:</strong> ${work.client}</span>` 
+    const clientHTML = work.client
+        ? `<span class="meta-item client"><strong>Client:</strong> ${work.client}</span>`
         : '';
-    const designHTML = work.design 
-        ? `<span class="meta-item design"><strong>Design:</strong> ${work.design}</span>` 
+    const designHTML = work.design
+        ? `<span class="meta-item design"><strong>Design:</strong> ${work.design}</span>`
         : '';
 
     // メタ情報を一つの行にまとめる
     const metaItems = [periodHTML, clientHTML, designHTML].filter(Boolean); // 空の要素を除外
-    const metaLineHTML = metaItems.length > 0 
-        ? `<div class="meta-line">${metaItems.join('')}</div>` 
+    const metaLineHTML = metaItems.length > 0
+        ? `<div class="meta-line">${metaItems.join('')}</div>`
         : '';
 
-    const notesHTML = work.notes 
-        ? `<p class="notes">${work.notes}</p>` 
+    const notesHTML = work.notes
+        ? `<p class="notes">${work.notes}</p>`
         : '';
 
     slide.innerHTML = `
@@ -357,15 +355,15 @@ async function initWorksSlider() {
         }
 
         const slidesPerRow = 4; // 1行あたり4つのコンテンツ
-        
+
         // worksDataを4つずつのチャンクに分割し、それぞれに対して行を生成
         for (let i = 0; i < worksData.length; i += slidesPerRow) {
             const chunk = worksData.slice(i, i + slidesPerRow);
-            
+
             // 新しい行を作成
             const sliderRow = document.createElement('div');
             sliderRow.classList.add('slider-row');
-            
+
             // 行のインデックス (0, 1, 2...) に基づいて交互にreverseクラスを適用
             const rowIndex = i / slidesPerRow;
             if (rowIndex % 2 !== 0) {
@@ -381,7 +379,7 @@ async function initWorksSlider() {
             combinedWorks.forEach(work => {
                 sliderTrack.appendChild(createWorksSlide(work));
             });
-            
+
             sliderRow.appendChild(sliderTrack);
             sliderContainer.appendChild(sliderRow);
         }
@@ -392,11 +390,6 @@ async function initWorksSlider() {
         console.error("Could not load works data:", error);
     }
 }
-
-// --- 開始 ---
-smoothScroll();
-initWorksSlider(); // Worksスライダーの初期化を追加
-
 
 // --- Staggered Fade-in Animation for Service Section ---
 function setupStaggeredAnimation() {
@@ -424,9 +417,6 @@ function setupStaggeredAnimation() {
         observer.observe(item);
     });
 }
-
-setupStaggeredAnimation();
-
 
 // --- Text Animation for Concept Section ---
 function setupConceptAnimation() {
@@ -463,22 +453,62 @@ function setupConceptAnimation() {
     observer.observe(conceptH2);
 }
 
-setupConceptAnimation();
+// --- Intro Text Animation (Scattered to Gathered) ---
+function setupIntroAnimation() {
+    const introTitle = document.querySelector('#intro h1');
+    const introSubtitle = document.querySelector('#intro p');
 
-document.addEventListener('DOMContentLoaded', () => {
-    smoothScroll();
-    cursorAnimation();
-    setupStaggeredAnimation();
-    setupConceptAnimation();
-    setupMenu();
-    initWorksSlider(); // Worksスライダーの初期化を追加
-    // setupHoverables(); // ここを削除
-});
+    if (!introTitle) return;
 
+    // Split text into characters using SplitType
+    const splitTitle = new SplitType(introTitle, { types: 'chars' });
+
+    // Random value generators
+    const randomX = () => Math.random() * window.innerWidth - window.innerWidth / 2;
+    const randomY = () => Math.random() * window.innerHeight - window.innerHeight / 2;
+    const randomRotate = () => Math.random() * 360 - 180;
+    const randomScale = () => Math.random() * 2 + 0.5;
+
+    // Animate characters from scattered positions
+    gsap.from(splitTitle.chars, {
+        duration: 2.5,
+        opacity: 0,
+        x: randomX,
+        y: randomY,
+        rotation: randomRotate,
+        scale: randomScale,
+        stagger: {
+            amount: 1.5,
+            from: "random"
+        },
+        ease: "power4.out", // Slow down at the end
+        delay: 0.5
+    });
+
+    // Animate subtitle
+    gsap.from(introSubtitle, {
+        duration: 1.5,
+        opacity: 0,
+        y: 50,
+        ease: "power2.out",
+        delay: 3 // Wait for title animation to mostly finish
+    });
+}
 
 // --- Scroll to Top on Indicator Click ---
 scrollIndicator.addEventListener('click', () => {
     if (scrollIndicator.classList.contains('is-back-to-top')) {
         targetScroll = 0;
     }
+});
+
+// --- Initialization ---
+document.addEventListener('DOMContentLoaded', () => {
+    smoothScroll();
+    cursorAnimation();
+    setupStaggeredAnimation();
+    setupConceptAnimation();
+    setupMenu();
+    initWorksSlider();
+    setupIntroAnimation(); // Add Intro Animation
 });
