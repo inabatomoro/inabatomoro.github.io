@@ -21,7 +21,10 @@ html {
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: -1;
+    z-index: -100;
+    /* 確実に一番後ろに */
+    background-color: #111;
+    /* デフォルト背景色 */
 }
 
 /* カスタムカーソル */
@@ -970,4 +973,169 @@ body.is-menu-open .close-menu-button {
     font-style: italic;
     color: var(--secondary-text-color, #aaa);
     margin-top: 10px;
+}
+
+/* =========================================
+   Responsive Styles (Mobile)
+   ========================================= */
+@media screen and (max-width: 768px) {
+
+    /* 基本設定 */
+    body,
+    html {
+        cursor: auto;
+        /* カーソル戻す */
+        overflow: auto;
+        /* スクロール許可 */
+        height: auto;
+    }
+
+    .cursor-dot,
+    .cursor-ring,
+    .spotlight-overlay {
+        display: none !important;
+    }
+
+    /* レイアウト */
+    .container {
+        width: 100%;
+        height: auto;
+        flex-direction: column;
+        transform: none !important;
+        /* JSの制御を無効化 */
+    }
+
+    .section {
+        width: 100%;
+        height: auto;
+        min-height: 100vh;
+        padding: 80px 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    /* Header */
+    header {
+        padding: 15px 20px;
+        justify-content: flex-end;
+        /* ハンバーガーを右に */
+    }
+
+    .hamburger-menu {
+        z-index: 10002;
+    }
+
+    /* Intro */
+    #intro .intro-content h1 {
+        font-size: 3rem;
+    }
+
+    /* Concept */
+    #concept .concept-content h2 {
+        font-size: 3rem;
+    }
+
+    /* Works (B案: 横スワイプ) */
+    #works {
+        padding-top: 100px;
+        display: block;
+        /* flex解除 */
+    }
+
+    .works-background-text {
+        font-size: 20vw;
+        top: 150px;
+        left: -20px;
+        opacity: 0.1;
+        transform: none;
+    }
+
+    .triple-slider-container {
+        padding: 0;
+        margin-top: 50px;
+    }
+
+    /* スマホ用のスライダーコンテナ */
+    .mobile-works-slider {
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        gap: 20px;
+        padding: 20px;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .mobile-works-slider .slide {
+        width: 85vw;
+        /* 画面幅の85% */
+        flex-shrink: 0;
+        scroll-snap-align: center;
+        margin-right: 0;
+    }
+
+    .mobile-works-slider .slide img {
+        aspect-ratio: 16 / 9;
+    }
+
+    /* PC用のスライダーは消す（JSで制御するがCSSでも念のため） */
+    .slider-row {
+        display: none;
+    }
+
+    /* Service */
+    #service .service-content {
+        flex-direction: column;
+        gap: 40px;
+    }
+
+    #service .service-content .service-header-group {
+        position: static;
+    }
+
+    #service .service-content h2 {
+        font-size: 3rem;
+    }
+
+    #service .service-content ul {
+        grid-template-columns: 1fr;
+        /* 1列 */
+    }
+
+    /* Gallery (A案: 2列) */
+    #gallery {
+        height: 100vh;
+        /* 高さは維持 */
+    }
+
+    .marquee-column:nth-child(3) {
+        display: none;
+        /* 3列目を消す */
+    }
+
+    .marquee-track .grid-item {
+        height: 30vh;
+        /* 高さを少し小さく */
+    }
+
+    /* About */
+    #about-contact .about-content {
+        flex-direction: column;
+    }
+
+    #about-contact .about-content h2 {
+        font-size: 3rem;
+        position: static;
+        margin-bottom: 40px;
+    }
+
+    #about-contact .about-item dt {
+        width: 120px;
+    }
+
+    /* Scroll Indicator */
+    .scroll-indicator {
+        display: none;
+        /* スマホでは邪魔かも？一旦消す */
+    }
 }

@@ -1,82 +1,19 @@
 // Initialize Lenis for smooth scrolling (if needed later, currently using custom smoothScroll)
 // const lenis = new Lenis({ ... });
 
-const container = document.querySelector('.container');
-const sections = document.querySelectorAll('.section');
-const backgroundLayer = document.querySelector('.background-layer');
-const spotlightOverlay = document.querySelector('.spotlight-overlay');
-const scrollIndicator = document.querySelector('.scroll-indicator');
-const hamburgerMenu = document.querySelector('.hamburger-menu');
-const closeMenuButton = document.querySelector('.close-menu-button');
-const navLinks = document.querySelectorAll('.modal-menu nav a');
-const body = document.body;
+// グローバル変数を宣言（初期値はnull）
+let container;
+let sections;
+let backgroundLayer;
+let spotlightOverlay;
+let scrollIndicator;
+let hamburgerMenu;
+let closeMenuButton;
+let navLinks;
+let body;
+let cursorDot;
+let cursorRing;
 
-// --- Custom Cursor ---
-const cursorDot = document.querySelector('.cursor-dot');
-const cursorRing = document.querySelector('.cursor-ring');
-// hoverablesは動的に再設定するため、ここでは宣言しない
-
-let mouseX = 0;
-let mouseY = 0;
-let ringX = 0;
-let ringY = 0;
-const ringEase = 0.1;
-
-function cursorAnimation() {
-    // ドットは即時追従
-    cursorDot.style.left = mouseX + 'px';
-    cursorDot.style.top = mouseY + 'px';
-
-    // リングは遅れて追従
-    ringX += (mouseX - ringX) * ringEase;
-    ringY += (mouseY - ringY) * ringEase;
-    cursorRing.style.left = ringX + 'px';
-    cursorRing.style.top = ringY + 'px';
-
-    requestAnimationFrame(cursorAnimation);
-}
-
-window.addEventListener('mousemove', e => {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
-    spotlightOverlay.style.setProperty('--mouse-x', mouseX + 'px');
-    spotlightOverlay.style.setProperty('--mouse-y', mouseY + 'px');
-});
-
-// hoverable要素にイベントリスナーを設定する関数
-function setupHoverables() {
-    const hoverables = document.querySelectorAll('a'); // 動的に生成されたaタグも含む
-    hoverables.forEach(el => {
-        // 既存のリスナーが重複しないように一度削除してから追加
-        el.removeEventListener('mouseenter', handleMouseEnter);
-        el.removeEventListener('mouseleave', handleMouseLeave);
-        el.addEventListener('mouseenter', handleMouseEnter);
-        el.addEventListener('mouseleave', handleMouseLeave);
-    });
-}
-
-function handleMouseEnter() {
-    document.body.classList.add('is-hovering');
-}
-
-function handleMouseLeave() {
-    document.body.classList.remove('is-hovering');
-}
-
-// Scroll Indicatorのホバーエフェクトを条件付きで適用
-scrollIndicator.addEventListener('mouseenter', () => {
-    // 'is-back-to-top'クラスがあるときだけホバーエフェクトを有効にする
-    if (scrollIndicator.classList.contains('is-back-to-top')) {
-        handleMouseEnter();
-    }
-});
-scrollIndicator.addEventListener('mouseleave', () => {
-    // マウスが離れたら、状態に関わらずホバーエフェクトを無効にする
-    handleMouseLeave();
-});
-
-// カーソルアニメーションを開始
-cursorAnimation();
 // --- 設定 ---
 const ease = 0.075;
 const TRANSITION_START_POINT = 0.8;
@@ -102,7 +39,55 @@ const sectionTextColors = [
 // --- 変数 ---
 let targetScroll = 0;
 let currentScroll = 0;
-const maxScroll = container.scrollWidth - window.innerWidth;
+let maxScroll = 0; // 初期化時に計算
+
+let mouseX = 0;
+let mouseY = 0;
+let ringX = 0;
+let ringY = 0;
+const ringEase = 0.1;
+
+// Helper to check if mobile
+function checkMobile() {
+    return window.innerWidth <= 768;
+}
+
+function cursorAnimation() {
+    if (checkMobile() || !cursorDot || !cursorRing) return; // Disable on mobile or if elements missing
+
+    // ドットは即時追従
+    cursorDot.style.left = mouseX + 'px';
+    cursorDot.style.top = mouseY + 'px';
+
+    // リングは遅れて追従
+    ringX += (mouseX - ringX) * ringEase;
+    ringY += (mouseY - ringY) * ringEase;
+    cursorRing.style.left = ringX + 'px';
+    cursorRing.style.top = ringY + 'px';
+
+    requestAnimationFrame(cursorAnimation);
+}
+
+// hoverable要素にイベントリスナーを設定する関数
+function setupHoverables() {
+    if (checkMobile()) return;
+    const hoverables = document.querySelectorAll('a'); // 動的に生成されたaタグも含む
+    hoverables.forEach(el => {
+        // 既存のリスナーが重複しないように一度削除してから追加
+        el.removeEventListener('mouseenter', handleMouseEnter);
+        el.removeEventListener('mouseleave', handleMouseLeave);
+        el.addEventListener('mouseenter', handleMouseEnter);
+        el.addEventListener('mouseleave', handleMouseLeave);
+    });
+}
+
+function handleMouseEnter() {
+    document.body.classList.add('is-hovering');
+}
+
+function handleMouseLeave() {
+    document.body.classList.remove('is-hovering');
+}
 
 // --- 色変換のヘルパー関数 ---
 function hexToRgb(hex) {
@@ -125,6 +110,8 @@ function lerpColor(color1, color2, amount) {
 
 // --- メインの処理 ---
 function smoothScroll() {
+    if (checkMobile() || !container) return; // Disable custom smooth scroll on mobile
+
     currentScroll += (targetScroll - currentScroll) * ease;
     container.style.transform = `translateX(-${currentScroll}px)`;
 
@@ -155,92 +142,54 @@ function smoothScroll() {
     root.style.setProperty('--secondary-text-color', `rgba(${blendedTextColor.r}, ${blendedTextColor.g}, ${blendedTextColor.b}, 0.7)`);
     root.style.setProperty('--card-bg-color', `rgba(${blendedTextColor.r}, ${blendedTextColor.g}, ${blendedTextColor.b}, 0.05)`);
     root.style.setProperty('--card-border-color', `rgba(${blendedTextColor.r}, ${blendedTextColor.g}, ${blendedTextColor.b}, 0.1)`);
-    backgroundLayer.style.backgroundColor = rgbToCss(blendedBgColor);
+    if (backgroundLayer) backgroundLayer.style.backgroundColor = rgbToCss(blendedBgColor);
 
     // --- Blur Transition ---
     const BLUR_START_POINT = 0.5;
     const MAX_BLUR = 20; // in pixels
 
-    sections.forEach((section, index) => {
-        let blurAmount = 0;
-        if (index === currentFloorIndex && currentProgress > BLUR_START_POINT) {
-            // Current section blurring out
-            const blurProgress = (currentProgress - BLUR_START_POINT) / (1 - BLUR_START_POINT);
-            blurAmount = blurProgress * MAX_BLUR;
-        } else if (index === currentFloorIndex + 1 && currentProgress > BLUR_START_POINT) {
-            // Next section blurring in
-            const blurProgress = (currentProgress - BLUR_START_POINT) / (1 - BLUR_START_POINT);
-            blurAmount = (1 - blurProgress) * MAX_BLUR;
-        } else if (index !== currentFloorIndex) {
-            // Ensure other sections are not blurred, or fully blurred if they are the next one
-            blurAmount = (index === currentFloorIndex + 1) ? MAX_BLUR : 0;
-        }
-        section.style.filter = `blur(${blurAmount}px)`;
-    });
-
-    // --- Scroll Indicator Logic for works/service sections ---
-    if (sections[sectionIndex].id === 'works') {
-        scrollIndicator.classList.add('is-works-section');
-        spotlightOverlay.classList.add('is-works-section-active');
-    } else {
-        scrollIndicator.classList.remove('is-works-section');
-        spotlightOverlay.classList.remove('is-works-section-active');
+    if (sections) {
+        sections.forEach((section, index) => {
+            let blurAmount = 0;
+            if (index === currentFloorIndex && currentProgress > BLUR_START_POINT) {
+                // Current section blurring out
+                const blurProgress = (currentProgress - BLUR_START_POINT) / (1 - BLUR_START_POINT);
+                blurAmount = blurProgress * MAX_BLUR;
+            } else if (index === currentFloorIndex + 1 && currentProgress > BLUR_START_POINT) {
+                // Next section blurring in
+                const blurProgress = (currentProgress - BLUR_START_POINT) / (1 - BLUR_START_POINT);
+                blurAmount = (1 - blurProgress) * MAX_BLUR;
+            } else if (index !== currentFloorIndex) {
+                // Ensure other sections are not blurred, or fully blurred if they are the next one
+                blurAmount = (index === currentFloorIndex + 1) ? MAX_BLUR : 0;
+            }
+            section.style.filter = `blur(${blurAmount}px)`;
+        });
     }
 
-    // --- Scroll Indicator for Last Section ---
-    const scrollText = scrollIndicator.querySelector('.scroll-text');
-    const isLastSection = sectionIndex === sections.length - 1;
-    scrollIndicator.classList.toggle('is-back-to-top', isLastSection);
-    if (isLastSection) {
-        scrollText.textContent = 'BACK TO TOP';
-    } else {
-        scrollText.textContent = 'SCROLL';
+    // --- Scroll Indicator Logic for works/service sections ---
+    if (sections && sections[sectionIndex]) {
+        if (sections[sectionIndex].id === 'works') {
+            scrollIndicator.classList.add('is-works-section');
+            spotlightOverlay.classList.add('is-works-section-active');
+        } else {
+            scrollIndicator.classList.remove('is-works-section');
+            spotlightOverlay.classList.remove('is-works-section-active');
+        }
+
+        // --- Scroll Indicator for Last Section ---
+        const scrollText = scrollIndicator.querySelector('.scroll-text');
+        const isLastSection = sectionIndex === sections.length - 1;
+        scrollIndicator.classList.toggle('is-back-to-top', isLastSection);
+        if (isLastSection) {
+            scrollText.textContent = 'BACK TO TOP';
+        } else {
+            scrollText.textContent = 'SCROLL';
+        }
     }
 
     requestAnimationFrame(smoothScroll);
 }
-
-// --- イベントリスナー ---
-window.addEventListener('mousemove', e => {
-    cursorDot.style.left = e.clientX + 'px';
-    cursorDot.style.top = e.clientY + 'px';
-    cursorRing.style.left = e.clientX + 'px';
-    cursorRing.style.top = e.clientY + 'px';
-});
-
-document.addEventListener('wheel', (event) => {
-    const sectionIndex = Math.floor(currentScroll / window.innerWidth);
-    const activeSection = sections[sectionIndex];
-
-    if (Math.abs(event.deltaX) > Math.abs(event.deltaY)) {
-        if (activeSection && (activeSection.id === 'works' || activeSection.id === 'gallery')) {
-            event.preventDefault();
-            targetScroll += event.deltaX;
-            targetScroll = Math.max(0, targetScroll);
-            targetScroll = Math.min(maxScroll, targetScroll);
-        }
-        return;
-    }
-
-    if (activeSection && (activeSection.id === 'works' || activeSection.id === 'gallery')) {
-        const el = activeSection;
-        const isAtBottom = el.scrollHeight - el.scrollTop <= el.clientHeight + 1;
-        const isAtTop = el.scrollTop === 0;
-        const isScrollingDown = event.deltaY > 0;
-        const isScrollingUp = event.deltaY < 0;
-
-        if ((isScrollingDown && !isAtBottom) || (isScrollingUp && !isAtTop)) {
-            return;
-        }
-    }
-
-    event.preventDefault();
-    targetScroll += event.deltaY;
-    targetScroll = Math.max(0, targetScroll);
-    targetScroll = Math.min(maxScroll, targetScroll);
-
-}, { passive: false });
-
 
 function setupMenu() {
     if (!hamburgerMenu) return;
@@ -265,11 +214,17 @@ function setupMenu() {
 
                 const targetSection = document.querySelector(targetId);
                 if (targetSection) {
-                    const sectionIndex = Array.from(sections).indexOf(targetSection);
-                    // メニューが閉じるのを待ってからスクロール
-                    setTimeout(() => {
-                        targetScroll = window.innerWidth * sectionIndex;
-                    }, 400);
+                    if (checkMobile()) {
+                        // Mobile: Native scroll
+                        const targetOffset = targetSection.offsetTop;
+                        window.scrollTo({ top: targetOffset, behavior: 'smooth' });
+                    } else {
+                        // PC: Custom horizontal scroll
+                        const sectionIndex = Array.from(sections).indexOf(targetSection);
+                        setTimeout(() => {
+                            targetScroll = window.innerWidth * sectionIndex;
+                        }, 400);
+                    }
                 }
             } else {
                 // 外部/絶対パスのリンクの場合、デフォルトの動作を許可
@@ -328,19 +283,13 @@ function createWorksSlide(work) {
     return slide;
 }
 
-// 配列をシャッフルする関数 (Fisher-Yatesアルゴリズム)
-function shuffleArray(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-    }
-    return array;
-}
-
 // Worksセクションのスライダーを初期化する関数
 async function initWorksSlider() {
     const sliderContainer = document.querySelector('.triple-slider-container');
     if (!sliderContainer) return;
+
+    // Clear container first (for resize handling)
+    sliderContainer.innerHTML = '';
 
     try {
         const response = await fetch('works.json');
@@ -354,34 +303,48 @@ async function initWorksSlider() {
             return;
         }
 
-        const slidesPerRow = 4; // 1行あたり4つのコンテンツ
+        if (checkMobile()) {
+            // --- Mobile Layout (Single Horizontal Slider) ---
+            const mobileSlider = document.createElement('div');
+            mobileSlider.classList.add('mobile-works-slider');
 
-        // worksDataを4つずつのチャンクに分割し、それぞれに対して行を生成
-        for (let i = 0; i < worksData.length; i += slidesPerRow) {
-            const chunk = worksData.slice(i, i + slidesPerRow);
-
-            // 新しい行を作成
-            const sliderRow = document.createElement('div');
-            sliderRow.classList.add('slider-row');
-
-            // 行のインデックス (0, 1, 2...) に基づいて交互にreverseクラスを適用
-            const rowIndex = i / slidesPerRow;
-            if (rowIndex % 2 !== 0) {
-                sliderRow.classList.add('reverse');
-            }
-
-            const sliderTrack = document.createElement('div');
-            sliderTrack.classList.add('slider-track');
-
-            // 無限ループのためにデータを2倍にする
-            const combinedWorks = [...chunk, ...chunk];
-
-            combinedWorks.forEach(work => {
-                sliderTrack.appendChild(createWorksSlide(work));
+            worksData.forEach(work => {
+                mobileSlider.appendChild(createWorksSlide(work));
             });
 
-            sliderRow.appendChild(sliderTrack);
-            sliderContainer.appendChild(sliderRow);
+            sliderContainer.appendChild(mobileSlider);
+
+        } else {
+            // --- PC Layout (Triple Slider) ---
+            const slidesPerRow = 4; // 1行あたり4つのコンテンツ
+
+            // worksDataを4つずつのチャンクに分割し、それぞれに対して行を生成
+            for (let i = 0; i < worksData.length; i += slidesPerRow) {
+                const chunk = worksData.slice(i, i + slidesPerRow);
+
+                // 新しい行を作成
+                const sliderRow = document.createElement('div');
+                sliderRow.classList.add('slider-row');
+
+                // 行のインデックス (0, 1, 2...) に基づいて交互にreverseクラスを適用
+                const rowIndex = i / slidesPerRow;
+                if (rowIndex % 2 !== 0) {
+                    sliderRow.classList.add('reverse');
+                }
+
+                const sliderTrack = document.createElement('div');
+                sliderTrack.classList.add('slider-track');
+
+                // 無限ループのためにデータを2倍にする
+                const combinedWorks = [...chunk, ...chunk];
+
+                combinedWorks.forEach(work => {
+                    sliderTrack.appendChild(createWorksSlide(work));
+                });
+
+                sliderRow.appendChild(sliderTrack);
+                sliderContainer.appendChild(sliderRow);
+            }
         }
 
         setupHoverables(); // スライド生成後にホバーイベントを設定
@@ -394,6 +357,7 @@ async function initWorksSlider() {
 // --- Staggered Fade-in Animation for Service Section ---
 function setupStaggeredAnimation() {
     const serviceItems = document.querySelectorAll('#service .service-content li');
+    if (serviceItems.length === 0) return;
 
     const observerCallback = (entries, observer) => {
         entries.forEach(entry => {
@@ -461,6 +425,12 @@ function setupIntroAnimation() {
     if (!introTitle) return;
 
     // Split text into characters using SplitType
+    // Check if SplitType is available
+    if (typeof SplitType === 'undefined') {
+        console.warn('SplitType is not defined. Skipping text animation.');
+        return;
+    }
+
     const splitTitle = new SplitType(introTitle, { types: 'chars' });
 
     // Random value generators
@@ -468,6 +438,12 @@ function setupIntroAnimation() {
     const randomY = () => Math.random() * window.innerHeight - window.innerHeight / 2;
     const randomRotate = () => Math.random() * 360 - 180;
     const randomScale = () => Math.random() * 2 + 0.5;
+
+    // Check if gsap is available
+    if (typeof gsap === 'undefined') {
+        console.warn('GSAP is not defined. Skipping text animation.');
+        return;
+    }
 
     // Animate characters from scattered positions
     gsap.from(splitTitle.chars, {
@@ -495,20 +471,109 @@ function setupIntroAnimation() {
     });
 }
 
-// --- Scroll to Top on Indicator Click ---
-scrollIndicator.addEventListener('click', () => {
-    if (scrollIndicator.classList.contains('is-back-to-top')) {
-        targetScroll = 0;
-    }
-});
-
 // --- Initialization ---
 document.addEventListener('DOMContentLoaded', () => {
+    // Initialize global variables
+    container = document.querySelector('.container');
+    sections = document.querySelectorAll('.section');
+    backgroundLayer = document.querySelector('.background-layer');
+    spotlightOverlay = document.querySelector('.spotlight-overlay');
+    scrollIndicator = document.querySelector('.scroll-indicator');
+    hamburgerMenu = document.querySelector('.hamburger-menu');
+    closeMenuButton = document.querySelector('.close-menu-button');
+    navLinks = document.querySelectorAll('.modal-menu nav a');
+    body = document.body;
+    cursorDot = document.querySelector('.cursor-dot');
+    cursorRing = document.querySelector('.cursor-ring');
+
+    if (container) {
+        maxScroll = container.scrollWidth - window.innerWidth;
+    } else {
+        console.error("Container not found!");
+    }
+
+    // Event Listeners that rely on global variables
+    window.addEventListener('mousemove', e => {
+        if (checkMobile()) return;
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        if (spotlightOverlay) {
+            spotlightOverlay.style.setProperty('--mouse-x', mouseX + 'px');
+            spotlightOverlay.style.setProperty('--mouse-y', mouseY + 'px');
+        }
+    });
+
+    document.addEventListener('wheel', (event) => {
+        if (checkMobile() || !container) return; // Disable custom wheel scroll on mobile
+
+        const sectionIndex = Math.floor(currentScroll / window.innerWidth);
+        const activeSection = sections[sectionIndex];
+
+        if (Math.abs(event.deltaX) > Math.abs(event.deltaY)) {
+            if (activeSection && (activeSection.id === 'works' || activeSection.id === 'gallery')) {
+                event.preventDefault();
+                targetScroll += event.deltaX;
+                targetScroll = Math.max(0, targetScroll);
+                targetScroll = Math.min(maxScroll, targetScroll);
+            }
+            return;
+        }
+
+        if (activeSection && (activeSection.id === 'works' || activeSection.id === 'gallery')) {
+            const el = activeSection;
+            const isAtBottom = el.scrollHeight - el.scrollTop <= el.clientHeight + 1;
+            const isAtTop = el.scrollTop === 0;
+            const isScrollingDown = event.deltaY > 0;
+            const isScrollingUp = event.deltaY < 0;
+
+            if ((isScrollingDown && !isAtBottom) || (isScrollingUp && !isAtTop)) {
+                return;
+            }
+        }
+
+        event.preventDefault();
+        targetScroll += event.deltaY;
+        targetScroll = Math.max(0, targetScroll);
+        targetScroll = Math.min(maxScroll, targetScroll);
+
+    }, { passive: false });
+
+    // Scroll Indicator Click
+    if (scrollIndicator) {
+        scrollIndicator.addEventListener('mouseenter', () => {
+            if (checkMobile()) return;
+            if (scrollIndicator.classList.contains('is-back-to-top')) {
+                handleMouseEnter();
+            }
+        });
+        scrollIndicator.addEventListener('mouseleave', () => {
+            if (checkMobile()) return;
+            handleMouseLeave();
+        });
+        scrollIndicator.addEventListener('click', () => {
+            if (scrollIndicator.classList.contains('is-back-to-top')) {
+                targetScroll = 0;
+            }
+        });
+    }
+
     smoothScroll();
     cursorAnimation();
     setupStaggeredAnimation();
     setupConceptAnimation();
     setupMenu();
     initWorksSlider();
-    setupIntroAnimation(); // Add Intro Animation
+    setupIntroAnimation();
+});
+
+// Handle Resize
+let resizeTimeout;
+window.addEventListener('resize', () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+        if (container) {
+            maxScroll = container.scrollWidth - window.innerWidth;
+        }
+        initWorksSlider();
+    }, 200);
 });
