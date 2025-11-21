@@ -151,6 +151,15 @@ header {
     justify-content: flex-start;
 }
 
+/* PC/SP 改行制御 (Default: PC) */
+br.sp-break,
+.sp-space {
+    display: none;
+}
+
+br.pc-break {
+    display: inline;
+}
 
 
 /* Intro */
@@ -1008,8 +1017,10 @@ body.is-menu-open .close-menu-button {
     .section {
         width: 100%;
         height: auto;
-        min-height: 100vh;
-        padding: 80px 20px;
+        min-height: auto;
+        /* 100vh強制をやめる */
+        padding: 60px 20px;
+        /* 上下の余白を減らす */
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -1027,8 +1038,31 @@ body.is-menu-open .close-menu-button {
     }
 
     /* Intro */
+    #intro {
+        min-height: 100vh;
+        /* Introは全画面 */
+        padding-top: 0;
+        /* 上下中央揃えのためにpaddingリセット */
+    }
+
     #intro .intro-content h1 {
         font-size: 3rem;
+        line-height: 1.2;
+    }
+
+    /* PC/SP 改行制御 (Mobile Overrides) */
+    br.sp-break {
+        display: inline;
+        /* brを表示 */
+    }
+
+    .sp-space {
+        display: inline;
+    }
+
+    br.pc-break {
+        display: inline;
+        /* スマホでもwithの後で改行 */
     }
 
     /* Concept */
@@ -1038,22 +1072,71 @@ body.is-menu-open .close-menu-button {
 
     /* Works (B案: 横スワイプ) */
     #works {
-        padding-top: 100px;
+        padding-top: 80px;
+        /* 余白調整 */
         display: block;
         /* flex解除 */
+        overflow: hidden;
+        /* はみ出し防止 */
+        position: relative;
+        /* 背景テキストの基準点 */
     }
 
     .works-background-text {
-        font-size: 20vw;
-        top: 150px;
-        left: -20px;
-        opacity: 0.1;
+        font-size: 18vw;
+        top: 20px;
+        /* 位置を上げる */
+        left: -10px;
+        opacity: 1;
         transform: none;
+        z-index: 0;
+        /* コンテンツの下 */
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        /* 行間を広げる */
+        color: rgba(255, 255, 255, 0.1);
+        pointer-events: none;
+        position: absolute;
+        /* 明示的に指定 */
+    }
+
+    .works-background-text span:last-child {
+        margin-left: 20vw;
+        /* 重なり防止のため右にずらす */
+    }
+
+    .footer-background-text {
+        font-size: 18vw;
+        /* サイズを合わせる */
+        bottom: 20px;
+        /* 位置調整 */
+        right: -10px;
+        opacity: 1;
+        transform: none;
+        z-index: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        /* 右寄せ */
+        gap: 20px;
+        /* 行間を広げる */
+        color: rgba(255, 255, 255, 0.1);
+        pointer-events: none;
+        position: absolute;
+    }
+
+    .footer-background-text span:first-child {
+        margin-right: 20vw;
+        /* ずらし */
     }
 
     .triple-slider-container {
         padding: 0;
-        margin-top: 50px;
+        margin-top: 120px;
+        /* スライダーを下にずらす */
+        position: relative;
+        z-index: 1;
     }
 
     /* スマホ用のスライダーコンテナ */
@@ -1076,6 +1159,23 @@ body.is-menu-open .close-menu-button {
 
     .mobile-works-slider .slide img {
         aspect-ratio: 16 / 9;
+    }
+
+    /* スマホ版Worksスライドのテキスト調整 */
+    .mobile-works-slider .slide .description {
+        -webkit-line-clamp: unset;
+        /* 行数制限解除 */
+        overflow: visible;
+        display: block;
+        /* boxからblockへ */
+        margin-bottom: 10px;
+    }
+
+    .mobile-works-slider .slide .meta-line {
+        flex-direction: column;
+        /* 縦並び */
+        gap: 5px;
+        /* 間隔調整 */
     }
 
     /* PC用のスライダーは消す（JSで制御するがCSSでも念のため） */
@@ -1104,8 +1204,21 @@ body.is-menu-open .close-menu-button {
 
     /* Gallery (A案: 2列) */
     #gallery {
-        height: 100vh;
-        /* 高さは維持 */
+        height: 80vh;
+        /* 固定高さにする */
+        min-height: unset;
+        overflow: hidden;
+        /* はみ出し防止 */
+    }
+
+    .gallery-grid {
+        height: 100%;
+        /* 親に合わせる */
+    }
+
+    .marquee-column {
+        height: 100%;
+        /* 親に合わせる */
     }
 
     .marquee-column:nth-child(3) {
@@ -1133,9 +1246,23 @@ body.is-menu-open .close-menu-button {
         width: 120px;
     }
 
+    .contact-button {
+        display: flex;
+        /* inline-flexからflexへ */
+        margin: 40px auto 0;
+        /* 中央寄せ */
+        width: fit-content;
+        /* 幅をコンテンツに合わせる */
+    }
+
     /* Scroll Indicator */
     .scroll-indicator {
         display: none;
         /* スマホでは邪魔かも？一旦消す */
+    }
+
+    /* Mobile Menu Font Size */
+    .modal-menu nav a {
+        font-size: 2rem;
     }
 }

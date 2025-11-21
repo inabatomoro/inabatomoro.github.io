@@ -557,6 +557,77 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Mobile Scroll Handler for Background Color and Blur
+    window.addEventListener('scroll', () => {
+        if (!checkMobile()) return;
+
+        const scrollY = window.scrollY;
+        const windowHeight = window.innerHeight;
+        const docHeight = document.documentElement.scrollHeight;
+
+        // Find current section index based on scroll position
+        let currentSectionIndex = 0;
+        let minDistance = Infinity;
+
+        sections.forEach((section, index) => {
+            const rect = section.getBoundingClientRect();
+            const distance = Math.abs(rect.top);
+            if (distance < minDistance) {
+                minDistance = distance;
+                currentSectionIndex = index;
+            }
+        });
+
+        // Calculate progress within the current transition zone
+        // Transition happens when the next section is coming into view
+        const currentSection = sections[currentSectionIndex];
+        const nextSection = sections[currentSectionIndex + 1];
+
+        if (currentSection && nextSection) {
+            const nextRect = nextSection.getBoundingClientRect();
+            const nextTop = nextRect.top;
+
+            // 次のセクションの上端が画面の下30% (0.7) に来たら開始し、
+            // 画面の上20% (0.2) に来るまでに完了する
+            const startTrigger = windowHeight * 0.7;
+            const endTrigger = windowHeight * 0.2;
+
+            let transitionProgress = 0;
+
+            if (nextTop < startTrigger) {
+                transitionProgress = (startTrigger - nextTop) / (startTrigger - endTrigger);
+                transitionProgress = Math.max(0, Math.min(1, transitionProgress));
+            }
+
+            if (transitionProgress > 0) {
+                const bg1 = hexToRgb(sectionBgColors[currentSectionIndex]);
+                const bg2 = hexToRgb(sectionBgColors[Math.min(currentSectionIndex + 1, sectionBgColors.length - 1)]);
+                const blendedBgColor = lerpColor(bg1, bg2, transitionProgress);
+
+                const text1 = hexToRgb(sectionTextColors[currentSectionIndex]);
+                const text2 = hexToRgb(sectionTextColors[Math.min(currentSectionIndex + 1, sectionTextColors.length - 1)]);
+                const blendedTextColor = lerpColor(text1, text2, transitionProgress);
+
+                const root = document.documentElement;
+                root.style.setProperty('--bg-color', rgbToCss(blendedBgColor));
+                root.style.setProperty('--primary-text-color', rgbToCss(blendedTextColor));
+                root.style.setProperty('--secondary-text-color', `rgba(${blendedTextColor.r}, ${blendedTextColor.g}, ${blendedTextColor.b}, 0.7)`);
+                root.style.setProperty('--card-bg-color', `rgba(${blendedTextColor.r}, ${blendedTextColor.g}, ${blendedTextColor.b}, 0.05)`);
+                root.style.setProperty('--card-border-color', `rgba(${blendedTextColor.r}, ${blendedTextColor.g}, ${blendedTextColor.b}, 0.1)`);
+                if (backgroundLayer) backgroundLayer.style.backgroundColor = rgbToCss(blendedBgColor);
+            } else {
+                // Reset to current section color if not transitioning
+                const bg = hexToRgb(sectionBgColors[currentSectionIndex]);
+                const text = hexToRgb(sectionTextColors[currentSectionIndex]);
+
+                const root = document.documentElement;
+                root.style.setProperty('--bg-color', rgbToCss(bg));
+                root.style.setProperty('--primary-text-color', rgbToCss(text));
+                if (backgroundLayer) backgroundLayer.style.backgroundColor = rgbToCss(bg);
+            }
+        }
+    });
+
     smoothScroll();
     cursorAnimation();
     setupStaggeredAnimation();
