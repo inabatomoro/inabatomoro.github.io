@@ -292,11 +292,15 @@ async function initWorksSlider() {
     sliderContainer.innerHTML = '';
 
     try {
-        const response = await fetch('works.json');
+        // キャッシュ対策のためにタイムスタンプを付与
+        const response = await fetch('works.json?t=' + new Date().getTime());
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        const worksData = await response.json();
+        let worksData = await response.json();
+
+        // データを倍にする（重複して表示）
+        worksData = [...worksData, ...worksData];
 
         if (!worksData || worksData.length === 0) {
             console.warn('No works data found or data is empty.');
