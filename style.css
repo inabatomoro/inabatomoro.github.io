@@ -1046,7 +1046,8 @@ body.is-menu-open .close-menu-button {
     }
 
     #intro .intro-content h1 {
-        font-size: 3rem;
+        font-size: 11.5vw;
+        /* 画面幅に合わせて調整 */
         line-height: 1.2;
     }
 
@@ -1197,6 +1198,17 @@ body.is-menu-open .close-menu-button {
         font-size: 3rem;
     }
 
+    .service-description {
+        color: #000 !important;
+        /* スマホでは黒文字で読みやすく */
+    }
+
+    #service .service-content h2,
+    #service .service-content h3,
+    #service .service-content li .price-estimate {
+        color: #000 !important;
+    }
+
     #service .service-content ul {
         grid-template-columns: 1fr;
         /* 1列 */
@@ -1209,6 +1221,8 @@ body.is-menu-open .close-menu-button {
         min-height: unset;
         overflow: hidden;
         /* はみ出し防止 */
+        color: #000 !important;
+        /* ギャラリーも黒文字 */
     }
 
     .gallery-grid {
@@ -1242,17 +1256,28 @@ body.is-menu-open .close-menu-button {
         margin-bottom: 40px;
     }
 
+    #about-contact .right-column {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        /* 幅を確保 */
+    }
+
     #about-contact .about-item dt {
         width: 120px;
     }
 
-    .contact-button {
-        display: flex;
-        /* inline-flexからflexへ */
+    #about-contact .contact-details {
+        text-align: center;
+        /* テキストも中央寄せ */
+    }
+
+    #about-contact .email-button {
+        display: inline-block;
+        /* または block */
         margin: 40px auto 0;
         /* 中央寄せ */
-        width: fit-content;
-        /* 幅をコンテンツに合わせる */
+        /* width: fit-content; 不要かも */
     }
 
     /* Scroll Indicator */

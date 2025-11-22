@@ -23,7 +23,7 @@ const sectionBgColors = [
     "#1a1a2e", // Concept (ダークブルー)
     "#1a2a1a", // Works (ダークグリーン)
     "#FFFFFF", // Service (白)
-    "#444444", // Gallery (中間グレー)
+    "#FFFFFF", // Gallery (白 - 変更: Serviceからの遷移をスキップ)
     "#111111"  // About & Contact (黒)
 ];
 
@@ -32,7 +32,7 @@ const sectionTextColors = [
     "#FFFFFF", // Concept
     "#FFFFFF", // Works
     "#000000", // Service (黒)
-    "#FFFFFF", // Gallery (白)
+    "#000000", // Gallery (黒 - 背景白に合わせて変更)
     "#FFFFFF"  // About & Contact (白)
 ];
 
@@ -597,6 +597,15 @@ document.addEventListener('DOMContentLoaded', () => {
             if (nextTop < startTrigger) {
                 transitionProgress = (startTrigger - nextTop) / (startTrigger - endTrigger);
                 transitionProgress = Math.max(0, Math.min(1, transitionProgress));
+
+                // Aboutセクション(index 5)への遷移は即座に完了させる
+                if (currentSectionIndex + 1 === 5 && transitionProgress > 0.1) {
+                    transitionProgress = 1;
+                }
+                // Serviceセクション(index 3)への遷移も即座に完了させる（文字色を黒にするため）
+                if (currentSectionIndex + 1 === 3 && transitionProgress > 0.1) {
+                    transitionProgress = 1;
+                }
             }
 
             if (transitionProgress > 0) {
