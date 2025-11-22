@@ -84,7 +84,8 @@
             <a href="#works">WORKS</a>
             <a href="#service">SERVICE</a>
             <a href="#gallery">GALLERY</a>
-            <a href="#about-contact">ABOUT</a>
+            <a href="#news">NEWS</a>
+            <a href="#about-contact">CONTACT</a>
             <a href="https://www.studio-works.jp/stuwor-port/">CANVAS</a>
         </nav>
     </div>
@@ -225,9 +226,18 @@
             </div>
         </section>
 
+        <section class="section" id="news">
+            <div class="news-content">
+                <h2>News</h2>
+                <ul class="news-list">
+                    <!-- JSで動的に生成 -->
+                </ul>
+            </div>
+        </section>
+
         <section class="section" id="about-contact">
             <div class="about-content">
-                <h2>About</h2>
+                <h2>Contact</h2>
                 <div class="right-column">
                     <dl>
                         <div class="about-item">
@@ -265,6 +275,19 @@
             <span class="arrow-right"></span>
         </div>
     </div>
+
+    <!-- News Modal -->
+    <div id="news-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="modal-header">
+                <span id="modal-date" class="news-date"></span>
+            </div>
+            <h2 id="modal-title"></h2>
+            <div id="modal-body"></div>
+        </div>
+    </div>
+
     <script src="script.js"></script>
 </body>
 

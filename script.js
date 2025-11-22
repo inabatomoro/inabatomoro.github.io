@@ -23,7 +23,8 @@ const sectionBgColors = [
     "#1a1a2e", // Concept (ダークブルー)
     "#1a2a1a", // Works (ダークグリーン)
     "#FFFFFF", // Service (白)
-    "#FFFFFF", // Gallery (白 - 変更: Serviceからの遷移をスキップ)
+    "#FFFFFF", // Gallery (白)
+    "#555555", // News (濃いグレー)
     "#111111"  // About & Contact (黒)
 ];
 
@@ -32,7 +33,8 @@ const sectionTextColors = [
     "#FFFFFF", // Concept
     "#FFFFFF", // Works
     "#000000", // Service (黒)
-    "#000000", // Gallery (黒 - 背景白に合わせて変更)
+    "#000000", // Gallery (黒)
+    "#FFFFFF", // News (白)
     "#FFFFFF"  // About & Contact (白)
 ];
 
@@ -602,14 +604,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 transitionProgress = (startTrigger - nextTop) / (startTrigger - endTrigger);
                 transitionProgress = Math.max(0, Math.min(1, transitionProgress));
 
-                // Aboutセクション(index 5)への遷移は即座に完了させる
-                if (currentSectionIndex + 1 === 5 && transitionProgress > 0.1) {
+                // Aboutセクション(index 6)への遷移は即座に完了させる
+                if (currentSectionIndex + 1 === 6 && transitionProgress > 0.1) {
                     transitionProgress = 1;
                 }
-                // Serviceセクション(index 3)への遷移も即座に完了させる（文字色を黒にするため）
-                if (currentSectionIndex + 1 === 3 && transitionProgress > 0.1) {
-                    transitionProgress = 1;
-                }
+
+                // Gallery(4) -> News(5) への遷移
+                // Galleryの背景は白、Newsは濃いグレー。
+                // Galleryの終わり際で自然に変わるようにする（デフォルトでOKだが、必要なら調整）
             }
 
             if (transitionProgress > 0) {
@@ -624,6 +626,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 const root = document.documentElement;
                 root.style.setProperty('--bg-color', rgbToCss(blendedBgColor));
                 root.style.setProperty('--primary-text-color', rgbToCss(blendedTextColor));
+
+                // Adjust secondary colors based on primary text color brightness
+                // Simple heuristic: if text is bright, secondary is dimmer white. If text is dark, secondary is gray.
+                // For simplicity, just use opacity of primary
                 root.style.setProperty('--secondary-text-color', `rgba(${blendedTextColor.r}, ${blendedTextColor.g}, ${blendedTextColor.b}, 0.7)`);
                 root.style.setProperty('--card-bg-color', `rgba(${blendedTextColor.r}, ${blendedTextColor.g}, ${blendedTextColor.b}, 0.05)`);
                 root.style.setProperty('--card-border-color', `rgba(${blendedTextColor.r}, ${blendedTextColor.g}, ${blendedTextColor.b}, 0.1)`);
@@ -648,7 +654,88 @@ document.addEventListener('DOMContentLoaded', () => {
     setupMenu();
     initWorksSlider();
     setupIntroAnimation();
+    loadNews(); // News読み込み
 });
+
+// --- News Loading & Modal ---
+async function loadNews() {
+    const newsList = document.querySelector('.news-list');
+    if (!newsList) return;
+
+    try {
+        const response = await fetch('news.json?t=' + new Date().getTime());
+        if (!response.ok) throw new Error('Failed to load news');
+        const newsData = await response.json();
+
+        newsList.innerHTML = ''; // Clear existing content
+
+        newsData.forEach(item => {
+            const li = document.createElement('li');
+            li.classList.add('news-item');
+            li.innerHTML = `
+                <span class="news-date">${item.date}</span>
+                <a href="${item.url}" class="news-title" data-id="${item.date + item.title}">${item.title}</a>
+            `;
+            newsList.appendChild(li);
+
+            // Click Event for Modal
+            const link = li.querySelector('.news-title');
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                openModal(item);
+            });
+
+            // Cursor Hover Effect
+            link.addEventListener('mouseover', () => {
+                if (cursorRing) cursorRing.classList.add('hovered'); // Use cursorRing or cursorDot based on design
+                document.body.classList.add('is-hovering'); // Re-use existing hover logic
+            });
+            link.addEventListener('mouseleave', () => {
+                if (cursorRing) cursorRing.classList.remove('hovered');
+                document.body.classList.remove('is-hovering');
+            });
+        });
+    } catch (error) {
+        console.error('Error loading news:', error);
+    }
+}
+
+// --- Modal Logic ---
+function openModal(item) {
+    const modal = document.getElementById('news-modal');
+    if (!modal) {
+        console.error('Modal element not found');
+        return;
+    }
+
+    const dateEl = document.getElementById('modal-date');
+    const titleEl = document.getElementById('modal-title');
+    const bodyEl = document.getElementById('modal-body');
+
+    if (dateEl) dateEl.textContent = item.date;
+    if (titleEl) titleEl.textContent = item.title;
+    if (bodyEl) bodyEl.innerHTML = item.content || '';
+
+    modal.style.display = 'block';
+    document.body.style.overflow = 'hidden'; // Prevent background scrolling
+
+    // Close button logic (re-bind every time or check if already bound? Better to bind once globally, but here for safety)
+    const closeModal = modal.querySelector('.close-modal');
+    if (closeModal) {
+        closeModal.onclick = () => {
+            modal.style.display = 'none';
+            document.body.style.overflow = '';
+        };
+    }
+
+    // Outside click logic
+    window.onclick = (e) => {
+        if (e.target === modal) {
+            modal.style.display = 'none';
+            document.body.style.overflow = '';
+        }
+    };
+}
 
 // Handle Resize
 let resizeTimeout;
