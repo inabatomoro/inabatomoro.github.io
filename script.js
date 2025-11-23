@@ -114,6 +114,10 @@ function lerpColor(color1, color2, amount) {
 function smoothScroll() {
     if (checkMobile() || !container) return; // Disable custom smooth scroll on mobile
 
+    // スクロール位置が負の値にならないように制限
+    if (targetScroll < 0) targetScroll = 0;
+    if (currentScroll < 0) currentScroll = 0;
+    
     currentScroll += (targetScroll - currentScroll) * ease;
     container.style.transform = `translateX(-${currentScroll}px)`;
 
@@ -223,9 +227,14 @@ function setupMenu() {
                     } else {
                         // PC: Custom horizontal scroll
                         const sectionIndex = Array.from(sections).indexOf(targetSection);
-                        setTimeout(() => {
-                            targetScroll = window.innerWidth * sectionIndex;
-                        }, 400);
+                        if (sectionIndex === 0) {
+                            // TOPに戻る場合はリセット関数を使用
+                            resetScrollPosition();
+                        } else {
+                            setTimeout(() => {
+                                targetScroll = window.innerWidth * sectionIndex;
+                            }, 400);
+                        }
                     }
                 }
             } else {
@@ -272,15 +281,19 @@ function createWorksSlide(work) {
         : '';
 
     slide.innerHTML = `
-        <a href="${work.url}" target="_blank" rel="noopener noreferrer">
-            <img src="${work.image}" alt="${work.title}" onerror="this.style.display='none'">
-            <div class="slide-info">
-                ${titleHTML}
-                ${descriptionHTML}
-                ${metaLineHTML}
-                ${notesHTML}
+        <div class="slide-card">
+            <div class="slide-front">
+                <a href="${work.url}" target="_blank" rel="noopener noreferrer">
+                    <img src="${work.image}" alt="${work.title}" onerror="this.style.display='none'">
+                    <div class="slide-info">
+                        ${titleHTML}
+                        ${descriptionHTML}
+                        ${metaLineHTML}
+                        ${notesHTML}
+                    </div>
+                </a>
             </div>
-        </a>
+        </div>
     `;
     return slide;
 }
@@ -426,7 +439,6 @@ function setupConceptAnimation() {
 // --- Intro Text Animation (Scattered to Gathered) ---
 function setupIntroAnimation() {
     const introTitle = document.querySelector('#intro h1');
-    const introSubtitle = document.querySelector('#intro p');
 
     if (!introTitle) return;
 
@@ -451,29 +463,373 @@ function setupIntroAnimation() {
         return;
     }
 
-    // Animate characters from scattered positions
-    gsap.from(splitTitle.chars, {
-        duration: 2.5,
-        opacity: 0,
-        x: randomX,
-        y: randomY,
-        rotation: randomRotate,
-        scale: randomScale,
-        stagger: {
-            amount: 1.5,
-            from: "random"
-        },
-        ease: "power4.out", // Slow down at the end
-        delay: 0.5
-    });
+    // ローディング完了を待ってからアニメーションを開始
+    const startAnimation = () => {
+        // アニメーション開始時にh1を表示
+        introTitle.classList.add('animation-started');
+        
+        // Animate characters from scattered positions
+        gsap.from(splitTitle.chars, {
+            duration: 2.5,
+            opacity: 0,
+            x: randomX,
+            y: randomY,
+            rotation: randomRotate,
+            scale: randomScale,
+            stagger: {
+                amount: 1.5,
+                from: "random"
+            },
+            ease: "power4.out", // Slow down at the end
+            delay: 0.5 // ローディング完了後、さらに0.5秒待つ（1秒早く）
+        });
 
-    // Animate subtitle
-    gsap.from(introSubtitle, {
-        duration: 1.5,
-        opacity: 0,
-        y: 50,
-        ease: "power2.out",
-        delay: 3 // Wait for title animation to mostly finish
+        // サブタイトルのアニメーションは削除（タイピングアニメーションで処理するため）
+    };
+
+    // ローディング完了を待つ
+    if (document.body.classList.contains('loaded')) {
+        // 既にローディング完了している場合
+        setTimeout(startAnimation, 500);
+    } else {
+        // ローディング完了を待つ
+        const checkLoaded = setInterval(() => {
+            if (document.body.classList.contains('loaded')) {
+                clearInterval(checkLoaded);
+                setTimeout(startAnimation, 500);
+            }
+        }, 100);
+    }
+}
+
+// --- Loading Screen Animation ---
+function initLoadingScreen() {
+    // 既に読み込まれている場合は即座に表示
+    if (document.readyState === 'complete') {
+        setTimeout(() => {
+            document.body.classList.add('loaded');
+            // ローディング後にスクロール位置をリセット
+            resetScrollPosition();
+        }, 500);
+    } else {
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.body.classList.add('loaded');
+                // ローディング後にスクロール位置をリセット
+                resetScrollPosition();
+            }, 1500); // ローディングアニメーションの表示時間
+        });
+    }
+}
+
+// --- Reset Scroll Position ---
+function resetScrollPosition() {
+    if (checkMobile()) {
+        // モバイルの場合は通常のスクロールをリセット
+        window.scrollTo(0, 0);
+        return;
+    }
+    
+    if (!container) return;
+    
+    // スクロール位置を0にリセット
+    targetScroll = 0;
+    currentScroll = 0;
+    container.style.transform = 'translateX(0)';
+    
+    // ウィンドウのスクロール位置もリセット
+    window.scrollTo(0, 0);
+    
+    // URLのハッシュを削除（ページリロード時の位置ずれを防ぐ）
+    if (window.location.hash) {
+        history.replaceState(null, null, ' ');
+    }
+}
+
+// --- Section Entry Animation ---
+function setupSectionEntryAnimation() {
+    // Introセクションは最初から表示
+    const introSection = document.querySelector('#intro');
+    if (introSection) {
+        introSection.classList.add('is-visible');
+    }
+    
+    const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.2
+    };
+
+    const observerCallback = (entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+            }
+        });
+    };
+
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
+    
+    // Intro以外のセクションを監視
+    sections.forEach(section => {
+        if (section.id !== 'intro') {
+            observer.observe(section);
+        }
+    });
+}
+
+// --- Particle Animation ---
+function initParticleAnimation() {
+    const canvas = document.getElementById('particle-canvas');
+    if (!canvas) return;
+    
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    const particleCount = 50;
+    
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    
+    function createParticle() {
+        return {
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            radius: Math.random() * 2 + 1,
+            speedX: (Math.random() - 0.5) * 0.5,
+            speedY: (Math.random() - 0.5) * 0.5,
+            opacity: Math.random() * 0.5 + 0.2
+        };
+    }
+    
+    function initParticles() {
+        particles = [];
+        for (let i = 0; i < particleCount; i++) {
+            particles.push(createParticle());
+        }
+    }
+    
+    function updateParticles() {
+        particles.forEach(particle => {
+            particle.x += particle.speedX;
+            particle.y += particle.speedY;
+            
+            if (particle.x < 0 || particle.x > canvas.width) particle.speedX *= -1;
+            if (particle.y < 0 || particle.y > canvas.height) particle.speedY *= -1;
+        });
+    }
+    
+    function drawParticles() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        particles.forEach(particle => {
+            ctx.beginPath();
+            ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(255, 255, 255, ${particle.opacity})`;
+            ctx.fill();
+        });
+        
+        // Connect nearby particles
+        particles.forEach((particle, i) => {
+            particles.slice(i + 1).forEach(otherParticle => {
+                const dx = particle.x - otherParticle.x;
+                const dy = particle.y - otherParticle.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                
+                if (distance < 100) {
+                    ctx.beginPath();
+                    ctx.moveTo(particle.x, particle.y);
+                    ctx.lineTo(otherParticle.x, otherParticle.y);
+                    ctx.strokeStyle = `rgba(255, 255, 255, ${0.1 * (1 - distance / 100)})`;
+                    ctx.stroke();
+                }
+            });
+        });
+    }
+    
+    function animate() {
+        updateParticles();
+        drawParticles();
+        requestAnimationFrame(animate);
+    }
+    
+    resizeCanvas();
+    initParticles();
+    animate();
+    
+    window.addEventListener('resize', () => {
+        resizeCanvas();
+        initParticles();
+    });
+}
+
+// --- Typing Animation ---
+function setupTypingAnimation() {
+    const firstElement = document.querySelector('.typing-text-first');
+    const secondElement = document.querySelector('.typing-text-second');
+    
+    if (!firstElement) return;
+    
+    // 既に実行されている場合はスキップ（重複実行を防ぐ）
+    if (firstElement.dataset.typingInitialized === 'true') return;
+    firstElement.dataset.typingInitialized = 'true';
+    
+    const typingSpeed = 100;
+    
+    // テキストを保存（初期化時に取得）
+    const firstText = firstElement.textContent.trim();
+    const secondText = secondElement ? secondElement.textContent.trim() : '';
+    
+    // 初期状態を確実に非表示にする
+    firstElement.textContent = '';
+    firstElement.style.borderRight = '2px solid #aaa';
+    firstElement.classList.remove('typing-active', 'complete');
+    
+    if (secondElement) {
+        secondElement.textContent = '';
+        secondElement.style.borderRight = '2px solid #aaa';
+        secondElement.classList.remove('typing-active', 'complete');
+    }
+    
+    let firstIndex = 0;
+    let isSecondTypingStarted = false; // 2つ目のタイピングが開始されたかどうかを追跡
+    
+    function typeFirst() {
+        // タイピング開始時に表示
+        if (firstIndex === 0) {
+            firstElement.classList.add('typing-active');
+        }
+        
+        if (firstIndex < firstText.length) {
+            firstElement.textContent += firstText.charAt(firstIndex);
+            firstIndex++;
+            setTimeout(typeFirst, typingSpeed);
+        } else {
+            firstElement.classList.remove('typing-active');
+            firstElement.classList.add('complete');
+            
+            // 1つ目が完了したら2つ目を開始（1回だけ）
+            if (secondElement && secondText && !isSecondTypingStarted) {
+                isSecondTypingStarted = true;
+                startSecondTyping();
+            }
+        }
+    }
+    
+    // 2つ目のテキスト（ANALYZE / DESIGN / BUILD / OPERATE）のアニメーション
+    function startSecondTyping() {
+        // 念のため、テキストを再度クリア
+        secondElement.textContent = '';
+        secondElement.style.borderRight = '2px solid #aaa';
+        
+        let secondIndex = 0;
+        
+        function typeSecond() {
+            // タイピング開始時に表示
+            if (secondIndex === 0) {
+                secondElement.classList.add('typing-active');
+            }
+            
+            if (secondIndex < secondText.length) {
+                // テキストを1文字ずつ追加（現在の長さをチェックして重複を防ぐ）
+                const currentText = secondElement.textContent;
+                if (currentText.length === secondIndex) {
+                    secondElement.textContent = secondText.substring(0, secondIndex + 1);
+                }
+                secondIndex++;
+                setTimeout(typeSecond, typingSpeed);
+            } else {
+                secondElement.classList.remove('typing-active');
+                secondElement.classList.add('complete');
+            }
+        }
+        
+        // 少し間を置いてから開始
+        setTimeout(() => {
+            typeSecond();
+        }, 300);
+    }
+    
+    // ローディング完了を待ってからタイピングを開始
+    const startTyping = () => {
+        // Design Works with Studioのアニメーションが終わってから開始
+        // delay: 0.5秒 + duration: 2.5秒 = 約3秒後から開始
+        // さらに余裕を持たせるため、4秒後に開始
+        setTimeout(() => {
+            typeFirst();
+        }, 4000);
+    };
+    
+    // ローディング完了を待つ（確実に待つため）
+    const waitForLoading = () => {
+        if (document.body.classList.contains('loaded')) {
+            startTyping();
+        } else {
+            // ローディング完了を待つ
+            const checkLoaded = setInterval(() => {
+                if (document.body.classList.contains('loaded')) {
+                    clearInterval(checkLoaded);
+                    startTyping();
+                }
+            }, 100);
+            
+            // タイムアウト（念のため10秒後に強制開始）
+            setTimeout(() => {
+                clearInterval(checkLoaded);
+                startTyping();
+            }, 10000);
+        }
+    };
+    
+    // DOMContentLoaded後に少し待ってからチェック
+    setTimeout(() => {
+        waitForLoading();
+    }, 500);
+}
+
+// --- Parallax Effect ---
+function setupParallaxEffect() {
+    if (checkMobile()) return;
+    
+    const parallaxElements = document.querySelectorAll('.parallax-slow');
+    
+    window.addEventListener('mousemove', (e) => {
+        const mouseX = e.clientX / window.innerWidth;
+        const mouseY = e.clientY / window.innerHeight;
+        
+        parallaxElements.forEach(element => {
+            const speed = 20;
+            const x = (mouseX - 0.5) * speed;
+            const y = (mouseY - 0.5) * speed;
+            element.style.transform = `translate(${x}px, ${y}px)`;
+        });
+    });
+}
+
+// --- Ripple Effect ---
+function setupRippleEffect() {
+    const buttons = document.querySelectorAll('.email-button, .hamburger-menu, .close-menu-button');
+    
+    buttons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            const ripple = document.createElement('span');
+            const rect = this.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height);
+            const x = e.clientX - rect.left - size / 2;
+            const y = e.clientY - rect.top - size / 2;
+            
+            ripple.style.width = ripple.style.height = size + 'px';
+            ripple.style.left = x + 'px';
+            ripple.style.top = y + 'px';
+            ripple.classList.add('ripple');
+            
+            this.appendChild(ripple);
+            
+            setTimeout(() => {
+                ripple.remove();
+            }, 600);
+        });
     });
 }
 
@@ -494,6 +850,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (container) {
         maxScroll = container.scrollWidth - window.innerWidth;
+        // 初期位置を確実に0に設定
+        targetScroll = 0;
+        currentScroll = 0;
+        container.style.transform = 'translateX(0)';
     } else {
         console.error("Container not found!");
     }
@@ -558,7 +918,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         scrollIndicator.addEventListener('click', () => {
             if (scrollIndicator.classList.contains('is-back-to-top')) {
-                targetScroll = 0;
+                resetScrollPosition();
             }
         });
     }
@@ -647,6 +1007,16 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // 最初にスクロール位置をリセット
+    resetScrollPosition();
+    
+    // ハッシュが付いている場合は無視してトップに戻す
+    if (window.location.hash) {
+        setTimeout(() => {
+            resetScrollPosition();
+        }, 100);
+    }
+    
     smoothScroll();
     cursorAnimation();
     setupStaggeredAnimation();
@@ -655,6 +1025,19 @@ document.addEventListener('DOMContentLoaded', () => {
     initWorksSlider();
     setupIntroAnimation();
     loadNews(); // News読み込み
+    initLoadingScreen(); // ローディングアニメーション
+    setupSectionEntryAnimation(); // セクション進入アニメーション
+    initParticleAnimation(); // パーティクルアニメーション
+    setupTypingAnimation(); // タイピングアニメーション
+    setupParallaxEffect(); // パララックス効果
+    setupRippleEffect(); // リップルエフェクト
+    
+    // ページ読み込み完了後に再度リセット（念のため）
+    window.addEventListener('load', () => {
+        setTimeout(() => {
+            resetScrollPosition();
+        }, 100);
+    });
 });
 
 // --- News Loading & Modal ---

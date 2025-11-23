@@ -64,10 +64,21 @@
 </head>
 
 <body>
+    <!-- Loading Screen -->
+    <div class="loading-screen">
+        <div class="loading-content">
+            <div class="loading-logo">STUDIO WORKS</div>
+            <div class="loading-bar">
+                <div class="loading-progress"></div>
+            </div>
+        </div>
+    </div>
     <div class="spotlight-overlay"></div>
     <div class="cursor-ring"></div>
     <div class="cursor-dot"></div>
     <div class="background-layer"></div>
+    <!-- Particle Background -->
+    <canvas id="particle-canvas"></canvas>
     <header>
         <button class="hamburger-menu">
             <span></span>
@@ -95,7 +106,8 @@
             <div class="intro-content">
                 <h1>Design Works <br class="sp-break">with<br class="pc-break"><span class="sp-space"> </span>Studio
                 </h1>
-                <p>ANALYZE / DESIGN / BUILD / OPERATE</p>
+                <p class="typing-text typing-text-first">WEBに関する課題をワンストップで</p>
+                <p class="typing-text typing-text-second">ANALYZE / DESIGN / BUILD / OPERATE</p>
             </div>
         </section>
         <section class="section" id="concept">
@@ -106,10 +118,10 @@
         </section>
 
         <section class="section" id="works">
-            <div class="works-background-text"><span>Design</span><span>Works</span></div>
+            <div class="works-background-text parallax-slow"><span>Design</span><span>Works</span></div>
             <div class="triple-slider-container">
             </div>
-            <div class="footer-background-text"><span>with</span><span>Studio</span></div>
+            <div class="footer-background-text parallax-slow"><span>with</span><span>Studio</span></div>
         </section>
 
         <section class="section" id="service">
@@ -259,7 +271,7 @@
                     </dl>
                     <div class="contact-details">
                         <p>お仕事のご依頼・ご相談は、下記よりお気軽にご連絡ください。</p>
-                        <a href="mailto:info@studioworks.llc" class="email-button">相談してみる</a>
+                        <a href="mailto:info@studioworks.llc" class="email-button"><span>相談してみる</span></a>
                     </div>
                 </div>
             </div>
