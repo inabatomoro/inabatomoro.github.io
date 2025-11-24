@@ -1457,8 +1457,9 @@ body.is-menu-open .close-menu-button {
     /* Header */
     header {
         padding: 15px 20px;
-        justify-content: flex-end;
-        /* ハンバーガーを右に */
+        justify-content: space-between;
+        /* ハンバーガーは左、言語切替は右 */
+        align-items: center;
     }
 
     .hamburger-menu {
