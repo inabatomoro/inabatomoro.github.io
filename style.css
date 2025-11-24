@@ -181,6 +181,7 @@ body.loaded .loading-screen {
         opacity: 0;
         transform: translateY(20px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -191,9 +192,11 @@ body.loaded .loading-screen {
     0% {
         width: 0%;
     }
+
     50% {
         width: 70%;
     }
+
     100% {
         width: 100%;
     }
@@ -253,7 +256,47 @@ header {
     z-index: 10001;
     /* Above scroll indicator */
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-between;
+    /* 両端配置 */
+    align-items: center;
+    mix-blend-mode: difference;
+    /* 背景色に応じて反転させて視認性を確保 */
+}
+
+.header-controls {
+    display: flex;
+    align-items: center;
+}
+
+.lang-switch {
+    font-family: 'Archivo Black', sans-serif;
+    /* ロゴと同じフォント */
+    font-size: 1rem;
+    color: #fff;
+    text-decoration: none;
+    position: relative;
+    padding: 5px 0;
+    letter-spacing: 0.1em;
+    transition: opacity 0.3s ease;
+}
+
+.lang-switch::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: #fff;
+    transition: width 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.lang-switch:hover {
+    opacity: 0.8;
+}
+
+.lang-switch:hover::after {
+    width: 100%;
 }
 
 /* PC/SP 改行制御 (Default: PC) */
@@ -328,9 +371,12 @@ br.pc-break {
 }
 
 @keyframes blink {
-    from, to {
+
+    from,
+    to {
         border-color: transparent;
     }
+
     50% {
         border-color: #aaa;
     }
@@ -1029,9 +1075,12 @@ body.is-hovering .spotlight-overlay {
 }
 
 @keyframes pulse {
-    0%, 100% {
+
+    0%,
+    100% {
         opacity: 1;
     }
+
     50% {
         opacity: 0.6;
     }
@@ -1355,21 +1404,21 @@ body.is-menu-open .close-menu-button {
     .spotlight-overlay {
         display: none !important;
     }
-    
+
     /* Loading Screen Mobile */
     .loading-logo {
         font-size: 2rem;
     }
-    
+
     .loading-bar {
         width: 200px;
     }
-    
+
     /* Particle Canvas Mobile */
     #particle-canvas {
         display: none !important;
     }
-    
+
     /* Parallax Mobile */
     .parallax-slow {
         transform: none !important;
@@ -1397,7 +1446,7 @@ body.is-menu-open .close-menu-button {
         opacity: 1;
         transform: none;
     }
-    
+
     /* モバイルでは全てのセクションを最初から表示 */
     .section.is-visible,
     #intro {

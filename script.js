@@ -117,7 +117,7 @@ function smoothScroll() {
     // スクロール位置が負の値にならないように制限
     if (targetScroll < 0) targetScroll = 0;
     if (currentScroll < 0) currentScroll = 0;
-    
+
     currentScroll += (targetScroll - currentScroll) * ease;
     container.style.transform = `translateX(-${currentScroll}px)`;
 
@@ -307,8 +307,12 @@ async function initWorksSlider() {
     sliderContainer.innerHTML = '';
 
     try {
+        // Determine language and file path
+        const lang = document.documentElement.lang === 'en' ? '_en' : '';
+        const jsonFile = `works${lang}.json`;
+
         // キャッシュ対策のためにタイムスタンプを付与
-        const response = await fetch('works.json?t=' + new Date().getTime());
+        const response = await fetch(`${jsonFile}?t=` + new Date().getTime());
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -467,7 +471,7 @@ function setupIntroAnimation() {
     const startAnimation = () => {
         // アニメーション開始時にh1を表示
         introTitle.classList.add('animation-started');
-        
+
         // Animate characters from scattered positions
         gsap.from(splitTitle.chars, {
             duration: 2.5,
@@ -529,17 +533,17 @@ function resetScrollPosition() {
         window.scrollTo(0, 0);
         return;
     }
-    
+
     if (!container) return;
-    
+
     // スクロール位置を0にリセット
     targetScroll = 0;
     currentScroll = 0;
     container.style.transform = 'translateX(0)';
-    
+
     // ウィンドウのスクロール位置もリセット
     window.scrollTo(0, 0);
-    
+
     // URLのハッシュを削除（ページリロード時の位置ずれを防ぐ）
     if (window.location.hash) {
         history.replaceState(null, null, ' ');
@@ -553,7 +557,7 @@ function setupSectionEntryAnimation() {
     if (introSection) {
         introSection.classList.add('is-visible');
     }
-    
+
     const observerOptions = {
         root: null,
         rootMargin: '0px',
@@ -569,7 +573,7 @@ function setupSectionEntryAnimation() {
     };
 
     const observer = new IntersectionObserver(observerCallback, observerOptions);
-    
+
     // Intro以外のセクションを監視
     sections.forEach(section => {
         if (section.id !== 'intro') {
@@ -582,16 +586,16 @@ function setupSectionEntryAnimation() {
 function initParticleAnimation() {
     const canvas = document.getElementById('particle-canvas');
     if (!canvas) return;
-    
+
     const ctx = canvas.getContext('2d');
     let particles = [];
     const particleCount = 50;
-    
+
     function resizeCanvas() {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
     }
-    
+
     function createParticle() {
         return {
             x: Math.random() * canvas.width,
@@ -602,41 +606,41 @@ function initParticleAnimation() {
             opacity: Math.random() * 0.5 + 0.2
         };
     }
-    
+
     function initParticles() {
         particles = [];
         for (let i = 0; i < particleCount; i++) {
             particles.push(createParticle());
         }
     }
-    
+
     function updateParticles() {
         particles.forEach(particle => {
             particle.x += particle.speedX;
             particle.y += particle.speedY;
-            
+
             if (particle.x < 0 || particle.x > canvas.width) particle.speedX *= -1;
             if (particle.y < 0 || particle.y > canvas.height) particle.speedY *= -1;
         });
     }
-    
+
     function drawParticles() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        
+
         particles.forEach(particle => {
             ctx.beginPath();
             ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
             ctx.fillStyle = `rgba(255, 255, 255, ${particle.opacity})`;
             ctx.fill();
         });
-        
+
         // Connect nearby particles
         particles.forEach((particle, i) => {
             particles.slice(i + 1).forEach(otherParticle => {
                 const dx = particle.x - otherParticle.x;
                 const dy = particle.y - otherParticle.y;
                 const distance = Math.sqrt(dx * dx + dy * dy);
-                
+
                 if (distance < 100) {
                     ctx.beginPath();
                     ctx.moveTo(particle.x, particle.y);
@@ -647,17 +651,17 @@ function initParticleAnimation() {
             });
         });
     }
-    
+
     function animate() {
         updateParticles();
         drawParticles();
         requestAnimationFrame(animate);
     }
-    
+
     resizeCanvas();
     initParticles();
     animate();
-    
+
     window.addEventListener('resize', () => {
         resizeCanvas();
         initParticles();
@@ -668,39 +672,39 @@ function initParticleAnimation() {
 function setupTypingAnimation() {
     const firstElement = document.querySelector('.typing-text-first');
     const secondElement = document.querySelector('.typing-text-second');
-    
+
     if (!firstElement) return;
-    
+
     // 既に実行されている場合はスキップ（重複実行を防ぐ）
     if (firstElement.dataset.typingInitialized === 'true') return;
     firstElement.dataset.typingInitialized = 'true';
-    
+
     const typingSpeed = 100;
-    
+
     // テキストを保存（初期化時に取得）
     const firstText = firstElement.textContent.trim();
     const secondText = secondElement ? secondElement.textContent.trim() : '';
-    
+
     // 初期状態を確実に非表示にする
     firstElement.textContent = '';
     firstElement.style.borderRight = '2px solid #aaa';
     firstElement.classList.remove('typing-active', 'complete');
-    
+
     if (secondElement) {
         secondElement.textContent = '';
         secondElement.style.borderRight = '2px solid #aaa';
         secondElement.classList.remove('typing-active', 'complete');
     }
-    
+
     let firstIndex = 0;
     let isSecondTypingStarted = false; // 2つ目のタイピングが開始されたかどうかを追跡
-    
+
     function typeFirst() {
         // タイピング開始時に表示
         if (firstIndex === 0) {
             firstElement.classList.add('typing-active');
         }
-        
+
         if (firstIndex < firstText.length) {
             firstElement.textContent += firstText.charAt(firstIndex);
             firstIndex++;
@@ -708,7 +712,7 @@ function setupTypingAnimation() {
         } else {
             firstElement.classList.remove('typing-active');
             firstElement.classList.add('complete');
-            
+
             // 1つ目が完了したら2つ目を開始（1回だけ）
             if (secondElement && secondText && !isSecondTypingStarted) {
                 isSecondTypingStarted = true;
@@ -716,21 +720,21 @@ function setupTypingAnimation() {
             }
         }
     }
-    
+
     // 2つ目のテキスト（ANALYZE / DESIGN / BUILD / OPERATE）のアニメーション
     function startSecondTyping() {
         // 念のため、テキストを再度クリア
         secondElement.textContent = '';
         secondElement.style.borderRight = '2px solid #aaa';
-        
+
         let secondIndex = 0;
-        
+
         function typeSecond() {
             // タイピング開始時に表示
             if (secondIndex === 0) {
                 secondElement.classList.add('typing-active');
             }
-            
+
             if (secondIndex < secondText.length) {
                 // テキストを1文字ずつ追加（現在の長さをチェックして重複を防ぐ）
                 const currentText = secondElement.textContent;
@@ -744,13 +748,13 @@ function setupTypingAnimation() {
                 secondElement.classList.add('complete');
             }
         }
-        
+
         // 少し間を置いてから開始
         setTimeout(() => {
             typeSecond();
         }, 300);
     }
-    
+
     // ローディング完了を待ってからタイピングを開始
     const startTyping = () => {
         // Design Works with Studioのアニメーションが終わってから開始
@@ -760,7 +764,7 @@ function setupTypingAnimation() {
             typeFirst();
         }, 4000);
     };
-    
+
     // ローディング完了を待つ（確実に待つため）
     const waitForLoading = () => {
         if (document.body.classList.contains('loaded')) {
@@ -773,7 +777,7 @@ function setupTypingAnimation() {
                     startTyping();
                 }
             }, 100);
-            
+
             // タイムアウト（念のため10秒後に強制開始）
             setTimeout(() => {
                 clearInterval(checkLoaded);
@@ -781,7 +785,7 @@ function setupTypingAnimation() {
             }, 10000);
         }
     };
-    
+
     // DOMContentLoaded後に少し待ってからチェック
     setTimeout(() => {
         waitForLoading();
@@ -791,13 +795,13 @@ function setupTypingAnimation() {
 // --- Parallax Effect ---
 function setupParallaxEffect() {
     if (checkMobile()) return;
-    
+
     const parallaxElements = document.querySelectorAll('.parallax-slow');
-    
+
     window.addEventListener('mousemove', (e) => {
         const mouseX = e.clientX / window.innerWidth;
         const mouseY = e.clientY / window.innerHeight;
-        
+
         parallaxElements.forEach(element => {
             const speed = 20;
             const x = (mouseX - 0.5) * speed;
@@ -810,22 +814,22 @@ function setupParallaxEffect() {
 // --- Ripple Effect ---
 function setupRippleEffect() {
     const buttons = document.querySelectorAll('.email-button, .hamburger-menu, .close-menu-button');
-    
+
     buttons.forEach(button => {
-        button.addEventListener('click', function(e) {
+        button.addEventListener('click', function (e) {
             const ripple = document.createElement('span');
             const rect = this.getBoundingClientRect();
             const size = Math.max(rect.width, rect.height);
             const x = e.clientX - rect.left - size / 2;
             const y = e.clientY - rect.top - size / 2;
-            
+
             ripple.style.width = ripple.style.height = size + 'px';
             ripple.style.left = x + 'px';
             ripple.style.top = y + 'px';
             ripple.classList.add('ripple');
-            
+
             this.appendChild(ripple);
-            
+
             setTimeout(() => {
                 ripple.remove();
             }, 600);
@@ -1009,14 +1013,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 最初にスクロール位置をリセット
     resetScrollPosition();
-    
+
     // ハッシュが付いている場合は無視してトップに戻す
     if (window.location.hash) {
         setTimeout(() => {
             resetScrollPosition();
         }, 100);
     }
-    
+
     smoothScroll();
     cursorAnimation();
     setupStaggeredAnimation();
@@ -1031,7 +1035,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setupTypingAnimation(); // タイピングアニメーション
     setupParallaxEffect(); // パララックス効果
     setupRippleEffect(); // リップルエフェクト
-    
+
     // ページ読み込み完了後に再度リセット（念のため）
     window.addEventListener('load', () => {
         setTimeout(() => {
@@ -1046,7 +1050,11 @@ async function loadNews() {
     if (!newsList) return;
 
     try {
-        const response = await fetch('news.json?t=' + new Date().getTime());
+        // Determine language and file path
+        const lang = document.documentElement.lang === 'en' ? '_en' : '';
+        const jsonFile = `news${lang}.json`;
+
+        const response = await fetch(`${jsonFile}?t=` + new Date().getTime());
         if (!response.ok) throw new Error('Failed to load news');
         const newsData = await response.json();
 
