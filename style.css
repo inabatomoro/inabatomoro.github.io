@@ -961,6 +961,12 @@ br.pc-break {
     font-size: 1rem;
 }
 
+#about-contact .contact-details {
+    text-align: center;
+    margin-top: 40px;
+    /* 上に少し余白を追加 */
+}
+
 #about-contact .contact-details p {
     font-size: 1rem;
     line-height: 1.8;
@@ -1645,6 +1651,10 @@ body.is-menu-open .close-menu-button {
         color: #000 !important;
     }
 
+    #service .service-content li p {
+        color: #000 !important;
+    }
+
     #service .service-content ul {
         grid-template-columns: 1fr;
         /* 1列 */
@@ -1706,8 +1716,8 @@ body.is-menu-open .close-menu-button {
     }
 
     #about-contact .contact-details {
-        text-align: left;
-        /* 左詰めに変更 */
+        text-align: center;
+        /* 中央寄せに変更 */
     }
 
     #about-contact .email-button {
