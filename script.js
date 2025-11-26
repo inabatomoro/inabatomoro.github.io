@@ -284,7 +284,9 @@ function createWorksSlide(work) {
         <div class="slide-card">
             <div class="slide-front">
                 <a href="${work.url}" target="_blank" rel="noopener noreferrer">
-                    <img src="${work.image}" alt="${work.title}" onerror="this.style.display='none'">
+                    <div class="image-wrapper">
+                        <img src="${work.image}" alt="${work.title}" onerror="this.style.display='none'">
+                    </div>
                     <div class="slide-info">
                         ${titleHTML}
                         ${descriptionHTML}
