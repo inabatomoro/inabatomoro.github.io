@@ -258,5 +258,25 @@
     "production_period": "",
     "design": "",
     "notes": "実装のみ対応"
+  },
+  {
+    "image": "https://storage.googleapis.com/production-os-assets/assets/160eb37d-752f-4996-a224-2b47ff410fd3",
+    "title": "鮨【真】",
+    "description": "当店は五つ星レストランのシェフが手がける高級鮨を自宅へお届け。厳選された食材と独自の技術で、贅沢な鮨体験を提供します。自宅で五つ星の味わいをお楽しみください。",
+    "url": "https://sushi-makoto.studio.site",
+    "client": "",
+    "production_period": "2023.3",
+    "design": "",
+    "notes": "Studio Store活用"
+  },
+  {
+    "image": "https://storage.googleapis.com/production-os-assets/assets/f3fdffe8-32e8-452c-877e-ea79a7c44099",
+    "title": "M's company",
+    "description": "信頼と実績のパートナーとして、私たちはあなたの夢の実現をサポートします。 不動産と建設業界における豊富な経験と専門知識を持つ私たちが、最適なソリューションを提供し、持続可能な未来を共に築き上げます。",
+    "url": "https://ms-company.studio.site/",
+    "client": "",
+    "production_period": "2024.7",
+    "design": "",
+    "notes": "Studio Store活用"
   }
 ]

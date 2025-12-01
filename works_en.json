@@ -258,5 +258,25 @@
         "production_period": "",
         "design": "",
         "notes": "Implementation Only"
+    },
+    {
+        "image": "https://storage.googleapis.com/production-os-assets/assets/160eb37d-752f-4996-a224-2b47ff410fd3",
+        "title": "Sushi [Makoto]",
+        "description": "Our restaurant delivers high-end sushi prepared by a five-star restaurant chef to your home. We provide a luxurious sushi experience with carefully selected ingredients and unique techniques.",
+        "url": "https://sushi-makoto.studio.site",
+        "client": "Sushi Makoto",
+        "production_period": "2023.3",
+        "design": "",
+        "notes": "Studio Store"
+    },
+    {
+        "image": "https://storage.googleapis.com/production-os-assets/assets/f3fdffe8-32e8-452c-877e-ea79a7c44099",
+        "title": "M's company",
+        "description": "As a partner of trust and achievement, we support the realization of your dreams. With abundant experience and expertise in the real estate and construction industries, we provide optimal solutions.",
+        "url": "https://ms-company.studio.site/",
+        "client": "M's company",
+        "production_period": "2024.7",
+        "design": "",
+        "notes": "Studio Store"
     }
 ]
