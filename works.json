@@ -6,7 +6,7 @@
     "url": "https://www.smart-engineer.co.jp/",
     "client": "スマートエンジニア株式会社",
     "production_period": "",
-    "design": "Chihiro",
+    "design": "",
     "notes": ""
   },
   {
@@ -16,7 +16,7 @@
     "url": "https://www.kamigou-ah.com/",
     "client": "上郷どうぶつ病院",
     "production_period": "",
-    "design": "Waka",
+    "design": "",
     "notes": ""
   },
   {
@@ -26,7 +26,7 @@
     "url": "https://hayashi-komon2.studio.site/",
     "client": "FancyWebmate株式会社",
     "production_period": "",
-    "design": "Tatsu",
+    "design": "",
     "notes": ""
   },
   {
@@ -36,7 +36,7 @@
     "url": "https://share-tra.studio.site/",
     "client": "シェアトラ",
     "production_period": "",
-    "design": "Megumi",
+    "design": "",
     "notes": ""
   },
   {
@@ -46,7 +46,7 @@
     "url": "https://www.h-o-m-e-y.com/",
     "client": "株式会社HOMEY",
     "production_period": "",
-    "design": "Tatsu",
+    "design": "",
     "notes": ""
   },
   {
@@ -56,7 +56,7 @@
     "url": "https://remote-sales.studio.site/",
     "client": "FancyWebmate株式会社",
     "production_period": "",
-    "design": "Tatsu",
+    "design": "",
     "notes": ""
   },
   {
@@ -76,17 +76,7 @@
     "url": "https://camp-skill.azureao.co.jp/bimoji/",
     "client": "FancyWebmate株式会社",
     "production_period": "",
-    "design": "Tatsu",
-    "notes": ""
-  },
-  {
-    "image": "https://storage.googleapis.com/production-os-assets/assets/654e30fc-342b-475e-9187-83f1398b060d",
-    "title": "Tom's Event Pages",
-    "description": "",
-    "url": "https://tomevent.studio.site/",
-    "client": "",
-    "production_period": "",
-    "design": "Tom",
+    "design": "",
     "notes": ""
   },
   {
@@ -106,7 +96,7 @@
     "url": "https://lifes-home.com/",
     "client": "Life's Home",
     "production_period": "2025.5",
-    "design": "Ayumi",
+    "design": "",
     "notes": ""
   },
   {
@@ -126,7 +116,7 @@
     "url": "https://skill-hacks.co.jp/vigor/",
     "client": "FancyWebmate株式会社",
     "production_period": "",
-    "design": "Tatsu",
+    "design": "",
     "notes": ""
   },
   {
@@ -136,7 +126,7 @@
     "url": "https://aimaster.studio.site/",
     "client": "FancyWebmate株式会社",
     "production_period": "",
-    "design": "Tatsu",
+    "design": "",
     "notes": ""
   },
   {
@@ -146,7 +136,7 @@
     "url": "https://elite-camp.studio.site/",
     "client": "FancyWebmate株式会社",
     "production_period": "",
-    "design": "Tatsu",
+    "design": "",
     "notes": ""
   },
   {
@@ -166,7 +156,7 @@
     "url": "https://instamaster.studio.site/",
     "client": "FancyWebmate株式会社",
     "production_period": "",
-    "design": "Tatsu",
+    "design": "",
     "notes": ""
   },
   {
@@ -186,7 +176,7 @@
     "url": "https://banso-lp.studio.site/",
     "client": "FancyWebmate株式会社",
     "production_period": "",
-    "design": "Tatsu",
+    "design": "",
     "notes": ""
   },
   {
@@ -196,7 +186,7 @@
     "url": "https://fancywebmate.studio.site/",
     "client": "FancyWebmate株式会社",
     "production_period": "",
-    "design": "Tatsu",
+    "design": "",
     "notes": ""
   },
   {
@@ -224,7 +214,7 @@
     "title": "グランドヴィジョン株式会社",
     "description": "No Description Found",
     "url": "https://testsitegrand.studio.site/",
-    "client": "Mayu",
+    "client": "",
     "production_period": "",
     "design": "",
     "notes": "アニメーションのみ一部対応"
@@ -234,7 +224,7 @@
     "title": "東京プライベートオフィス株式会社",
     "description": "No Description Found",
     "url": "https://tokyoprivate.studio.site/",
-    "client": "Mayu",
+    "client": "",
     "production_period": "",
     "design": "",
     "notes": "アニメーションのみ一部対応"
@@ -246,7 +236,7 @@
     "url": "https://gyukin-kusanagi.studio.site/",
     "client": "",
     "production_period": "2023.3",
-    "design": "Tom",
+    "design": "",
     "notes": "Studio Store活用"
   },
   {
