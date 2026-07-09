@@ -15,7 +15,7 @@
     --acc: #FF0A6B;
     --acc-2: #FB41E6;
     --grad: linear-gradient(100deg, #FF0A6B, #FB41E6);
-    --font-en: 'Syne', sans-serif;
+    --font-en: 'Anton', sans-serif;
     --font-jp: 'Zen Kaku Gothic New', 'Hiragino Kaku Gothic ProN', sans-serif;
     --font-mono: 'IBM Plex Mono', monospace;
     --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
@@ -157,7 +157,7 @@ body.loaded .preloader {
 
 .preloader__logo {
     font-family: var(--font-en);
-    font-weight: 800;
+    font-weight: 400;
     font-size: clamp(1.4rem, 3.4vw, 2.4rem);
     letter-spacing: 0.14em;
 }
@@ -188,7 +188,7 @@ body.loaded .preloader {
     right: 4vw;
     bottom: 5vh;
     font-family: var(--font-en);
-    font-weight: 800;
+    font-weight: 400;
     font-size: clamp(3rem, 9vw, 8rem);
     line-height: 1;
     color: var(--ink-faint);
@@ -290,9 +290,9 @@ body.cursor-label .cursor__label {
 
 .site-head__logo {
     font-family: var(--font-en);
-    font-weight: 800;
-    font-size: 15px;
-    letter-spacing: 0.16em;
+    font-weight: 400;
+    font-size: 16px;
+    letter-spacing: 0.18em;
 }
 
 .site-head__logo .reg {
@@ -396,7 +396,7 @@ body.is-menu-open .menu-btn__lines i:nth-child(2) {
     display: inline-flex;
     align-items: baseline;
     font-family: var(--font-en);
-    font-weight: 800;
+    font-weight: 400;
     font-size: clamp(2rem, 5.6vh, 3.8rem);
     line-height: 1.35;
     letter-spacing: 0.02em;
@@ -495,7 +495,7 @@ body.is-menu-open .menu__foot {
 
 .split--stroke {
     color: transparent;
-    -webkit-text-stroke: 1.5px var(--ink);
+    -webkit-text-stroke: 2px var(--ink);
 }
 
 /* ---------- Section scaffolding ---------- */
@@ -567,10 +567,10 @@ body.is-menu-open .menu__foot {
 
 .hero__title {
     font-family: var(--font-en);
-    font-weight: 800;
-    font-size: clamp(3.4rem, 10.8vw, 11.5rem);
+    font-weight: 400;
+    font-size: clamp(4.2rem, 17vw, 18rem);
     line-height: 0.92;
-    letter-spacing: -0.015em;
+    letter-spacing: 0.01em;
     text-transform: uppercase;
 }
 
@@ -624,7 +624,7 @@ body.is-menu-open .menu__foot {
 
 .hero__stat-num {
     font-family: var(--font-en);
-    font-weight: 700;
+    font-weight: 400;
     font-size: clamp(1.6rem, 3vw, 2.6rem);
     line-height: 1.1;
     font-variant-numeric: tabular-nums;
@@ -696,8 +696,8 @@ body.is-menu-open .menu__foot {
 
 .marquee__track span {
     font-family: var(--font-en);
-    font-weight: 700;
-    font-size: clamp(2rem, 5.5vw, 5rem);
+    font-weight: 400;
+    font-size: clamp(2.2rem, 6vw, 5.5rem);
     line-height: 1.1;
     text-transform: uppercase;
     letter-spacing: 0.01em;
@@ -713,9 +713,9 @@ body.is-menu-open .menu__foot {
 /* ---------- Concept ---------- */
 .concept__title {
     font-family: var(--font-en);
-    font-weight: 800;
-    font-size: clamp(3rem, 8.4vw, 8.5rem);
-    line-height: 1.02;
+    font-weight: 400;
+    font-size: clamp(3.2rem, 9.5vw, 9.5rem);
+    line-height: 1.05;
     letter-spacing: -0.01em;
     margin-bottom: clamp(40px, 7vh, 80px);
 }
@@ -807,12 +807,12 @@ body.is-menu-open .menu__foot {
 
 .works__intro-big {
     font-family: var(--font-en);
-    font-weight: 800;
-    font-size: clamp(2.6rem, 6vw, 6rem);
-    line-height: 0.95;
+    font-weight: 400;
+    font-size: clamp(3rem, 7vw, 7rem);
+    line-height: 1.02;
     text-transform: uppercase;
     color: transparent;
-    -webkit-text-stroke: 1.5px var(--ink);
+    -webkit-text-stroke: 2px var(--ink);
 }
 
 .works__intro-txt {
@@ -905,9 +905,9 @@ body.is-menu-open .menu__foot {
 
 .works__end-big {
     font-family: var(--font-en);
-    font-weight: 800;
-    font-size: clamp(2.4rem, 5.5vw, 5.5rem);
-    line-height: 0.98;
+    font-weight: 400;
+    font-size: clamp(2.8rem, 6.5vw, 6.5rem);
+    line-height: 1.02;
     text-transform: uppercase;
     margin-bottom: 32px;
 }
@@ -944,9 +944,9 @@ body.is-menu-open .menu__foot {
 
 .svc__title {
     font-family: var(--font-en);
-    font-weight: 800;
-    font-size: clamp(3rem, 8.4vw, 8.5rem);
-    line-height: 1.02;
+    font-weight: 400;
+    font-size: clamp(3.2rem, 9.5vw, 9.5rem);
+    line-height: 1.05;
     margin-bottom: 20px;
 }
 
@@ -992,8 +992,8 @@ body.is-menu-open .menu__foot {
 
 .svc__en {
     font-family: var(--font-en);
-    font-weight: 700;
-    font-size: clamp(1.7rem, 4.6vw, 4.2rem);
+    font-weight: 400;
+    font-size: clamp(2rem, 5.2vw, 5rem);
     line-height: 1.05;
     text-transform: uppercase;
     letter-spacing: 0;
@@ -1094,9 +1094,9 @@ body.is-menu-open .menu__foot {
 
 .svc-sub__grid h4 {
     font-family: var(--font-en);
-    font-weight: 700;
-    font-size: 0.95rem;
-    letter-spacing: 0.05em;
+    font-weight: 400;
+    font-size: 1rem;
+    letter-spacing: 0.08em;
 }
 
 .svc-sub__grid p {
@@ -1109,9 +1109,9 @@ body.is-menu-open .menu__foot {
 /* ---------- Reason ---------- */
 .reason__title {
     font-family: var(--font-en);
-    font-weight: 800;
-    font-size: clamp(3rem, 8.4vw, 8.5rem);
-    line-height: 1.02;
+    font-weight: 400;
+    font-size: clamp(3.2rem, 9.5vw, 9.5rem);
+    line-height: 1.05;
     margin-bottom: clamp(48px, 8vh, 110px);
 }
 
@@ -1139,7 +1139,7 @@ body.is-menu-open .menu__foot {
 
 .reason__num {
     font-family: var(--font-en);
-    font-weight: 800;
+    font-weight: 400;
     font-size: clamp(4rem, 9vw, 9rem);
     line-height: 0.9;
     color: transparent;
@@ -1163,9 +1163,9 @@ body.is-menu-open .menu__foot {
 /* ---------- News ---------- */
 .news__title {
     font-family: var(--font-en);
-    font-weight: 800;
-    font-size: clamp(3rem, 8.4vw, 8.5rem);
-    line-height: 1.02;
+    font-weight: 400;
+    font-size: clamp(3.2rem, 9.5vw, 9.5rem);
+    line-height: 1.05;
     margin-bottom: clamp(40px, 7vh, 80px);
 }
 
@@ -1238,11 +1238,11 @@ body.is-menu-open .menu__foot {
 
 .contact__title {
     font-family: var(--font-en);
-    font-weight: 800;
-    font-size: clamp(3.4rem, 10.8vw, 11.5rem);
-    line-height: 0.94;
+    font-weight: 400;
+    font-size: clamp(4rem, 15vw, 15.5rem);
+    line-height: 0.92;
     text-transform: uppercase;
-    letter-spacing: -0.01em;
+    letter-spacing: 0.01em;
     margin-bottom: clamp(36px, 6vh, 64px);
 }
 
@@ -1546,7 +1546,7 @@ body.is-menu-open .menu__foot {
     }
 
     .hero__title {
-        font-size: 12vw;
+        font-size: 21vw;
         margin-top: 2vh;
     }
 
@@ -1612,7 +1612,7 @@ body.is-menu-open .menu__foot {
     }
 
     .works__intro-big {
-        font-size: 2rem;
+        font-size: 2.6rem;
     }
 
     .works__end {
