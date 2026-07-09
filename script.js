@@ -136,14 +136,13 @@
         });
 
         if (words) {
-            gsap.to(words, {
-                y: '-1.6em',
-                duration: 0.5,
-                delay: 0.6,
-                ease: 'power3.inOut',
-                onComplete() {
-                    gsap.to(words, { y: '-3.2em', duration: 0.5, delay: 0.25, ease: 'power3.inOut' });
-                }
+            // 3つの文言を同じ位置でクロスフェード（カクつく段階移動をやめる）
+            const items = $$('li', words);
+            items.forEach((li, i) => {
+                if (i === 0) return;
+                const at = 0.55 * i;
+                gsap.to(items[i - 1], { autoAlpha: 0, duration: 0.3, ease: 'power2.inOut', delay: at });
+                gsap.to(li, { autoAlpha: 1, duration: 0.3, ease: 'power2.inOut', delay: at + 0.08 });
             });
         }
 
@@ -309,14 +308,14 @@
     function initMarquee() {
         const track = $('#marquee-track');
         if (!track || prefersReduced) return;
-        const tween = gsap.to(track, { xPercent: -50, repeat: -1, duration: 24, ease: 'none' });
-        // スクロール速度でマーキーを加速
+        // 左から右へゆっくり流れ、スクロールに合わせて加速する
+        const tween = gsap.fromTo(track, { xPercent: -50 }, { xPercent: 0, repeat: -1, duration: 46, ease: 'none' });
         ScrollTrigger.create({
             start: 0,
             end: 'max',
             onUpdate: (self) => {
-                const v = Math.min(Math.abs(self.getVelocity()) / 1200, 4);
-                gsap.to(tween, { timeScale: 1 + v, duration: 0.3, overwrite: true });
+                const v = Math.min(Math.abs(self.getVelocity()) / 1500, 2.5);
+                gsap.to(tween, { timeScale: 1 + v, duration: 0.35, overwrite: true });
             }
         });
     }
@@ -377,9 +376,6 @@
             const res = await fetch(`works${lang}.json?t=${Date.now()}`);
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
             const works = await res.json();
-
-            const countEl = $('#works-count');
-            if (countEl) countEl.textContent = String(works.length).padStart(2, '0');
 
             const endCard = $('.works__end', track);
             works.forEach((work, idx) => {
