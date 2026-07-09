@@ -43,21 +43,31 @@
     };
 
     /* ---------- Text splitting ---------- */
+    // スクリーンリーダーには sr-only の原文を読ませ、視覚用の分割文字は aria-hidden にする
     function splitChars(el) {
         const text = el.textContent;
-        el.setAttribute('aria-label', text.trim());
-        const frag = document.createDocumentFragment();
+        const chars = [];
+        el.textContent = '';
+
+        const sr = document.createElement('span');
+        sr.className = 'sr-only';
+        sr.textContent = text.trim();
+
+        const wrap = document.createElement('span');
+        wrap.className = 'split-chars';
+        wrap.setAttribute('aria-hidden', 'true');
+
         for (const ch of text) {
             const span = document.createElement('span');
             span.className = 'char';
-            span.setAttribute('aria-hidden', 'true');
             span.textContent = ch === ' ' ? ' ' : ch;
-            frag.appendChild(span);
+            wrap.appendChild(span);
+            chars.push(span);
         }
-        el.textContent = '';
-        el.appendChild(frag);
+        el.appendChild(sr);
+        el.appendChild(wrap);
         el.classList.add('is-ready');
-        return $$('.char', el);
+        return chars;
     }
 
     /* ---------- Preloader ---------- */
@@ -539,9 +549,11 @@
 
     /* ---------- News modal ---------- */
     const modal = $('#news-modal');
+    let modalOpener = null;
 
     function openModal(item) {
         if (!modal) return;
+        modalOpener = document.activeElement;
         $('#modal-date').textContent = item.date;
         $('#modal-title').textContent = item.title;
         $('#modal-body').innerHTML = item.content || '';
@@ -557,6 +569,10 @@
         modal.classList.remove('is-open');
         modal.setAttribute('aria-hidden', 'true');
         startScroll();
+        if (modalOpener && typeof modalOpener.focus === 'function') {
+            modalOpener.focus();
+            modalOpener = null;
+        }
     }
 
     function initModal() {
@@ -587,23 +603,26 @@
     }
 
     /* ---------- Boot ---------- */
+    // 1つの機能が失敗しても他が道連れにならないように分離して起動する
+    const safe = (fn) => { try { fn(); } catch (err) { console.error('[init]', err); } };
+
     const boot = () => {
-        initPreloader();
-        initCursor();
-        initMagnetic();
-        initScramble();
-        initMenu();
-        initAnchors();
-        initRoleRotator();
-        initMarquee();
-        initSectionTitles();
-        initScrubText();
-        initWorks();
-        initService();
-        initReason();
-        initNews();
-        initModal();
-        initMisc();
+        safe(initPreloader);
+        safe(initCursor);
+        safe(initMagnetic);
+        safe(initScramble);
+        safe(initMenu);
+        safe(initAnchors);
+        safe(initRoleRotator);
+        safe(initMarquee);
+        safe(initSectionTitles);
+        safe(initScrubText);
+        safe(initWorks);
+        safe(initService);
+        safe(initReason);
+        safe(initNews);
+        safe(initModal);
+        safe(initMisc);
     };
 
     if (document.readyState === 'loading') {
