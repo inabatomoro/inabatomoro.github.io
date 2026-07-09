@@ -1,2 +1,17 @@
-User-agent: *
-Allow: /
+# STUDIO WORKS LLC.
+
+> Web制作・Web開発・AI導入支援を手がける東京（渋谷）のクリエイティブスタジオ。
+> 戦略から設計・デザイン・実装・運用までワンストップで提供します。
+
+## Services
+- Web Production（Web制作）: Studioを中心としたコーポレートサイト・LP・採用サイト制作
+- Web Development（Web開発）: Webアプリ・業務システムのUI/UX設計と実装
+- AI Integration（AI導入支援）: 業務フロー可視化、生成AI活用、自動化、内製化支援
+- Support: SNS & LINE運用 / LLMO & SEO / 保守・運用 / コンテンツ制作
+- 料金は内容・規模に応じた個別お見積り
+
+## Links
+- Site: https://www.studio-works.jp/
+- English: https://www.studio-works.jp/en.html
+- Works data: https://www.studio-works.jp/works.json
+- Contact: info@studioworks.llc

@@ -4,14 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>STUDIO WORKS LLC.｜WEBに関する課題をワンストップで</title>
+    <script>document.documentElement.classList.add('js');</script>
+    <title>STUDIO WORKS LLC.｜Web制作・Web開発・AI導入支援</title>
     <meta name="description"
-        content="STUDIO WORKS LLC.は、Webデザイン・開発を通じてビジネスの成長を支援するクリエイティブパートナーです。Studioでのサイト制作をメインとしつつ、課題解決までワンストップで提供します。">
+        content="STUDIO WORKS LLC.は、Web制作・Web開発・AI導入支援を手がける東京のクリエイティブスタジオです。戦略から設計・デザイン・実装・運用まで、事業を前に進めるクリエイティブをワンストップで提供します。">
 
     <!-- OGP設定 -->
-    <meta property="og:title" content="STUDIO WORKS LLC.｜WEBに関する課題をワンストップで">
+    <meta property="og:title" content="STUDIO WORKS LLC.｜Web制作・Web開発・AI導入支援">
     <meta property="og:description"
-        content="STUDIO WORKS LLC.は、Webデザイン・開発を通じてビジネスの成長を支援するクリエイティブパートナーです。Studioでのサイト制作をメインとしつつ、課題解決までワンストップで提供します。">
+        content="STUDIO WORKS LLC.は、Web制作・Web開発・AI導入支援を手がける東京のクリエイティブスタジオです。戦略から設計・デザイン・実装・運用まで、事業を前に進めるクリエイティブをワンストップで提供します。">
     <meta property="og:image" content="https://www.studio-works.jp/images/ogp_image.png">
     <meta property="og:url" content="https://www.studio-works.jp">
     <meta property="og:type" content="website">
@@ -19,10 +20,14 @@
 
     <!-- Twitter Card設定 -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="STUDIO WORKS LLC.｜WEBに関する課題をワンストップで">
+    <meta name="twitter:title" content="STUDIO WORKS LLC.｜Web制作・Web開発・AI導入支援">
     <meta name="twitter:description"
-        content="STUDIO WORKS LLC.は、Webデザイン・開発を通じてビジネスの成長を支援するクリエイティブパートナーです。Studioでのサイト制作をメインとしつつ、課題解決までワンストップで提供します。">
+        content="STUDIO WORKS LLC.は、Web制作・Web開発・AI導入支援を手がける東京のクリエイティブスタジオです。戦略から設計・デザイン・実装・運用までワンストップで提供します。">
     <meta name="twitter:image" content="https://www.studio-works.jp/images/ogp_image.png">
+
+    <link rel="canonical" href="https://www.studio-works.jp/">
+    <link rel="alternate" hreflang="ja" href="https://www.studio-works.jp/">
+    <link rel="alternate" hreflang="en" href="https://www.studio-works.jp/en.html">
 
     <!-- JSON-LD 構造化データ -->
     <script type="application/ld+json">
@@ -31,22 +36,29 @@
       "@graph": [
         {
           "@type": "Organization",
+          "@id": "https://www.studio-works.jp/#organization",
           "name": "STUDIO WORKS LLC.",
           "url": "https://www.studio-works.jp",
           "logo": "https://www.studio-works.jp/images/favicon.png",
+          "description": "Web制作・Web開発・AI導入支援を手がける東京のクリエイティブスタジオ",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "渋谷区",
+            "addressRegion": "東京都",
+            "addressCountry": "JP"
+          },
           "contactPoint": {
             "@type": "ContactPoint",
             "contactType": "customer service",
             "email": "info@studioworks.llc"
-          }
+          },
+          "knowsAbout": ["Web Production", "Web Development", "AI Integration", "UI/UX Design"]
         },
         {
           "@type": "WebSite",
-          "name": "STUDIO WORKS LLC.｜WEBに関する課題をワンストップで",
+          "name": "STUDIO WORKS LLC.｜Web制作・Web開発・AI導入支援",
           "url": "https://www.studio-works.jp",
-          "publisher": {
-            "@id": "https://www.studio-works.jp/#organization"
-          }
+          "publisher": { "@id": "https://www.studio-works.jp/#organization" }
         }
       ]
     }
@@ -56,258 +68,371 @@
     <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Noto+Sans+JP:wght@400;700&display=swap"
+    <link
+        href="https://fonts.googleapis.com/css2?family=Syne:wght@500;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://unpkg.com/split-type"></script>
+
+    <script type="importmap">
+    { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" } }
+    </script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script defer src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
+    <script defer src="script.js"></script>
+    <script type="module" src="webgl.js"></script>
 </head>
 
 <body>
-    <!-- Loading Screen -->
-    <div class="loading-screen">
-        <div class="loading-content">
-            <div class="loading-logo">STUDIO WORKS</div>
-            <div class="loading-bar">
-                <div class="loading-progress"></div>
-            </div>
+    <!-- Preloader -->
+    <div class="preloader" aria-hidden="true">
+        <div class="preloader__inner">
+            <p class="preloader__logo">STUDIO WORKS<span class="preloader__reg">®</span></p>
+            <ul class="preloader__words">
+                <li>WEB PRODUCTION</li>
+                <li>WEB DEVELOPMENT</li>
+                <li>AI INTEGRATION</li>
+            </ul>
         </div>
+        <div class="preloader__count"><span id="pre-count">000</span></div>
+        <div class="preloader__bar"><i id="pre-bar"></i></div>
     </div>
-    <div class="spotlight-overlay"></div>
-    <div class="cursor-ring"></div>
-    <div class="cursor-dot"></div>
-    <div class="background-layer"></div>
-    <!-- Particle Background -->
-    <canvas id="particle-canvas"></canvas>
-    <header>
-        <button class="hamburger-menu">
-            <span></span>
-            <span></span>
-            <span></span>
-        </button>
-        <div class="header-controls">
-            <a href="en.html" class="lang-switch">EN</a>
+
+    <!-- WebGL Background -->
+    <canvas id="gl" aria-hidden="true"></canvas>
+    <!-- Film grain -->
+    <div class="grain" aria-hidden="true"></div>
+    <!-- Custom cursor -->
+    <div class="cursor" aria-hidden="true">
+        <div class="cursor__dot"></div>
+        <div class="cursor__label"></div>
+    </div>
+
+    <header class="site-head">
+        <a href="#hero" class="site-head__logo" data-scroll-to>STUDIO WORKS<span class="reg">®</span></a>
+        <div class="site-head__right">
+            <a href="en.html" class="site-head__lang" data-scramble>EN</a>
+            <button class="menu-btn" type="button" aria-label="メニューを開く" aria-expanded="false" aria-controls="menu">
+                <span class="menu-btn__txt">MENU</span>
+                <span class="menu-btn__lines"><i></i><i></i></span>
+            </button>
         </div>
     </header>
 
-    <div class="modal-menu">
-        <button class="close-menu-button"><span></span></button>
-        <nav>
-            <a href="#intro">TOP</a>
-            <a href="#concept">CONCEPT</a>
-            <a href="#works">WORKS</a>
-            <a href="#service">SERVICE</a>
-            <a href="#gallery">GALLERY</a>
-            <a href="#news">NEWS</a>
-            <a href="#about-contact">CONTACT</a>
-            <a href="https://www.studio-works.jp/stuwor-port/">CANVAS</a>
-        </nav>
-    </div>
-
-    <div class="container">
-        <section class="section" id="intro">
-            <div class="intro-content">
-                <h1>Design Works <br class="sp-break">with<br class="pc-break"><span class="sp-space"> </span>Studio
-                </h1>
-                <p class="typing-text typing-text-first">WEBに関する課題をワンストップで</p>
-                <p class="typing-text typing-text-second">ANALYZE / DESIGN / BUILD / OPERATE</p>
+    <!-- Fullscreen menu -->
+    <nav class="menu" id="menu" aria-hidden="true">
+        <div class="menu__bg"></div>
+        <div class="menu__inner">
+            <ol class="menu__list">
+                <li><a href="#hero" data-scroll-to data-scramble>TOP</a><span class="menu__jp">トップ</span></li>
+                <li><a href="#concept" data-scroll-to data-scramble>CONCEPT</a><span class="menu__jp">コンセプト</span></li>
+                <li><a href="#works" data-scroll-to data-scramble>WORKS</a><span class="menu__jp">制作実績</span></li>
+                <li><a href="#service" data-scroll-to data-scramble>SERVICE</a><span class="menu__jp">サービス</span></li>
+                <li><a href="#reason" data-scroll-to data-scramble>REASON</a><span class="menu__jp">選ばれる理由</span></li>
+                <li><a href="#news" data-scroll-to data-scramble>NEWS</a><span class="menu__jp">ニュース</span></li>
+                <li><a href="#contact" data-scroll-to data-scramble>CONTACT</a><span class="menu__jp">お問い合わせ</span></li>
+            </ol>
+            <div class="menu__foot">
+                <a href="https://www.studio-works.jp/stuwor-port/" data-scramble>CANVAS ↗</a>
+                <a href="https://x.com/austomterry" target="_blank" rel="noopener noreferrer" data-scramble>X (TWITTER) ↗</a>
+                <a href="mailto:info@studioworks.llc" data-scramble>MAIL ↗</a>
             </div>
-        </section>
-        <section class="section" id="concept">
-            <div class="concept-content">
-                <h2>Partnership in Growth.</h2>
-                <p>クリエイティブは、見た目の美しさを競うものではなく、ビジネスの課題を解決するための手段です。<br>私たちは、単なる“制作代行”ではありません。<br>Webに関するあらゆる課題にワンストップで向き合い、クライアントの成長に伴走するパートナーでありたいと考えています。
-                </p>
-            </div>
-        </section>
-
-        <section class="section" id="works">
-            <div class="works-background-text parallax-slow"><span>Design</span><span>Works</span></div>
-            <div class="triple-slider-container">
-            </div>
-            <div class="footer-background-text parallax-slow"><span>with</span><span>Studio</span></div>
-        </section>
-
-        <section class="section" id="service">
-            <div class="service-content">
-                <div class="service-header-group">
-                    <h2>Service</h2>
-                    <p class="service-description">
-                        WEBに関する事業課題に応じて、現状把握・企画・制作・運用をワンストップで提供します。<br>戦略立案から運用までを一貫して担い、成果につながる支援を行います。</p>
-                </div>
-                <ul>
-                    <li>
-                        <h3>Studio Web Production</h3>
-                        <p>Studioを使った高機能・高品質なウェブサイトを制作します。</p>
-                        <p class="price-estimate">200,000円〜</p>
-                    </li>
-                    <li>
-                        <h3>Web Application Development</h3>
-                        <p>ユーザーにとって使いやすく、心地よい体験をデザインします。</p>
-                        <p class="price-estimate">300,000円〜</p>
-                    </li>
-                    <li>
-                        <h3>SNS & LINE Management</h3>
-                        <p>SNS（Instagram, X, Facebookなど）やLINE公式アカウントを活用した戦略的な運用を支援。顧客エンゲージメントを高め、ブランド認知度向上と集客に貢献します。</p>
-                        <p class="price-estimate">150,000円〜</p>
-                    </li>
-                    <li>
-                        <h3>LLMO & SEO Analytics</h3>
-                        <p>検索エンジン最適化（SEO）とGoogle Analyticsを用いた分析・改善提案を行います。</p>
-                        <p class="price-estimate">30,000円〜／月額</p>
-                    </li>
-                    <li>
-                        <h3>Support & Maintenance</h3>
-                        <p>公開後のサイトの保守・運用をサポートし、安定したサイト運営を実現します。</p>
-                        <p class="price-estimate">30,000円〜／月額</p>
-                    </li>
-                    <li>
-                        <h3>Content Creation</h3>
-                        <p>ウェブサイトに必要な文章作成や、写真・イラストなどの素材制作をサポートします。</p>
-                        <p class="price-estimate">100,000円〜</p>
-                    </li>
-                </ul>
-            </div>
-        </section>
-
-        <section class="section" id="gallery">
-            <div class="marquee-container">
-                <div class="marquee-column">
-                    <div class="marquee-track reverse">
-                        <div class="grid-item"><img src="images/gallery/Business Meeting in a Modern Workspace.png"
-                                alt="Business Meeting in a Modern Workspace"></div>
-                        <div class="grid-item"><img src="images/gallery/Business Meeting in Modern Office.png"
-                                alt="Business Meeting in Modern Office"></div>
-                        <div class="grid-item"><img src="images/gallery/Business Meeting Presentation.jpeg"
-                                alt="Business Meeting Presentation"></div>
-                        <div class="grid-item"><img src="images/gallery/Contemplative Woman in White Shirt.png"
-                                alt="Contemplative Woman in White Shirt"></div>
-                        <div class="grid-item"><img src="images/gallery/Engaging Discussion in Modern Workspace.png"
-                                alt="Engaging Discussion in Modern Workspace"></div>
-                        <!-- Cloned -->
-                        <div class="grid-item"><img src="images/gallery/Business Meeting in a Modern Workspace.png"
-                                alt="Business Meeting in a Modern Workspace"></div>
-                        <div class="grid-item"><img src="images/gallery/Business Meeting in Modern Office.png"
-                                alt="Business Meeting in Modern Office"></div>
-                        <div class="grid-item"><img src="images/gallery/Business Meeting Presentation.jpeg"
-                                alt="Business Meeting Presentation"></div>
-                        <div class="grid-item"><img src="images/gallery/Contemplative Woman in White Shirt.png"
-                                alt="Contemplative Woman in White Shirt"></div>
-                        <div class="grid-item"><img src="images/gallery/Engaging Discussion in Modern Workspace.png"
-                                alt="Engaging Discussion in Modern Workspace"></div>
-                    </div>
-                </div>
-                <div class="marquee-column">
-                    <div class="marquee-track">
-                        <div class="grid-item"><img src="images/gallery/Engaging presentation in a modern office.png"
-                                alt="Engaging presentation in a modern office"></div>
-                        <div class="grid-item"><img src="images/gallery/Focused woman working on a laptop.png"
-                                alt="Focused woman working on a laptop"></div>
-                        <div class="grid-item"><img src="images/gallery/Modern Office Lobby with Silhouettes.png"
-                                alt="Modern Office Lobby with Silhouettes"></div>
-                        <div class="grid-item"><img src="images/gallery/Modern Office Workspace.png"
-                                alt="Modern Office Workspace"></div>
-                        <!-- Cloned -->
-                        <div class="grid-item"><img src="images/gallery/Engaging presentation in a modern office.png"
-                                alt="Engaging presentation in a modern office"></div>
-                        <div class="grid-item"><img src="images/gallery/Focused woman working on a laptop.png"
-                                alt="Focused woman working on a laptop"></div>
-                        <div class="grid-item"><img src="images/gallery/Modern Office Lobby with Silhouettes.png"
-                                alt="Modern Office Lobby with Silhouettes"></div>
-                        <div class="grid-item"><img src="images/gallery/Modern Office Workspace.png"
-                                alt="Modern Office Workspace"></div>
-                    </div>
-                </div>
-                <div class="marquee-column">
-                    <div class="marquee-track reverse">
-                        <div class="grid-item"><img src="images/gallery/Professional Woman in Office Setting.png"
-                                alt="Professional Woman in Office Setting"></div>
-                        <div class="grid-item"><img src="images/gallery/Sunlit Conference Room.png"
-                                alt="Sunlit Conference Room"></div>
-                        <div class="grid-item"><img src="images/gallery/Team Meeting in a Bright Office.png"
-                                alt="Team Meeting in a Bright Office"></div>
-                        <div class="grid-item"><img src="images/gallery/Team Meeting with Smiles.png"
-                                alt="Team Meeting with Smiles"></div>
-                        <!-- Cloned -->
-                        <div class="grid-item"><img src="images/gallery/Professional Woman in Office Setting.png"
-                                alt="Professional Woman in Office Setting"></div>
-                        <div class="grid-item"><img src="images/gallery/Sunlit Conference Room.png"
-                                alt="Sunlit Conference Room"></div>
-                        <div class="grid-item"><img src="images/gallery/Team Meeting in a Bright Office.png"
-                                alt="Team Meeting in a Bright Office"></div>
-                        <div class="grid-item"><img src="images/gallery/Team Meeting with Smiles.png"
-                                alt="Team Meeting with Smiles"></div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="section" id="news">
-            <div class="news-content">
-                <h2>News</h2>
-                <ul class="news-list">
-                    <!-- JSで動的に生成 -->
-                </ul>
-            </div>
-        </section>
-
-        <section class="section" id="about-contact">
-            <div class="about-content">
-                <h2>Contact</h2>
-                <div class="right-column">
-                    <dl>
-                        <div class="about-item">
-                            <dt>Company</dt>
-                            <dd>STUDIO WORKS LLC.</dd>
-                        </div>
-                        <div class="about-item">
-                            <dt>Business</dt>
-                            <dd>Design & Development</dd>
-                        </div>
-                        <div class="about-item">
-                            <dt>Location</dt>
-                            <dd>Maruyama-cho, Shibuya-ku, Tokyo</dd>
-                        </div>
-                        <div class="about-item">
-                            <dt>Contact</dt>
-                            <dd>info@studioworks.llc</dd>
-                        </div>
-                    </dl>
-                    <div class="contact-details">
-                        <p>お仕事のご依頼・ご相談は、下記よりお気軽にご連絡ください。</p>
-                        <a href="https://x.com/austomterry" class="email-button"><span>相談してみる</span></a>
-                        <footer class="footer-copyright">
-                            <small>&copy; 2025 STUDIO WORKS LLC. All Rights Reserved.</small>
-                        </footer>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </div>
-    <div class="scroll-indicator">
-        <span class="scroll-text">SCROLL</span>
-        <span class="scroll-arrow-down"></span>
-        <div class="scroll-arrows-cross">
-            <span class="arrow-up"></span>
-            <span class="arrow-down"></span>
-            <span class="arrow-left"></span>
-            <span class="arrow-right"></span>
         </div>
-    </div>
+    </nav>
+
+    <main>
+        <!-- ============ HERO ============ -->
+        <section class="hero" id="hero">
+            <p class="hero__eyebrow"><span class="hero__dot"></span>CREATIVE STUDIO — TOKYO, JAPAN</p>
+            <h1 class="hero__title">
+                <span class="line"><span class="split" data-split>STUDIO</span></span>
+                <span class="line line--indent"><span class="split split--stroke" data-split>WORKS</span></span>
+            </h1>
+            <div class="hero__field">
+                <span class="hero__field-label">FIELD</span>
+                <span class="hero__role" id="hero-role">WEB PRODUCTION</span>
+            </div>
+            <p class="hero__lead">
+                Web制作・Web開発・AI導入支援。<br>
+                デザインとテクノロジーで、事業を前に進めるクリエイティブスタジオ。
+            </p>
+            <ul class="hero__stats">
+                <li><span class="hero__stat-num" id="stat-works" data-count>27</span><span class="hero__stat-label">WORKS</span></li>
+                <li><span class="hero__stat-num" data-count>3</span><span class="hero__stat-label">FIELDS</span></li>
+                <li><span class="hero__stat-num">∞</span><span class="hero__stat-label">ITERATION</span></li>
+            </ul>
+            <div class="scroll-cue" aria-hidden="true">
+                <span>SCROLL</span>
+                <i></i>
+            </div>
+        </section>
+
+        <!-- ============ MARQUEE ============ -->
+        <div class="marquee" aria-hidden="true">
+            <div class="marquee__track" id="marquee-track">
+                <span>WEB PRODUCTION <em>✳</em> WEB DEVELOPMENT <em>✳</em> AI INTEGRATION <em>✳</em>&nbsp;</span>
+                <span>WEB PRODUCTION <em>✳</em> WEB DEVELOPMENT <em>✳</em> AI INTEGRATION <em>✳</em>&nbsp;</span>
+                <span>WEB PRODUCTION <em>✳</em> WEB DEVELOPMENT <em>✳</em> AI INTEGRATION <em>✳</em>&nbsp;</span>
+                <span>WEB PRODUCTION <em>✳</em> WEB DEVELOPMENT <em>✳</em> AI INTEGRATION <em>✳</em>&nbsp;</span>
+            </div>
+        </div>
+
+        <!-- ============ CONCEPT ============ -->
+        <section class="section section--concept" id="concept">
+            <header class="sec-head">
+                <span class="sec-head__idx">01</span>
+                <span class="sec-head__label" data-scramble>CONCEPT</span>
+            </header>
+            <h2 class="concept__title">
+                <span class="line"><span class="split" data-split>Partnership</span></span>
+                <span class="line"><span class="split" data-split>in Growth.</span></span>
+            </h2>
+            <div class="concept__body">
+                <p class="concept__lead" data-scrub-text>
+                    STUDIO WORKSは、Web制作・Web開発・AI導入支援を手がけるクリエイティブスタジオ。クリエイティブは、見た目の美しさを競うものではなく、ビジネスの課題を解決するための手段です。私たちは単なる制作代行ではなく、戦略から設計・デザイン・実装・運用までをワンストップで担い、クライアントの成長に伴走するパートナーであり続けます。
+                </p>
+                <p class="concept__en">ANALYZE / DESIGN / BUILD / OPERATE — ALL UNDER ONE ROOF.</p>
+            </div>
+        </section>
+
+        <!-- ============ WORKS (horizontal) ============ -->
+        <section class="section section--works" id="works">
+            <div class="works__pin">
+                <header class="sec-head sec-head--works">
+                    <span class="sec-head__idx">02</span>
+                    <span class="sec-head__label" data-scramble>SELECTED WORKS</span>
+                    <span class="sec-head__count">(<span id="works-count">00</span>)</span>
+                </header>
+                <div class="works__hint" aria-hidden="true">SCROLL DOWN → MOVE RIGHT</div>
+                <div class="works__track" id="works-track">
+                    <div class="works__intro">
+                        <p class="works__intro-big">SELECTED<br>WORKS</p>
+                        <p class="works__intro-txt">Web制作を中心とした実績の一部をご紹介。<br>カードを選ぶと実際のサイトが開きます。</p>
+                    </div>
+                    <!-- work cards injected by JS -->
+                    <div class="works__end">
+                        <p class="works__end-big">YOUR<br>PROJECT<br>HERE ?</p>
+                        <a class="btn btn--ghost" href="#contact" data-scroll-to data-magnetic><span>相談してみる</span></a>
+                    </div>
+                </div>
+                <div class="works__progress" aria-hidden="true"><i id="works-progress"></i></div>
+            </div>
+        </section>
+
+        <!-- ============ SERVICE (light) ============ -->
+        <section class="section section--service" id="service">
+            <header class="sec-head">
+                <span class="sec-head__idx">03</span>
+                <span class="sec-head__label" data-scramble>SERVICE</span>
+            </header>
+            <h2 class="svc__title">
+                <span class="line"><span class="split" data-split>What we do.</span></span>
+            </h2>
+            <p class="svc__lead">
+                事業課題に応じて、現状分析・企画・制作・運用までワンストップで提供。<br class="pc-only">
+                「作って終わり」ではなく、成果につながる支援を行います。
+            </p>
+
+            <ul class="svc__list">
+                <li class="svc__row" data-svc>
+                    <div class="svc__row-head">
+                        <span class="svc__num">01</span>
+                        <h3 class="svc__en">WEB PRODUCTION</h3>
+                        <span class="svc__jp">Web制作</span>
+                        <span class="svc__arrow" aria-hidden="true">→</span>
+                    </div>
+                    <div class="svc__row-body">
+                        <p class="svc__desc">
+                            「伝わる」を設計する、ハイエンドなサイト制作。Studioを中心に、コーポレートサイト・LP・採用サイトを企画から公開まで一貫して手がけます。目に留まる表現と、成果につながる情報設計を両立します。
+                        </p>
+                        <ul class="svc__tags">
+                            <li>Studio</li><li>コーポレートサイト</li><li>LP</li><li>採用サイト</li><li>CMS構築</li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="svc__row" data-svc>
+                    <div class="svc__row-head">
+                        <span class="svc__num">02</span>
+                        <h3 class="svc__en">WEB DEVELOPMENT</h3>
+                        <span class="svc__jp">Web開発</span>
+                        <span class="svc__arrow" aria-hidden="true">→</span>
+                    </div>
+                    <div class="svc__row-body">
+                        <p class="svc__desc">
+                            業務システム・WebアプリケーションのUI/UX設計から実装まで。ユーザーにとって使いやすく、心地よい体験を軸に、事業の仕組みそのものをデザインします。
+                        </p>
+                        <ul class="svc__tags">
+                            <li>Webアプリ</li><li>業務システム</li><li>UI/UX設計</li><li>フルスクラッチ開発</li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="svc__row" data-svc>
+                    <div class="svc__row-head">
+                        <span class="svc__num">03</span>
+                        <h3 class="svc__en">AI INTEGRATION</h3>
+                        <span class="svc__jp">AI導入支援</span>
+                        <span class="svc__arrow" aria-hidden="true">→</span>
+                    </div>
+                    <div class="svc__row-body">
+                        <p class="svc__desc">
+                            「AIを使いたいが、何から始めればいいか分からない」に応えます。業務フローの可視化から、ツール選定・構築・内製化支援まで。制作会社としてAIを日常的に使い倒している実務知見で伴走します。
+                        </p>
+                        <ul class="svc__tags">
+                            <li>業務改善</li><li>生成AI活用</li><li>自動化</li><li>内製化支援</li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+
+            <div class="svc-sub">
+                <p class="svc-sub__label">+ SUPPORT</p>
+                <ul class="svc-sub__grid">
+                    <li>
+                        <h4>SNS & LINE運用</h4>
+                        <p>SNS・LINE公式アカウントを活用した戦略的な運用支援。認知向上と集客に貢献します。</p>
+                    </li>
+                    <li>
+                        <h4>LLMO & SEO</h4>
+                        <p>検索エンジンとAI検索の両方に最適化。アナリティクスを用いた分析・改善提案。</p>
+                    </li>
+                    <li>
+                        <h4>保守・運用</h4>
+                        <p>公開後のサイトの保守・運用をサポートし、安定したサイト運営を実現します。</p>
+                    </li>
+                    <li>
+                        <h4>コンテンツ制作</h4>
+                        <p>Webサイトに必要な文章作成や、写真・イラストなどの素材制作をサポートします。</p>
+                    </li>
+                </ul>
+            </div>
+            <p class="svc__note">
+                料金は、内容と規模に応じたオーダーメイドの個別お見積りです。<br class="pc-only">
+                「何をどこまで頼めるか」の整理からで構いません。まずは課題をお聞かせください。
+            </p>
+        </section>
+
+        <!-- ============ REASON ============ -->
+        <section class="section section--reason" id="reason">
+            <header class="sec-head">
+                <span class="sec-head__idx">04</span>
+                <span class="sec-head__label" data-scramble>REASON</span>
+            </header>
+            <h2 class="reason__title">
+                <span class="line"><span class="split" data-split>Why us.</span></span>
+            </h2>
+            <ol class="reason__list">
+                <li class="reason__item">
+                    <span class="reason__num" aria-hidden="true">01</span>
+                    <div class="reason__body">
+                        <h3>窓口ひとつで、戦略から運用まで</h3>
+                        <p>
+                            企画・デザイン・実装・運用が分断されると、サイトは「作って終わり」になります。私たちはすべての工程を一気通貫で担うため、意思決定が速く、責任の所在が明確。公開後の改善まで同じチームで伴走します。
+                        </p>
+                    </div>
+                </li>
+                <li class="reason__item">
+                    <span class="reason__num" aria-hidden="true">02</span>
+                    <div class="reason__body">
+                        <h3>「目に留まる」を作り切る表現力</h3>
+                        <p>
+                            このサイトで体験している動きや3D表現は、そのまま私たちの提供品質です。テンプレートに頼らない設計と、細部まで作り込むインタラクションで、埋もれないブランド体験を作ります。
+                        </p>
+                    </div>
+                </li>
+                <li class="reason__item">
+                    <span class="reason__num" aria-hidden="true">03</span>
+                    <div class="reason__body">
+                        <h3>AIを使い倒しているから、支援できる</h3>
+                        <p>
+                            私たち自身が制作プロセスにAIを組み込み、スピードと品質を両立しています。ツールの紹介ではなく「業務がどう変わるか」から逆算した、実務起点のAI導入支援が可能です。
+                        </p>
+                    </div>
+                </li>
+            </ol>
+        </section>
+
+        <!-- ============ NEWS ============ -->
+        <section class="section section--news" id="news">
+            <header class="sec-head">
+                <span class="sec-head__idx">05</span>
+                <span class="sec-head__label" data-scramble>NEWS</span>
+            </header>
+            <h2 class="news__title">
+                <span class="line"><span class="split" data-split>Updates.</span></span>
+            </h2>
+            <ul class="news__list" id="news-list">
+                <!-- injected by JS -->
+            </ul>
+        </section>
+
+        <!-- ============ CONTACT ============ -->
+        <section class="section section--contact" id="contact">
+            <header class="sec-head">
+                <span class="sec-head__idx">06</span>
+                <span class="sec-head__label" data-scramble>CONTACT</span>
+            </header>
+            <h2 class="contact__title">
+                <span class="line"><span class="split" data-split>Let's</span></span>
+                <span class="line line--indent"><span class="split split--stroke" data-split>talk.</span></span>
+            </h2>
+            <p class="contact__lead">
+                サイトのリニューアル、新規事業のWeb展開、AI導入の相談。<br>
+                「まだ整理できていない」段階からで構いません。お気軽にご連絡ください。
+            </p>
+            <div class="contact__actions">
+                <a class="btn btn--fill" href="https://x.com/austomterry" target="_blank" rel="noopener noreferrer" data-magnetic>
+                    <span>相談してみる</span>
+                </a>
+                <a class="btn btn--ghost" href="mailto:info@studioworks.llc" data-magnetic>
+                    <span>info@studioworks.llc</span>
+                </a>
+            </div>
+
+            <dl class="contact__info">
+                <div class="contact__row">
+                    <dt>COMPANY</dt>
+                    <dd>STUDIO WORKS LLC.（合同会社STUDIO WORKS）</dd>
+                </div>
+                <div class="contact__row">
+                    <dt>BUSINESS</dt>
+                    <dd>Web Production / Web Development / AI Integration</dd>
+                </div>
+                <div class="contact__row">
+                    <dt>LOCATION</dt>
+                    <dd>Maruyama-cho, Shibuya-ku, Tokyo</dd>
+                </div>
+                <div class="contact__row">
+                    <dt>CONTACT</dt>
+                    <dd>info@studioworks.llc</dd>
+                </div>
+            </dl>
+
+            <footer class="footer">
+                <nav class="footer__nav">
+                    <a href="#concept" data-scroll-to data-scramble>CONCEPT</a>
+                    <a href="#works" data-scroll-to data-scramble>WORKS</a>
+                    <a href="#service" data-scroll-to data-scramble>SERVICE</a>
+                    <a href="#news" data-scroll-to data-scramble>NEWS</a>
+                    <a href="https://www.studio-works.jp/stuwor-port/" data-scramble>CANVAS ↗</a>
+                </nav>
+                <button class="footer__top" type="button" id="back-to-top" data-magnetic>
+                    <span>BACK TO TOP ↑</span>
+                </button>
+                <small class="footer__copy">&copy; <span id="copy-year">2026</span> STUDIO WORKS LLC. All Rights Reserved.</small>
+            </footer>
+        </section>
+    </main>
 
     <!-- News Modal -->
-    <div id="news-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <div class="modal-header">
-                <span id="modal-date" class="news-date"></span>
-            </div>
-            <h2 id="modal-title"></h2>
-            <div id="modal-body"></div>
+    <div class="modal" id="news-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-hidden="true">
+        <div class="modal__backdrop" data-modal-close></div>
+        <div class="modal__panel" data-lenis-prevent>
+            <button class="modal__close" type="button" aria-label="閉じる" data-modal-close>×</button>
+            <span class="modal__date" id="modal-date"></span>
+            <h2 class="modal__title" id="modal-title"></h2>
+            <div class="modal__body" id="modal-body"></div>
         </div>
     </div>
-
-    <script src="script.js"></script>
 </body>
 
 </html>
