@@ -149,7 +149,8 @@
         "client": "Reygit Inc.",
         "production_period": "",
         "design": "",
-        "notes": "Studio Store"
+        "notes": "Studio Store",
+        "hidden": true
     },
     {
         "image": "https://storage.googleapis.com/production-os-assets/assets/e741707f-88e9-43a0-b5b6-d47642716f48",
