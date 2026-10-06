@@ -37,7 +37,8 @@
     "client": "シェアトラ",
     "production_period": "",
     "design": "",
-    "notes": ""
+    "notes": "",
+    "hidden": true
   },
   {
     "image": "https://static.wixstatic.com/media/9d129e_a697896d437d4a65a8bda67ece64e4b9%7Emv2.png/v1/fit/w_2500,h_1330,al_c/9d129e_a697896d437d4a65a8bda67ece64e4b9%7Emv2.png",
@@ -67,7 +68,8 @@
     "client": "TailorBase",
     "production_period": "",
     "design": "",
-    "notes": "Studio Store活用"
+    "notes": "Studio Store活用",
+    "hidden": true
   },
   {
     "image": "images/bimoji.png",
@@ -167,7 +169,8 @@
     "client": "株式会社兵庫技研",
     "production_period": "",
     "design": "",
-    "notes": "Studio Store活用"
+    "notes": "Studio Store活用",
+    "hidden": true
   },
   {
     "image": "https://storage.googleapis.com/production-os-assets/assets/921a3d25-a007-4a0c-9b2c-e838ad92000e",
@@ -267,6 +270,7 @@
     "client": "",
     "production_period": "2024.7",
     "design": "",
-    "notes": "Studio Store活用"
+    "notes": "Studio Store活用",
+    "hidden": true
   }
 ]

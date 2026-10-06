@@ -375,7 +375,7 @@
             const lang = document.documentElement.lang === 'en' ? '_en' : '';
             const res = await fetch(`works${lang}.json?t=${Date.now()}`);
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
-            const works = await res.json();
+            const works = (await res.json()).filter((w) => !w.hidden);
 
             const endCard = $('.works__end', track);
             works.forEach((work, idx) => {
