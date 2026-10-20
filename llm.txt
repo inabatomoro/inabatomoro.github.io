@@ -14,4 +14,4 @@
 - Site: https://www.studio-works.jp/
 - English: https://www.studio-works.jp/en.html
 - Works data: https://www.studio-works.jp/works.json
-- Contact: info@studioworks.llc
+- Contact: info@studio-works.jp
